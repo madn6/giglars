@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    /* ✅ OUTPUT SETTINGS */
+    "outDir": "./dist",            // Compiled files go here
+    "rootDir": "./src",            // Your TypeScript source files
+
+    /* ✅ TARGET ENVIRONMENT */
+    "target": "ES6",            // Modern JavaScript features
+    "module": "CommonJS",          // Node.js requires CommonJS
+    "moduleResolution": "node",    // Resolve modules like Node.js
+
+    /* ✅ STRICT TYPE CHECKING */
+    "strict": true,                // Enable all strict checks
+    "esModuleInterop": true,       // Allow default imports from CommonJS
+    "forceConsistentCasingInFileNames": true, // Prevent case-sensitive issues
+    "skipLibCheck": true,          // Skip type checking in node_modules
+
+    /* ✅ OPTIONAL SETTINGS */
+    "resolveJsonModule": true,     // Allow importing JSON files
+    "noImplicitAny": false,        // Allow 'any' types if needed
+    "allowJs": true                // Allow JavaScript files in the project
+  },
+  "include": ["src"],              // Only compile files in src
+  "exclude": ["node_modules", "dist"] // Ignore these directories
+}
