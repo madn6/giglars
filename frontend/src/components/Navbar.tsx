@@ -1,26 +1,29 @@
 import { Link } from 'react-router-dom';
 
 const Navbar: React.FC = () => {
+
+
+
+
+
 	return (
 		<div className="">
 			<nav className="border-[rgba(255,255,255,0.18)] shadow-2xl border fixed font-poppins top-0 left-0 w-full bg-[rgba(0,0,0,0.6)] backdrop-blur-lg text-white z-50">
 				<ul className="flex items-center justify-between px-5 py-4">
-					<li className="font-rangile text-2xl text-orange-600">
+					<li className="font-rangile text-2xl ">
 						<Link to="/">Giglars</Link>
 					</li>
 
 					<div className="">
 						<li className=" items-center  hidden md:flex gap-1">
-							<img className="w-8" src="../../public/images/dice.png" alt="" />
+							<img className="w-8" src="/images/dice.png" alt="" />
 							<p className='font-boyrun text-2xl'>Lucky or Unlucky ?  Share Your Story</p>
 						</li>
 					</div>
 					<div className="flex items-center gap-2">
+						<img className='w-8' src="../../public/images/entry.png" alt="" />
 						<li>
 							<Link to="/login">Login</Link>
-						</li>
-						<li>
-							<Link to="/register">Register</Link>
 						</li>
 					</div>
 				</ul>
