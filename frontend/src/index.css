@@ -7,13 +7,13 @@
 @import 'tailwindcss';
 
 @theme {
-	--color-primary: #222831; /* Primary Background */
-	--color-secondary: #393e46; /* Secondary Background */
-	--color-lucky: #00a676; /* Lucky Accent */
-	--color-unlucky: #d72323; /* Unlucky Accent */
-	--color-text: #eeeeee; /* Text Color */
-	--color-highlight: #007a5e; /* Button Hover / Highlights */
-	--color-border: #464e57; /* Borders & Dividers */
+	--color-primary: #000000;
+	--color-secondary: #FFFFFF1A ; 
+	--color-border: #FFFFFF4D ; 
+	--color-gray: #D1D5DB ; 
+	--color-unlucky: #d72323; 
+	--color-white: #ffffff; 
+	--color-highlight: #007a5e; 
 }
 /* src/styles/global.css */
 

@@ -1,36 +1,17 @@
 import { Link } from 'react-router-dom';
 import PostCard from '../components/PostCard';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store/store';
+
 
 const Home: React.FC = () => {
-	const dummyData = [
-		{
-			image: '/images/user.png',
-			name: 'maddy69',
-			username: '@mathanmuthukani',
-			time: '2d',
-			postText:
-				'Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt consectetur nemo omnis animi necessitatibus eos nisi nam vitae repellat quas sint sed aut magnam, eius, eveniet debitis itaque natus tempore.',
-			postImage:
-				'https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?cs=srgb&dl=pexels-souvenirpixels-414612.jpg&fm=jpg',
-			stats: { luck: 32400, comments: 2400, caps: 566, saves: 566, shares: 34000 }
-		},
-		{
-			image: '/images/user.png',
-			name: 'ramya',
-			username: '@ramya6868',
-			time: '1h',
-			postText: 'Reiciendis ea commodi maiores.',
-			postImage:
-				'https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg?cs=srgb&dl=pexels-fauxels-3183197.jpg&fm=jpg',
-			stats: { luck: 10400, comments: 1300, caps: 232, saves: 400, shares: 12000 }
-		}
-	];
-
+	const posts = useSelector((state: RootState) => state.posts)
+	console.log(posts)
 	return (
 		<div className="flex flex-col min-h-screen">
 			{/* Left Sidebar - Fixed on Large Screens, Bottom on Small Screens */}
 			<nav
-				className="bg-black text-white py-5 fixed bottom-0 w-full flex justify-around 
+				className="bg-primary text-white py-5 fixed bottom-0 w-full flex justify-around 
                 md:w-[120px] md:h-auto md:left-0 md:top-1/2 md:-translate-y-1/2 md:flex-col md:space-y-6
 				
 				"
@@ -68,7 +49,7 @@ const Home: React.FC = () => {
 			<div className="flex justify-center items-start md:ml-[120px] py-20 h-screen overflow-y-auto px-2 md:px-6">
 				<div className="max-w-2xl w-full">
 					<div className="grid grid-cols-1  gap-4">
-						{dummyData.map((post, index) => (
+						{posts.map((post, index) => (
 							<PostCard key={index} post={post} />
 						))}
 					</div>

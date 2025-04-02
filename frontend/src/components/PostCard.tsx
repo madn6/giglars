@@ -25,12 +25,12 @@ type PostCardProps = {
 
 export default function PostCard({ post }: PostCardProps) {
 	return (
-		<div className="container text-white -z-10 bg-white/10 border border-white/30 p-4 rounded-xl backdrop-blur-2xl shadow-xl">
+		<div className="container text-white -z-10 bg-secondar border border-border p-4 rounded-xl backdrop-blur-2xl shadow-xl">
 			<div className="top__container flex items-center gap-4">
 				<img className="w-10 h-10 rounded-full" src={post.image} alt={post.name} />
 				<div className="flex-1">
 					<div className="font-bold">{post.name}</div>
-					<div className="text-sm text-gray-300">
+					<div className="text-sm text-gray">
 						{post.username} • {post.time}
 					</div>
 				</div>
