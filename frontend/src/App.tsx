@@ -1,6 +1,18 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Home } from './pages';
+import { Navbar } from './components';
 
-export default function App() {
-  return (
-    <div className="text-6xl text-green-700">this is giglars app </div>
-  )
-}
+const App: React.FC = () => {
+	return (
+		<div className="">
+			<Router>
+				<Navbar />
+				<Routes>
+					<Route path="/" element={<Home />} />
+				</Routes>
+			</Router>
+		</div>
+	);
+};
+
+export default App;
