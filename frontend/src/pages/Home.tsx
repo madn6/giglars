@@ -8,7 +8,7 @@ const Home: React.FC = () => {
 	const posts = useSelector((state: RootState) => state.posts)
 	console.log(posts)
 	return (
-		<div className="flex flex-col min-h-screen">
+		<div className="flex flex-col  font-inter min-h-screen">
 			{/* Left Sidebar - Fixed on Large Screens, Bottom on Small Screens */}
 			<nav
 				className="bg-primary text-white py-5 fixed bottom-0 w-full flex justify-around 

@@ -16,9 +16,9 @@ const Navbar: React.FC = () => {
 						</li>
 					</div>
 					<div className="flex items-center gap-2">
-						<img className="w-8" src="../../public/images/entry.png" alt="" />
+						<img className="w-8" src="/images/entry.png" alt="" />
 						<li>
-							<Link to="/login">Login</Link>
+							<Link to="/sign-in">Sign In</Link>
 						</li>
 					</div>
 				</ul>

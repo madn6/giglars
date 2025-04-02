@@ -25,7 +25,7 @@ type PostCardProps = {
 
 export default function PostCard({ post }: PostCardProps) {
 	return (
-		<div className="container text-white -z-10 bg-secondar border border-border p-4 rounded-xl backdrop-blur-2xl shadow-xl">
+		<div className="container font-inter text-white -z-10 bg-secondar border border-border p-4 rounded-xl backdrop-blur-2xl shadow-xl">
 			<div className="top__container flex items-center gap-4">
 				<img className="w-10 h-10 rounded-full" src={post.image} alt={post.name} />
 				<div className="flex-1">
