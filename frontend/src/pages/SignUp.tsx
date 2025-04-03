@@ -51,10 +51,15 @@ export default function SignUp() {
 	const {
 		register,
 		handleSubmit,
-		formState: { errors, isSubmitting },reset
+		watch,
+		formState: { errors, isSubmitting },
+		reset
 	} = useForm({
 		resolver: yupResolver(signupSchema)
 	});
+
+	const watchPassword = watch('password');
+	const watchConfirmPassword = watch('confirmPassword');
 
 	const onSubmit = async (data: SignUpFormData) => {
 		try {
@@ -67,13 +72,13 @@ export default function SignUp() {
 			});
 			console.log('user registerd', res.data);
 			toast.success('login successful!', { position: 'bottom-center' });
-			reset()
+			reset();
 		} catch (error) {
 			if (axios.isAxiosError(error)) {
-				const errorMessage = error.response?.data?.error || 'Signup failed!'; 
-				toast.error(errorMessage, { position: "bottom-center" }); 
+				const errorMessage = error.response?.data?.error || 'Signup failed!';
+				toast.error(errorMessage, { position: 'bottom-center' });
 			} else {
-				toast.error('An unexpected error occurred.', { position: "bottom-center" });
+				toast.error('An unexpected error occurred.', { position: 'bottom-center' });
 			}
 		}
 	};
@@ -110,13 +115,15 @@ export default function SignUp() {
 							className="w-full p-3 text-white rounded-lg border border-border placeholder:text-white focus:outline-none"
 							{...register('password')}
 						/>
-						<button
-							type="button"
-							className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray"
-							onClick={togglePassword}
-						>
-							{showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-						</button>
+						{watchPassword && (
+							<button
+								type="button"
+								className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray"
+								onClick={togglePassword}
+							>
+								{showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+							</button>
+						)}
 						{errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
 					</div>
 
@@ -127,13 +134,15 @@ export default function SignUp() {
 							className="w-full p-3 text-white rounded-lg border border-border placeholder:text-white focus:outline-none"
 							{...register('confirmPassword')}
 						/>
-						<button
-							type="button"
-							className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray"
-							onClick={toggleConfirmPassword}
-						>
-							{showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-						</button>
+						{watchConfirmPassword && (
+							<button
+								type="button"
+								className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray"
+								onClick={toggleConfirmPassword}
+							>
+								{showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+							</button>
+						)}
 						{errors.confirmPassword && (
 							<p className="text-red-500 text-sm">{errors.confirmPassword.message}</p>
 						)}

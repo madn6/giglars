@@ -34,11 +34,13 @@ export default function SignIn() {
 	const {
 		register,
 		handleSubmit,
+		watch,
 		formState: { errors, isSubmitting },
 		reset
 	} = useForm<SignInFormData>({
 		resolver: yupResolver(signInSchema)
 	});
+	const watchPassword = watch('password');
 
 	const onSubmit = async (data: SignInFormData) => {
 		try {
@@ -82,13 +84,15 @@ export default function SignIn() {
 							className="w-full p-3 text-white rounded-lg border border-border placeholder:text-white focus:outline-none"
 							{...register('password')}
 						/>
-						<button
-							type="button"
-							className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray"
-							onClick={togglePassword}
-						>
-							{showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-						</button>
+						{watchPassword && (
+							<button
+								type="button"
+								className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray"
+								onClick={togglePassword}
+							>
+								{showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+							</button>
+						)}
 						<p className="text-red-500 text-sm">{errors.password?.message}</p>
 					</div>
 
