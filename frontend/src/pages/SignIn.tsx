@@ -2,11 +2,19 @@ import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import axios, { AxiosError } from 'axios';
+import { useDispatch } from 'react-redux';
+import { login } from '../redux/features/auth/authSlice';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Eye, EyeOff } from 'lucide-react';
+import { useState } from 'react';
 
-// Define validation schema
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const signInSchema = yup.object().shape({
 	email: yup.string().email('Invalid email').required('Email is required'),
-	password: yup.string().min(8, 'At least 8 characters').required('Password is required'),
+	password: yup.string().min(8, 'At least 8 characters').required('Password is required')
 });
 
 type SignInFormData = {
@@ -15,18 +23,41 @@ type SignInFormData = {
 };
 
 export default function SignIn() {
+	const [showPassword, setShowPassword] = useState(false);
+
+	const togglePassword = () => {
+		setShowPassword((prev) => !prev);
+	};
+
+	const dispatch = useDispatch();
+
 	const {
 		register,
 		handleSubmit,
 		formState: { errors, isSubmitting },
+		reset
 	} = useForm<SignInFormData>({
-		resolver: yupResolver(signInSchema),
+		resolver: yupResolver(signInSchema)
 	});
 
 	const onSubmit = async (data: SignInFormData) => {
-		console.log('Signing in...', data);
-		// Simulating API call delay
-		await new Promise((resolve) => setTimeout(resolve, 1000));
+		try {
+			const res = await axios.post(`${API_BASE_URL}/api/auth/login`, data, {
+				withCredentials: true
+			});
+			dispatch(login({ userid: res.data.userId, token: res.data.token }));
+
+			console.log('login successful', res.data);
+			toast.success('login successful!', { position: 'bottom-center' });
+			reset();
+		} catch (error) {
+			if (error instanceof AxiosError) {
+				// TypeScript now recognizes error.response safely
+				toast.error(error.response?.data?.error || 'Login failed!', { position: 'bottom-center' });
+			} else {
+				toast.error('An unexpected error occurred.', { position: 'bottom-center' });
+			}
+		}
 	};
 
 	return (
@@ -44,13 +75,20 @@ export default function SignIn() {
 						<p className="text-red-500 text-sm">{errors.email?.message}</p>
 					</div>
 
-					<div>
+					<div className="relative w-full">
 						<input
-							type="password"
+							type={showPassword ? 'text' : 'password'}
 							placeholder="Password"
 							className="w-full p-3 text-white rounded-lg border border-border placeholder:text-white focus:outline-none"
 							{...register('password')}
 						/>
+						<button
+							type="button"
+							className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray"
+							onClick={togglePassword}
+						>
+							{showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+						</button>
 						<p className="text-red-500 text-sm">{errors.password?.message}</p>
 					</div>
 

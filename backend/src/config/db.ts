@@ -1,4 +1,4 @@
-import "./dotenv"; 
+import './back.dotenv';
 import mongoose from 'mongoose';
 
 const connectDB = async () => {

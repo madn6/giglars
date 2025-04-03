@@ -7,6 +7,7 @@ interface RegisterUserBody {
 	username: string;
 	email: string;
 	password: string;
+	confirmPassword: string;
 }
 
 export const registerUser: RequestHandler<{}, {}, RegisterUserBody> = async (
@@ -15,7 +16,18 @@ export const registerUser: RequestHandler<{}, {}, RegisterUserBody> = async (
 	next: NextFunction
 ): Promise<void> => {
 	try {
-		const { username, email, password } = req.body;
+		const { username, email, password, confirmPassword } = req.body;
+
+		const existingUser = await User.findOne({ email });
+		if (existingUser) {
+			res.status(400).json({ error: 'Email already in use' });
+			return
+		}
+
+		if (password !== confirmPassword) {
+			res.status(400).json({ error: 'Passwords do not match' });
+			return;
+		}
 
 		const salt = await bcrypt.genSalt(10);
 		const hashedPassword = await bcrypt.hash(password, salt);
@@ -34,7 +46,7 @@ interface LoginUserBody {
 	password: string;
 }
 
-export const loginUser: RequestHandler<{},{},LoginUserBody> = async (
+export const loginUser: RequestHandler<{}, {}, LoginUserBody> = async (
 	req: Request,
 	res: Response,
 	next: NextFunction

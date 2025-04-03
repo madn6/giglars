@@ -2,8 +2,13 @@ import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { useState } from 'react';
+import { Eye, EyeOff } from 'lucide-react';
 
-// ✅ Validation Schema
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const signupSchema = yup.object().shape({
 	username: yup
 		.string()
@@ -31,19 +36,46 @@ type SignUpFormData = {
 	confirmPassword: string;
 };
 
-
-
 export default function SignUp() {
+	const [showPassword, setShowPassword] = useState(false);
+	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+	const togglePassword = () => {
+		setShowPassword((prev) => !prev);
+	};
+
+	const toggleConfirmPassword = () => {
+		setShowConfirmPassword((prev) => !prev);
+	};
+
 	const {
 		register,
 		handleSubmit,
-		formState: { errors, isSubmitting }
+		formState: { errors, isSubmitting },reset
 	} = useForm({
 		resolver: yupResolver(signupSchema)
 	});
 
 	const onSubmit = async (data: SignUpFormData) => {
-		console.log('Signing up...', data);
+		try {
+			console.log(data);
+			const res = await axios.post(`${API_BASE_URL}/api/auth/register`, {
+				username: data.username,
+				email: data.email,
+				password: data.password,
+				confirmPassword: data.confirmPassword
+			});
+			console.log('user registerd', res.data);
+			toast.success('login successful!', { position: 'bottom-center' });
+			reset()
+		} catch (error) {
+			if (axios.isAxiosError(error)) {
+				const errorMessage = error.response?.data?.error || 'Signup failed!'; 
+				toast.error(errorMessage, { position: "bottom-center" }); 
+			} else {
+				toast.error('An unexpected error occurred.', { position: "bottom-center" });
+			}
+		}
 	};
 
 	return (
@@ -71,23 +103,37 @@ export default function SignUp() {
 						{errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
 					</div>
 
-					<div>
+					<div className="relative w-full">
 						<input
-							type="password"
+							type={showPassword ? 'text' : 'password'}
 							placeholder="Password"
 							className="w-full p-3 text-white rounded-lg border border-border placeholder:text-white focus:outline-none"
 							{...register('password')}
 						/>
+						<button
+							type="button"
+							className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray"
+							onClick={togglePassword}
+						>
+							{showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+						</button>
 						{errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
 					</div>
 
-					<div>
+					<div className="relative w-full">
 						<input
-							type="password"
+							type={showConfirmPassword ? 'text' : 'password'}
 							placeholder="Confirm Password"
 							className="w-full p-3 text-white rounded-lg border border-border placeholder:text-white focus:outline-none"
 							{...register('confirmPassword')}
 						/>
+						<button
+							type="button"
+							className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray"
+							onClick={toggleConfirmPassword}
+						>
+							{showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+						</button>
 						{errors.confirmPassword && (
 							<p className="text-red-500 text-sm">{errors.confirmPassword.message}</p>
 						)}
