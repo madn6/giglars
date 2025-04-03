@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Eye, EyeOff } from 'lucide-react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -30,6 +31,7 @@ export default function SignIn() {
 	};
 
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	const {
 		register,
@@ -47,9 +49,16 @@ export default function SignIn() {
 			const res = await axios.post(`${API_BASE_URL}/api/auth/login`, data, {
 				withCredentials: true
 			});
-			dispatch(login({ userid: res.data.userId, token: res.data.token }));
-
+			dispatch(
+				login({
+					userid: res.data.userId,
+					token: res.data.token,
+					profileImage: res.data.profileImage
+				})
+			);
+			console.log(res.data.profileImage);
 			console.log('login successful', res.data);
+			navigate('/');
 			toast.success('login successful!', { position: 'bottom-center' });
 			reset();
 		} catch (error) {

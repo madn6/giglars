@@ -60,6 +60,8 @@ export const loginUser: RequestHandler<{}, {}, LoginUserBody> = async (
 			return;
 		}
 
+		const profileImage = user.profileImage
+
 		const isMatch = await bcrypt.compare(password, user.password);
 		if (!isMatch) {
 			res.status(400).json({ message: 'Invalid password' });
@@ -70,7 +72,7 @@ export const loginUser: RequestHandler<{}, {}, LoginUserBody> = async (
 			expiresIn: '1d'
 		});
 
-		res.status(200).json({ token, userId: user._id });
+		res.status(200).json({ token, userId: user._id, profileImage });
 	} catch (error) {
 		next(error);
 	}

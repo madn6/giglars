@@ -1,6 +1,12 @@
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store/store';
 
 const Navbar: React.FC = () => {
+	const profileImage = useSelector((state: RootState) => state.auth.profileImage);
+	const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+	console.log(profileImage)
+
 	return (
 		<div className="">
 			<nav className="fixed md:bg-primary top-0 left-0 w-full z-50 font-poppins text-white shadow-2xl backdrop-blur-md bg-[#232323]/1 ">
@@ -16,10 +22,13 @@ const Navbar: React.FC = () => {
 						</li>
 					</div>
 					<div className="flex items-center gap-2">
-						<img className="w-8" src="/images/entry.png" alt="" />
-						<li>
-							<Link to="/sign-in">Sign In</Link>
-						</li>
+						{isLoggedIn ? (
+							<img className="w-8 h-8 rounded-full" src={profileImage} alt="user profile" />
+						) : (
+							<li>
+								<Link to="/sign-in">Sign In</Link>
+							</li>
+						)}
 					</div>
 				</ul>
 			</nav>
