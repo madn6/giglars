@@ -6,6 +6,12 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
+import { useDispatch } from 'react-redux';
+import { login } from '../redux/features/auth/authSlice';
+import { useNavigate } from 'react-router-dom';
+
+
+
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -61,17 +67,35 @@ export default function SignUp() {
 	const watchPassword = watch('password');
 	const watchConfirmPassword = watch('confirmPassword');
 
+
+	const dispatch = useDispatch()
+	const navigate = useNavigate()
+
 	const onSubmit = async (data: SignUpFormData) => {
 		try {
 			console.log(data);
-			const res = await axios.post(`${API_BASE_URL}/api/auth/register`, {
-				username: data.username,
-				email: data.email,
-				password: data.password,
-				confirmPassword: data.confirmPassword
-			});
+			const res = await axios.post(
+				`${API_BASE_URL}/api/auth/register`,
+				{
+					username: data.username,
+					email: data.email,
+					password: data.password,
+					confirmPassword: data.confirmPassword
+				},
+				{
+					withCredentials: true
+				}
+			);
 			console.log('user registerd', res.data);
 			toast.success('login successful!', { position: 'bottom-center' });
+			dispatch(
+				login({
+					userid: res.data.userId,
+					profileImage: res.data.profileImage
+				})
+			);
+
+			navigate('/');
 			reset();
 		} catch (error) {
 			if (axios.isAxiosError(error)) {

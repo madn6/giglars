@@ -4,6 +4,8 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import connectDB from './config/db';
 import authRoutes from './routes/authRoutes';
+import cookieParser from 'cookie-parser'
+import helmet from 'helmet';
 // import postRoutes from "./routes/postRoutes";
 // import userRoutes from "./routes/userRoutes";
 
@@ -11,6 +13,10 @@ const app = express();
 
 // Middleware
 app.use(express.json());
+app.use(cookieParser())
+app.use(helmet())
+
+
 app.use(
 	cors({
 		origin: 'http://localhost:5173', // Allow frontend origin

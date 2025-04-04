@@ -52,7 +52,6 @@ export default function SignIn() {
 			dispatch(
 				login({
 					userid: res.data.userId,
-					token: res.data.token,
 					profileImage: res.data.profileImage
 				})
 			);
