@@ -10,9 +10,6 @@ import { useDispatch } from 'react-redux';
 import { login } from '../redux/features/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
 
-
-
-
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const signupSchema = yup.object().shape({
@@ -67,9 +64,8 @@ export default function SignUp() {
 	const watchPassword = watch('password');
 	const watchConfirmPassword = watch('confirmPassword');
 
-
-	const dispatch = useDispatch()
-	const navigate = useNavigate()
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	const onSubmit = async (data: SignUpFormData) => {
 		try {
@@ -91,7 +87,9 @@ export default function SignUp() {
 			dispatch(
 				login({
 					userid: res.data.userId,
-					profileImage: res.data.profileImage
+					profileImage: res.data.profileImage,
+					name: res.data.name,
+					email: res.data.email
 				})
 			);
 

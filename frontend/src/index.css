@@ -1,19 +1,19 @@
+@import url('https://fonts.cdnfonts.com/css/romantic-party');
+@import url('https://fonts.cdnfonts.com/css/rangile');
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-@import url('https://fonts.cdnfonts.com/css/rangile');
-@import url('https://fonts.cdnfonts.com/css/boyrun');
 
 @import 'tailwindcss';
 
 @theme {
 	--color-primary: #000000;
-	--color-secondary: #FFFFFF1A ; 
-	--color-border: #FFFFFF4D ; 
-	--color-gray: #D1D5DB ; 
-	--color-unlucky: #d72323; 
-	--color-white: #ffffff; 
-	--color-highlight: #007a5e; 
+	--color-secondary: #ffffff1a;
+	--color-border: #ffffff4d;
+	--color-gray: #d1d5db;
+	--color-unlucky: #d72323;
+	--color-white: #ffffff;
+	--color-highlight: #007a5e;
 }
 /* src/styles/global.css */
 
@@ -21,8 +21,8 @@ html {
 	background-color: #000000;
 }
 
-.font-boyrun {
-	font-family: 'Boyrun', sans-serif;
+.font-romantic {
+	font-family: 'Romantic Party', sans-serif;
 }
 
 .font-rangile {

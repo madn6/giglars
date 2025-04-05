@@ -52,7 +52,9 @@ export default function SignIn() {
 			dispatch(
 				login({
 					userid: res.data.userId,
-					profileImage: res.data.profileImage
+					profileImage: res.data.profileImage,
+					name:res.data.name,
+					email:res.data.email,
 				})
 			);
 			console.log(res.data.profileImage);

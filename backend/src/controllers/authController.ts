@@ -59,7 +59,9 @@ export const registerUser: RequestHandler<{}, {}, RegisterUserBody> = async (req
 
 		res.status(201).json({
 			userId: newUser._id,
-			profileImage: newUser.profileImage
+			profileImage: newUser.profileImage,
+			email:newUser.email,
+			name:newUser.username
 		});
 	} catch (error) {
 		next(error);
@@ -102,7 +104,9 @@ export const loginUser: RequestHandler<{}, {}, LoginUserBody> = async (req, res,
 
 		res.status(200).json({
 			userId: user._id,
-			profileImage: user.profileImage
+			profileImage: user.profileImage,
+			email: user.email,
+			name:user.username
 		});
 	} catch (error) {
 		next(error);
@@ -124,7 +128,9 @@ export const checkAuth = async (req: AuthenticatedRequest, res: Response):Promis
 
 		res.status(200).json({
 			userId: user._id,
-			profileImage: user.profileImage
+			profileImage: user.profileImage,
+			name:user.username,
+			email: user.email
 		});
 	} catch (err) {
 		res.status(500).json({ error: 'Server error' });
@@ -166,7 +172,6 @@ export const refreshToken: RequestHandler = async (req, res):Promise<void> => {
 		res.cookie('accessToken', newAccessToken, {
 			httpOnly: true,
 			sameSite: 'strict',
-			secure: process.env.NODE_ENV === 'production',
 			maxAge: 15 * 60 * 1000
 		});
 

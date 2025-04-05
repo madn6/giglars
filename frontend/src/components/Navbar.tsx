@@ -1,11 +1,22 @@
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store/store';
+import UserMenu from './UserMenu';
 
+export interface UserMenuProps {
+	isLoggedIn: boolean;
+	user: {
+		image: string;
+		email: string;
+		name: string;
+	};
+}
 const Navbar: React.FC = () => {
 	const profileImage = useSelector((state: RootState) => state.auth.profileImage);
 	const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
-	console.log(profileImage)
+	const email = useSelector((state: RootState) => state.auth.email);
+	const name = useSelector((state: RootState) => state.auth.name);
+	console.log(profileImage);
 
 	return (
 		<div className="">
@@ -18,10 +29,18 @@ const Navbar: React.FC = () => {
 					<div className="">
 						<li className=" items-center  hidden md:flex gap-1">
 							<img className="w-8" src="/images/dice.png" alt="" />
-							<p className="font-boyrun text-2xl">Lucky or Unlucky ? Share Your Story</p>
+							<p className="font-romantic text-2xl">Lucky or Unlucky ? Share Your Story</p>
 						</li>
 					</div>
-					<div className="flex items-center gap-2">
+					<UserMenu
+						isLoggedIn={isLoggedIn}
+						user={{
+							image: profileImage || '',
+							email: email || '',
+							name: name || ''
+						}}
+					/>
+					{/* <div className="flex items-center gap-2">
 						{isLoggedIn ? (
 							<img className="w-8 h-8 rounded-full" src={profileImage} alt="user profile" />
 						) : (
@@ -29,7 +48,7 @@ const Navbar: React.FC = () => {
 								<Link to="/sign-in">Sign In</Link>
 							</li>
 						)}
-					</div>
+					</div> */}
 				</ul>
 			</nav>
 		</div>
