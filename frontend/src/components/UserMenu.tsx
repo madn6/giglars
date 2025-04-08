@@ -1,10 +1,19 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { UserMenuProps } from './Navbar';
+import { useDispatch } from 'react-redux';
+import { logout } from '../redux/features/auth/authSlice';
+import API from '../utils/axios';
+import { toast } from 'react-toastify';
 
 const UserMenu = ({ isLoggedIn, user }: UserMenuProps) => {
 	const [open, setOpen] = useState(false);
 	const menuRef = useRef<HTMLDivElement>(null);
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
+	console.log('isLoggedIn:', isLoggedIn);
+	console.log('user:', user);
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -17,18 +26,32 @@ const UserMenu = ({ isLoggedIn, user }: UserMenuProps) => {
 		return () => document.removeEventListener('mousedown', handleClickOutside);
 	}, []);
 
+	const handleLogout = async () => {
+		try {
+			await API.post('/api/auth/logout', {}, { withCredentials: true });
+			dispatch(logout());
+			navigate('/');
+			toast.success('Logged out successfully', { position: 'bottom-center' });
+		} catch (err) {
+			toast.error('Failed to logout', { position: 'bottom-center' });
+			console.error(err);
+		}
+	};
+
+	// ✅ If not logged in, just show a sign-in link
 	if (!isLoggedIn) {
 		return (
-			<div className="text-sm">
-				<Link className="" to="/sign-in">
+			<div className="text-sm px-1">
+				<Link to="/sign-in" onClick={()=>setOpen(false)} className="text-white hover:underline">
 					Sign In
 				</Link>
 			</div>
 		);
 	}
 
+	// ✅ If logged in, show profile image and dropdown
 	return (
-		<div className="relative " ref={menuRef}>
+		<div className="relative" ref={menuRef}>
 			<img
 				onClick={() => setOpen((prev) => !prev)}
 				className="w-9 h-9 rounded-full cursor-pointer shadow-md hover:shadow-lg"
@@ -43,25 +66,20 @@ const UserMenu = ({ isLoggedIn, user }: UserMenuProps) => {
 							<p className="text-sm px-3 font-medium">{user.name}</p>
 							<p className="text-xs px-3 mb-1 truncate">{user.email}</p>
 						</div>
+						{/* Menu Links */}
 						<div className="flex flex-col space-y-1">
-							<div className="px-1">
-								<Link to="/profile" className="block px-3 py-2 rounded hover:bg-[#111111] text-sm">
-									Profile
-								</Link>
-							</div>
-							<div className="px-1">
-								<Link to="/settings" className="block px-3 py-2 rounded hover:bg-[#111111] text-sm">
-									Settings
-								</Link>
-							</div>
-							<div className="px-1">
-								<Link
-									to="/logout"
-									className="block px-3 py-2 rounded hover:bg-[#111111] text-sm text-red-500"
-								>
-									Logout
-								</Link>
-							</div>
+							<Link to="/profile" onClick={()=>setOpen(false)} className="block px-3 py-2 rounded hover:bg-[#111111] text-sm">
+								Profile
+							</Link>
+							<Link to="/settings" onClick={()=>setOpen(false)}  className="block px-3 py-2 rounded hover:bg-[#111111] text-sm">
+								Settings
+							</Link>
+							<button
+								onClick={handleLogout}
+								className="text-left cursor-pointer text-sm text-red-500 hover:bg-[#111111] px-3 py-2 rounded"
+							>
+								Logout
+							</button>
 						</div>
 					</div>
 				</div>

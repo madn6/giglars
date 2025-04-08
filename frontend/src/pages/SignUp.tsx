@@ -9,8 +9,8 @@ import { Eye, EyeOff } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import { login } from '../redux/features/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
+import API from '../utils/axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const signupSchema = yup.object().shape({
 	username: yup
@@ -70,8 +70,8 @@ export default function SignUp() {
 	const onSubmit = async (data: SignUpFormData) => {
 		try {
 			console.log(data);
-			const res = await axios.post(
-				`${API_BASE_URL}/api/auth/register`,
+			const res = await API.post(
+				'/api/auth/register',
 				{
 					username: data.username,
 					email: data.email,

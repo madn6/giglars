@@ -1,21 +1,18 @@
 import { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
-
 import { Home, SignIn, SignUp } from './pages';
 import { Navbar } from './components';
-import { checkAuth } from './api/axiosInstance'; // adjust the path as needed
+import { checkAuth } from './api/axiosInstance'; 
 import 'react-toastify/dist/ReactToastify.css';
 
-// ✅ This inner component is rendered inside <Router>
 const AppContent: React.FC = () => {
-	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		checkAuth(dispatch, navigate);
-	}, [dispatch, navigate]);
+		checkAuth(dispatch);
+	}, [dispatch ]);
 
 	return (
 		<>

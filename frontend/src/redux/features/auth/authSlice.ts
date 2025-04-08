@@ -38,7 +38,6 @@ const authSlice = createSlice({
 		logout: (state) => {
 			state.isLoggedIn = false;
 			state.userId = null;
-			state.profileImage = '/images/dummyUser.jpg';
 		}
 	}
 });

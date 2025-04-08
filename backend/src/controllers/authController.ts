@@ -23,22 +23,24 @@ const generateTokens = (userId: string) => {
 	return { accessToken, refreshToken };
 };
 
-export const registerUser: RequestHandler<{}, {}, RegisterUserBody> = async (req, res, next):Promise<void> => {
+export const registerUser: RequestHandler<{}, {}, RegisterUserBody> = async (
+	req,
+	res,
+	next
+): Promise<void> => {
 	try {
 		const { username, email, password, confirmPassword } = req.body;
 
 		const existingUser = await User.findOne({ email });
 		if (existingUser) {
 			res.status(400).json({ error: 'Email already in use' });
-			return
-		} 
-			
-			
-		if (password !== confirmPassword) {
-			res.status(400).json({ error: 'Passwords do not match' });
-			return
+			return;
 		}
 
+		if (password !== confirmPassword) {
+			res.status(400).json({ error: 'Passwords do not match' });
+			return;
+		}
 
 		const hashedPassword = await bcrypt.hash(password, 10);
 		const newUser = await User.create({ username, email, password: hashedPassword });
@@ -47,21 +49,23 @@ export const registerUser: RequestHandler<{}, {}, RegisterUserBody> = async (req
 
 		res.cookie('accessToken', accessToken, {
 			httpOnly: true,
-			sameSite: 'strict',
+			sameSite: 'none',
+			secure: false,
 			maxAge: 15 * 60 * 1000
 		});
 
 		res.cookie('refreshToken', refreshToken, {
 			httpOnly: true,
-			sameSite: 'strict',
+			sameSite: 'none',
+			secure: false,
 			maxAge: 7 * 24 * 60 * 60 * 1000
 		});
 
 		res.status(201).json({
 			userId: newUser._id,
 			profileImage: newUser.profileImage,
-			email:newUser.email,
-			name:newUser.username
+			email: newUser.email,
+			name: newUser.username
 		});
 	} catch (error) {
 		next(error);
@@ -73,32 +77,39 @@ interface LoginUserBody {
 	password: string;
 }
 
-export const loginUser: RequestHandler<{}, {}, LoginUserBody> = async (req, res, next):Promise<void> => {
+export const loginUser: RequestHandler<{}, {}, LoginUserBody> = async (
+	req,
+	res,
+	next
+): Promise<void> => {
 	try {
 		const { email, password } = req.body;
 		const user = await User.findOne({ email });
 
-		if (!user){
+		if (!user) {
 			res.status(400).json({ message: 'User not found' });
-			return
-		} 
+			return;
+		}
 
 		const isMatch = await bcrypt.compare(password, user.password);
 		if (!isMatch) {
 			res.status(400).json({ message: 'Invalid password' });
-		}  
+			return 
+		}
 
 		const { accessToken, refreshToken } = generateTokens(user._id.toString());
 
 		res.cookie('accessToken', accessToken, {
 			httpOnly: true,
-			sameSite: 'strict',
+			sameSite: 'none',
+			secure: false,
 			maxAge: 15 * 60 * 1000
 		});
 
 		res.cookie('refreshToken', refreshToken, {
 			httpOnly: true,
-			sameSite: 'strict',
+			sameSite: 'none',
+			secure: false,
 			maxAge: 7 * 24 * 60 * 60 * 1000
 		});
 
@@ -106,30 +117,30 @@ export const loginUser: RequestHandler<{}, {}, LoginUserBody> = async (req, res,
 			userId: user._id,
 			profileImage: user.profileImage,
 			email: user.email,
-			name:user.username
+			name: user.username
 		});
 	} catch (error) {
 		next(error);
 	}
 };
 
-export const checkAuth = async (req: AuthenticatedRequest, res: Response):Promise<void> => {
+export const checkAuth = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
 	try {
 		if (!req.userId) {
 			res.status(401).json({ error: 'Unauthorized' });
-			return 
-		} 
+			return;
+		}
 
 		const user = await User.findById(req.userId);
 		if (!user) {
 			res.status(404).json({ error: 'User not found' });
-			return
+			return;
 		}
 
 		res.status(200).json({
 			userId: user._id,
 			profileImage: user.profileImage,
-			name:user.username,
+			name: user.username,
 			email: user.email
 		});
 	} catch (err) {
@@ -141,24 +152,22 @@ export const logoutUser: RequestHandler = (req, res) => {
 	res.clearCookie('accessToken', {
 		httpOnly: true,
 		sameSite: 'strict',
-		secure: process.env.NODE_ENV === 'production'
 	});
 
 	res.clearCookie('refreshToken', {
 		httpOnly: true,
 		sameSite: 'strict',
-		secure: process.env.NODE_ENV === 'production'
 	});
 
 	res.status(200).json({ message: 'Logged out' });
 };
 
-export const refreshToken: RequestHandler = async (req, res):Promise<void> => {
+export const refreshToken: RequestHandler = async (req, res): Promise<void> => {
 	const token = req.cookies.refreshToken;
 	if (!token) {
-		res.status(401).json({ error: 'No refresh token' })
-		return
-	} 
+		res.status(401).json({ error: 'No refresh token' });
+		return;
+	}
 
 	try {
 		const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET as string) as {

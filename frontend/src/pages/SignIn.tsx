@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 import { useDispatch } from 'react-redux';
 import { login } from '../redux/features/auth/authSlice';
 import { toast } from 'react-toastify';
@@ -11,7 +11,9 @@ import { Eye, EyeOff } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+// const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import API from '../utils/axios';
+
 
 const signInSchema = yup.object().shape({
 	email: yup.string().email('Invalid email').required('Email is required'),
@@ -46,7 +48,7 @@ export default function SignIn() {
 
 	const onSubmit = async (data: SignInFormData) => {
 		try {
-			const res = await axios.post(`${API_BASE_URL}/api/auth/login`, data, {
+			const res = await API.post('/api/auth/login', data, {
 				withCredentials: true
 			});
 			dispatch(

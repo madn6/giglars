@@ -1,7 +1,7 @@
 import API from '../utils/axios';
 import { AppDispatch } from '../redux/store/store'; // update with actual store path
 import { login, logout } from '../redux/features/auth/authSlice';
-import { NavigateFunction } from 'react-router-dom';
+// import { NavigateFunction } from 'react-router-dom';
 
 interface UserData {
 	userId: string;
@@ -12,7 +12,7 @@ interface UserData {
 
 export const checkAuth = async (
 	dispatch: AppDispatch,
-	navigate: NavigateFunction
+	// navigate: NavigateFunction
 ): Promise<void> => {
 	console.log('this is api', API);
 	try {
@@ -41,7 +41,6 @@ export const checkAuth = async (
 			);
 		} catch {
 			dispatch(logout());
-			navigate('/sign-in');
 		}
 	}
 };
