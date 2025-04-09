@@ -20,7 +20,7 @@ const Navbar: React.FC = () => {
 
 	return (
 		<div className="">
-			<nav className="fixed md:bg-primary top-0 left-0 w-full z-50 font-poppins text-white shadow-2xl backdrop-blur-md bg-[#232323]/1 ">
+			<nav className="fixed bg-[#081420]  border-b border-border/20  top-0 left-0 w-full z-50 font-poppins text-white shadow-2xl  ">
 				<ul className="flex items-center justify-between px-5 py-4">
 					<li className="font-rangile text-2xl ">
 						<Link to="/">Giglars</Link>
@@ -40,15 +40,6 @@ const Navbar: React.FC = () => {
 							name: name || ''
 						}}
 					/>
-					{/* <div className="flex items-center gap-2">
-						{isLoggedIn ? (
-							<img className="w-8 h-8 rounded-full" src={profileImage} alt="user profile" />
-						) : (
-							<li>
-								<Link to="/sign-in">Sign In</Link>
-							</li>
-						)}
-					</div> */}
 				</ul>
 			</nav>
 		</div>

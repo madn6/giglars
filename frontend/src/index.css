@@ -7,7 +7,7 @@
 @import 'tailwindcss';
 
 @theme {
-	--color-primary: #000000;
+	--color-primary: #0B1C2C;
 	--color-secondary: #ffffff1a;
 	--color-border: #ffffff4d;
 	--color-gray: #d1d5db;
@@ -18,7 +18,7 @@
 /* src/styles/global.css */
 
 html {
-	background-color: #000000;
+	background-color: #0B1C2C;
 }
 
 .font-romantic {
