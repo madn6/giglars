@@ -108,7 +108,7 @@ export default function SignUp() {
 	return (
 		<div className="h-screen flex items-center font-inter justify-center">
 			<div className="w-full max-w-xs px-4">
-				<h2 className="text-center text-xl font-bold dark:text-light-100">Sign Up</h2>
+				<h2 className="text-center text-xl font-semibold text-white">Sign Up</h2>
 				<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3 mt-4">
 					<div>
 						<input
@@ -172,7 +172,7 @@ export default function SignUp() {
 
 					<button
 						type="submit"
-						className="mt-3 p-3 bg-[#121212] border border-border/20 cursor-pointer text-light-100 rounded-lg text-white transition disabled:opacity-50"
+						className="mt-3 p-3 bg-[#081420] border border-border/30 cursor-pointer text-light-100 rounded-lg text-white disabled:opacity-50"
 						disabled={isSubmitting}
 					>
 						{isSubmitting ? 'Loading...' : 'Sign Up'}

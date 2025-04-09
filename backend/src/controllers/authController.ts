@@ -50,14 +50,14 @@ export const registerUser: RequestHandler<{}, {}, RegisterUserBody> = async (
 		res.cookie('accessToken', accessToken, {
 			httpOnly: true,
 			sameSite: 'none',
-			secure: false,
+			secure: true,
 			maxAge: 15 * 60 * 1000
 		});
 
 		res.cookie('refreshToken', refreshToken, {
 			httpOnly: true,
 			sameSite: 'none',
-			secure: false,
+			secure: true,
 			maxAge: 7 * 24 * 60 * 60 * 1000
 		});
 
@@ -102,14 +102,14 @@ export const loginUser: RequestHandler<{}, {}, LoginUserBody> = async (
 		res.cookie('accessToken', accessToken, {
 			httpOnly: true,
 			sameSite: 'none',
-			secure: false,
+			secure: true,
 			maxAge: 15 * 60 * 1000
 		});
 
 		res.cookie('refreshToken', refreshToken, {
 			httpOnly: true,
 			sameSite: 'none',
-			secure: false,
+			secure: true,
 			maxAge: 7 * 24 * 60 * 60 * 1000
 		});
 
@@ -151,12 +151,14 @@ export const checkAuth = async (req: AuthenticatedRequest, res: Response): Promi
 export const logoutUser: RequestHandler = (req, res) => {
 	res.clearCookie('accessToken', {
 		httpOnly: true,
-		sameSite: 'strict',
+		secure:true,
+		sameSite: 'none',
 	});
 
 	res.clearCookie('refreshToken', {
 		httpOnly: true,
-		sameSite: 'strict',
+		secure:true,
+		sameSite: 'none',
 	});
 
 	res.status(200).json({ message: 'Logged out' });
@@ -180,7 +182,8 @@ export const refreshToken: RequestHandler = async (req, res): Promise<void> => {
 
 		res.cookie('accessToken', newAccessToken, {
 			httpOnly: true,
-			sameSite: 'strict',
+			secure:true,
+			sameSite: 'none',
 			maxAge: 15 * 60 * 1000
 		});
 

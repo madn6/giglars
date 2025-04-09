@@ -32,6 +32,10 @@ app.get('/api/debug-cookies', (req, res) => {
 	res.send(req.cookies);
 });
 
+app.get('/', (req, res) => {
+	res.send("api working")
+})
+
 
 // Routes
 app.use('/api/auth', authRoutes);

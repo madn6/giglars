@@ -7,7 +7,7 @@
 @import 'tailwindcss';
 
 @theme {
-	--color-primary: #000000;
+	--color-primary: #0b1c2c;
 	--color-secondary: #ffffff1a;
 	--color-border: #ffffff4d;
 	--color-gray: #d1d5db;
@@ -17,8 +17,16 @@
 }
 /* src/styles/global.css */
 
+/* TipTap default styles */
+.ProseMirror {
+	min-height: 150px;
+	outline: none;
+}
+
+
+
 html {
-	background-color: #000000;
+	background-color: #0b1c2c;
 }
 
 .font-romantic {

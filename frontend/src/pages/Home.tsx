@@ -3,18 +3,17 @@ import PostCard from '../components/PostCard';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store/store';
 
-
 const Home: React.FC = () => {
-	const posts = useSelector((state: RootState) => state.posts)
-	console.log(posts)
+	const posts = useSelector((state: RootState) => state.posts);
+	console.log(posts);
 	return (
 		<div className="flex flex-col  font-inter min-h-screen">
 			{/* Left Sidebar - Fixed on Large Screens, Bottom on Small Screens */}
 			<nav
-				className="bg-primary text-white py-5 fixed bottom-0 w-full flex justify-around 
-                md:w-[120px] md:h-auto md:left-0 md:top-1/2 md:-translate-y-1/2 md:flex-col md:space-y-6
-				
-				"
+				className="bg-[#081420] border-t md:border-l-0 md:border-t md:border-r md:border-b border-border/20 text-white py-5 fixed bottom-0 w-full flex justify-around 
+                md:w-[120px] md:h-[350px] md:left-0 md:top-1/2 md:-translate-y-1/2 md:flex-col md:space-y-6 
+                rounded-tl-xl rounded-tr-xl rounded-bl-none rounded-br-none
+                md:rounded-tl-none md:rounded-bl-none md:rounded-tr-xl md:rounded-br-xl"
 			>
 				<ul className="flex w-full justify-around md:flex-col md:w-auto md:items-center md:space-y-6">
 					<li>
@@ -28,8 +27,8 @@ const Home: React.FC = () => {
 						</Link>
 					</li>
 					<li>
-						<Link to="/submit">
-							<img className="w-8" src="/images/post.png" alt="Submit" />
+						<Link to="/create-post">
+							<img className="w-9" src="/images/post.png" alt="Submit" />
 						</Link>
 					</li>
 					<li>

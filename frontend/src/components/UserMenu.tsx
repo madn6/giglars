@@ -41,7 +41,8 @@ const UserMenu = ({ isLoggedIn, user }: UserMenuProps) => {
 	// ✅ If not logged in, just show a sign-in link
 	if (!isLoggedIn) {
 		return (
-			<div className="text-sm px-1">
+			<div className=" px-1 flex items-center gap-1">
+				<img src="/images/entry.png" className='w-8'  alt="" />
 				<Link to="/sign-in" onClick={()=>setOpen(false)} className="text-white hover:underline">
 					Sign In
 				</Link>
@@ -68,10 +69,10 @@ const UserMenu = ({ isLoggedIn, user }: UserMenuProps) => {
 						</div>
 						{/* Menu Links */}
 						<div className="flex flex-col space-y-1">
-							<Link to="/profile" onClick={()=>setOpen(false)} className="block px-3 py-2 rounded hover:bg-[#111111] text-sm">
+							<Link to="/profile" onClick={()=>setOpen(false)} className="block px-3 py-2 rounded hover:bg-[#081522] text-sm">
 								Profile
 							</Link>
-							<Link to="/settings" onClick={()=>setOpen(false)}  className="block px-3 py-2 rounded hover:bg-[#111111] text-sm">
+							<Link to="/settings" onClick={()=>setOpen(false)}  className="block px-3 py-2 rounded hover:bg-[#0B1C2C] text-sm">
 								Settings
 							</Link>
 							<button

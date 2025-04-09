@@ -14,7 +14,6 @@ import { useNavigate } from 'react-router-dom';
 // const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 import API from '../utils/axios';
 
-
 const signInSchema = yup.object().shape({
 	email: yup.string().email('Invalid email').required('Email is required'),
 	password: yup.string().min(8, 'At least 8 characters').required('Password is required')
@@ -55,8 +54,8 @@ export default function SignIn() {
 				login({
 					userid: res.data.userId,
 					profileImage: res.data.profileImage,
-					name:res.data.name,
-					email:res.data.email,
+					name: res.data.name,
+					email: res.data.email
 				})
 			);
 			console.log(res.data.profileImage);
@@ -77,7 +76,7 @@ export default function SignIn() {
 	return (
 		<div className="h-screen flex items-center font-inter justify-center">
 			<div className="w-full max-w-xs px-4">
-				<h2 className="text-center text-xl font-bold dark:text-light-100">Sign In</h2>
+				<h2 className="text-center text-xl font-semibold text-white">Sign In</h2>
 				<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3 mt-4">
 					<div>
 						<input
@@ -110,7 +109,7 @@ export default function SignIn() {
 
 					<button
 						type="submit"
-						className="mt-3 p-3 bg-[#121212] border border-border/20 cursor-pointer text-light-100 rounded-lg text-white transition disabled:opacity-50"
+						className="mt-3 p-3 bg-[#081420] border border-border/30 cursor-pointer text-light-100 rounded-lg text-white disabled:opacity-50"
 						disabled={isSubmitting}
 					>
 						{isSubmitting ? 'Loading...' : 'Sign In'}
