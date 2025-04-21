@@ -35,7 +35,7 @@ export default function PostImageUpload({
 			{files.length < maxImage && (
 				<label className="flex items-center justify-center p-1 m-2 border border-dashed border-gray-500 rounded cursor-pointer hover:bg-[#0f1f35] transition">
 					<div className="flex flex-col items-center text-gray-400">
-						<ImageIcon height={20} width={20} />
+						<ImageIcon  className='' />
 						<span className="text-xs mt-1 hidden md:block">Add Image</span>
 					</div>
 					<input

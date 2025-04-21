@@ -17,6 +17,8 @@ export default function CreatePost() {
 	const [feeling, setFeeling] = useState<'lucky' | 'unlucky'>('lucky');
 	const [files, setFiles] = useState<File[]>([]);
 	const [previews, setPreviews] = useState<string[]>([]);
+	const [postDate, setPostDate] = useState<Date>(new Date());
+	const [scheduledDate, setScheduledDate] = useState(new Date());
 
 	const maxLength = 300;
 	const maxImage = 4;
@@ -41,47 +43,48 @@ export default function CreatePost() {
 	};
 
 	return (
-		<div className="min-h-screen flex justify-center items-center pt-10 px-4">
-			<div className="w-full max-w-xl">
-				<form onSubmit={handleSubmit} className="rounded-2xl shadow text-white">
-					<div className="w-full p-3 border border-border rounded-md space-y-4">
+		<div className="min-h-screen flex justify-center items-center pt-10 px-2">
+			<div className="w-full max-w-2xl">
+				<form onSubmit={handleSubmit} className="rounded-2xl shadow text-white p-4 md:p-6">
+					<div className="w-full border border-border rounded-md space-y-6 p-4">
 						{/* TextArea Section */}
 						<div>
 							<PostTextArea content={content} setContent={setContent} maxLength={maxLength} />
 						</div>
 
-						{/* Feeling Selector */}
-						<PostFeelingSelector feeling={feeling} setFeeling={setFeeling} />
+						{/* Feeling Selector + Image Upload */}
+						<div className="flex flex-col md:flex-row md:items-center md:gap-4 gap-2">
+							<PostFeelingSelector feeling={feeling} setFeeling={setFeeling} />
+							<PostImageUpload
+								files={files}
+								previews={previews}
+								maxImage={maxImage}
+								handleFileChange={handleFileChange}
+								removeImage={removeImage}
+							/>
+						</div>
 
-						{/* Image Previews & Upload */}
-						<PostImageUpload
-							files={files}
-							previews={previews}
-							maxImage={maxImage}
-							handleFileChange={handleFileChange}
-							removeImage={removeImage}
-						/>
+						{/* Date, Tags, Visibility */}
+						<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-4">
+							<PostDatePicker date={postDate} setDate={setPostDate} />
+							<PostTagsInput />
+							<PostVisibilitySelector />
+						</div>
 
-						{/* Event Date Picker */}
-						<PostDatePicker />
-
-						{/* Tags Input */}
-						<PostTagsInput />
-
-						{/* Post Visibility */}
-						<PostVisibilitySelector />
-
-						{/* Anonymous Toggle */}
-						<PostAnonymousToggle />
-
-						{/* GIF Upload Placeholder */}
-						<PostGifSelector />
-
-						{/* Schedule Post */}
-						<PostScheduleSelector />
+						{/* Anonymous, Gif, Schedule */}
+						<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-4">
+							<PostAnonymousToggle />
+							<PostGifSelector />
+							<PostScheduleSelector
+								scheduledDate={scheduledDate}
+								setScheduledDate={setScheduledDate}
+							/>
+						</div>
 
 						{/* Submit Button */}
-						<PostSubmitButton />
+						<div className="pt-2">
+							<PostSubmitButton />
+						</div>
 					</div>
 				</form>
 			</div>

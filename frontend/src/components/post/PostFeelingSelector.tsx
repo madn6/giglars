@@ -5,10 +5,10 @@ type Props = {
 
 export default function PostFeelingSelector({ feeling, setFeeling }: Props) {
 	return (
-		<div className="flex items-center gap-2">
+		<div className="flex items-center text-sm gap-2">
 			<label className="text-sm">Mood:</label>
 			<select
-				className="p-1 rounded outline-none bg-gray-800 text-white"
+				className="p-1 rounded w-22 outline-none bg-gray-800 text-white"
 				value={feeling}
 				onChange={(e) => setFeeling(e.target.value as 'lucky' | 'unlucky')}
 			>

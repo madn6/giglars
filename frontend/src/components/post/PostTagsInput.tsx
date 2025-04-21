@@ -7,7 +7,7 @@ export default function PostTagsInput() {
     <input
       type="text"
       placeholder="#luckymoment"
-      className="p-1 rounded bg-gray-800 text-white outline-none"
+      className="p-1 w-23 rounded bg-gray-800 text-white outline-none"
       onChange={(e) => console.log('Tags:', e.target.value)}
     />
   </div>  )
