@@ -19,6 +19,7 @@ export default function CreatePost() {
 	const [previews, setPreviews] = useState<string[]>([]);
 	const [postDate, setPostDate] = useState<Date>(new Date());
 	const [scheduledDate, setScheduledDate] = useState(new Date());
+	const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
 
 	const maxLength = 300;
 	const maxImage = 4;
@@ -42,10 +43,16 @@ export default function CreatePost() {
 		setPreviews(updatedPreviews);
 	};
 
+	const handleToggle = (e:React.ChangeEvent<HTMLInputElement>) => {
+		setIsAnonymous(e.target.checked)
+		console.log("changed",e.target.checked)
+	}
+
+
 	return (
 		<div className="min-h-screen flex justify-center items-center pt-10 px-2">
 			<div className="w-full max-w-2xl">
-				<form onSubmit={handleSubmit} className="rounded-2xl shadow text-white p-4 md:p-6">
+				<form onSubmit={handleSubmit} className="rounded-2xl  text-white p-4 md:p-6">
 					<div className="w-full border border-border rounded-md space-y-6 p-4">
 						{/* TextArea Section */}
 						<div>
@@ -53,7 +60,7 @@ export default function CreatePost() {
 						</div>
 
 						{/* Feeling Selector + Image Upload */}
-						<div className="flex flex-col md:flex-row md:items-center md:gap-4 gap-2">
+						<div className="flex flex-col  md:flex-row md:items-center md:gap-4 gap-2">
 							<PostFeelingSelector feeling={feeling} setFeeling={setFeeling} />
 							<PostImageUpload
 								files={files}
@@ -73,7 +80,7 @@ export default function CreatePost() {
 
 						{/* Anonymous, Gif, Schedule */}
 						<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-4">
-							<PostAnonymousToggle />
+							<PostAnonymousToggle isAnonymous={isAnonymous} handleToggle ={handleToggle } />
 							<PostGifSelector />
 							<PostScheduleSelector
 								scheduledDate={scheduledDate}
