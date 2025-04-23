@@ -24,7 +24,7 @@ export default function CreatePost() {
 	const [previews, setPreviews] = useState<string[]>([]);
 	const [tags, setTags] = useState<string[]>([]);
 	const [visibility, setVisibility] = useState<string>('public');
-	const [postGif, setPostGif] = useState<string>('public');
+	const [postGif, setPostGif] = useState<string>('');
 
 	const editorRef = useRef<Editor | null>(null);
 	const maxLength = 300;

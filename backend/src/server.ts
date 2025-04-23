@@ -3,10 +3,10 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import connectDB from './config/db';
-import authRoutes from './routes/authRoutes';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
-// import postRoutes from "./routes/postRoutes";
+import authRoutes from './routes/auth.routes';
+import postRoutes from "./routes/post.routes";
 // import userRoutes from "./routes/userRoutes";
 
 const app = express();
@@ -39,7 +39,7 @@ app.get('/', (req, res) => {
 
 // Routes
 app.use('/api/auth', authRoutes);
-// app.use("/api/posts", postRoutes);
+app.use("/api/post", postRoutes);
 // app.use("/api/users", userRoutes);
 
 // Connect to database and start server
