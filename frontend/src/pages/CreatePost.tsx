@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import PostImageUpload from '../components/post/PostImageUpload';
 import {
 	PostTextArea,
 	PostFeelingSelector,
@@ -10,57 +10,86 @@ import {
 	PostScheduleSelector,
 	PostSubmitButton
 } from '../components';
-import PostImageUpload from '../components/post/PostImageUpload';
+
+import { Editor } from '@tiptap/react';
+import { useRef, useState } from 'react';
 
 export default function CreatePost() {
 	const [content, setContent] = useState('');
 	const [feeling, setFeeling] = useState<'lucky' | 'unlucky'>('lucky');
+	const [postDate, setPostDate] = useState(new Date());
+	const [scheduledDate, setScheduledDate] = useState(new Date());
+	const [isAnonymous, setIsAnonymous] = useState(false);
 	const [files, setFiles] = useState<File[]>([]);
 	const [previews, setPreviews] = useState<string[]>([]);
-	const [postDate, setPostDate] = useState<Date>(new Date());
-	const [scheduledDate, setScheduledDate] = useState(new Date());
-	const [isAnonymous, setIsAnonymous] = useState<boolean>(false);
+	const [tags, setTags] = useState<string[]>([]);
+	const [visibility, setVisibility] = useState<string>('public');
+	const [postGif, setPostGif] = useState<string>('public');
 
+	const editorRef = useRef<Editor | null>(null);
 	const maxLength = 300;
 	const maxImage = 4;
 
-	const handleSubmit = async (e: React.FormEvent) => {
-		e.preventDefault();
-		console.log({ content, feeling, files });
-	};
-
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const selectedFile = e.target.files ? Array.from(e.target.files) : [];
-		const totalFiles = [...files, ...selectedFile].slice(0, maxImage);
+		const selectedFiles = e.target.files ? Array.from(e.target.files) : [];
+		const totalFiles = [...files, ...selectedFiles].slice(0, maxImage);
 		setFiles(totalFiles);
 		setPreviews(totalFiles.map((file) => URL.createObjectURL(file)));
 	};
 
 	const removeImage = (index: number) => {
-		const updatedFiles = files.filter((_, i) => i !== index);
-		const updatedPreviews = previews.filter((_, i) => i !== index);
-		setFiles(updatedFiles);
-		setPreviews(updatedPreviews);
+		setFiles((prev) => prev.filter((_, i) => i !== index));
+		setPreviews((prev) => prev.filter((_, i) => i !== index));
 	};
 
-	const handleToggle = (e:React.ChangeEvent<HTMLInputElement>) => {
-		setIsAnonymous(e.target.checked)
-		console.log("changed",e.target.checked)
-	}
+	const handleInsertGif = (gifUrl: string) => {
+		setPostGif(gifUrl); // Save for submission
+		editorRef.current?.commands.setContent(
+			editorRef.current?.getHTML() + `<img src="${gifUrl}" alt="gif" />`
+		); // Optional: visually insert in editor
+	};
 
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault();
+
+		const formData = new FormData();
+		const content = editorRef.current?.getHTML() || '';
+		formData.append('content', content);
+		formData.append('feeling', feeling);
+		formData.append('isAnonymous', String(isAnonymous));
+		formData.append('postDate', postDate.toISOString());
+		formData.append('scheduledDate', scheduledDate.toISOString());
+		files.forEach((file) => formData.append('files', file));
+		formData.append('tags', JSON.stringify(tags));
+		formData.append('visibility', visibility);
+		formData.append('gif', postGif);
+
+		console.log('form data:', {
+			content,
+			feeling,
+			isAnonymous,
+			postDate,
+			scheduledDate,
+			files,
+			tags,
+			visibility,
+			postGif
+		});
+	};
 
 	return (
 		<div className="min-h-screen flex justify-center items-center pt-10 px-2">
 			<div className="w-full max-w-2xl">
-				<form onSubmit={handleSubmit} className="rounded-2xl  text-white p-4 md:p-6">
+				<form onSubmit={handleSubmit} className="rounded-2xl text-white p-4 md:p-6">
 					<div className="w-full border border-border rounded-md space-y-6 p-4">
-						{/* TextArea Section */}
-						<div>
-							<PostTextArea content={content} setContent={setContent} maxLength={maxLength} />
-						</div>
+						<PostTextArea
+							onEditorReady={(editor) => (editorRef.current = editor)}
+							content={content}
+							setContent={setContent}
+							maxLength={maxLength}
+						/>
 
-						{/* Feeling Selector + Image Upload */}
-						<div className="flex flex-col  md:flex-row md:items-center md:gap-4 gap-2">
+						<div className="flex flex-col md:flex-row md:items-center md:gap-4 gap-2">
 							<PostFeelingSelector feeling={feeling} setFeeling={setFeeling} />
 							<PostImageUpload
 								files={files}
@@ -71,24 +100,27 @@ export default function CreatePost() {
 							/>
 						</div>
 
-						{/* Date, Tags, Visibility */}
 						<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-4">
 							<PostDatePicker date={postDate} setDate={setPostDate} />
-							<PostTagsInput />
-							<PostVisibilitySelector />
+							<PostTagsInput tags={tags} setTags={setTags} />
+							<PostVisibilitySelector visibility={visibility} setVisibility={setVisibility} />
 						</div>
 
-						{/* Anonymous, Gif, Schedule */}
 						<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-4">
-							<PostAnonymousToggle isAnonymous={isAnonymous} handleToggle ={handleToggle } />
-							<PostGifSelector />
+							<PostAnonymousToggle
+								isAnonymous={isAnonymous}
+								handleToggle={(e) => setIsAnonymous(e.target.checked)}
+							/>
+							<PostGifSelector
+								onSelectGif={handleInsertGif}
+								setPostGif={setPostGif}
+							/>
 							<PostScheduleSelector
 								scheduledDate={scheduledDate}
 								setScheduledDate={setScheduledDate}
 							/>
 						</div>
 
-						{/* Submit Button */}
 						<div className="pt-2">
 							<PostSubmitButton />
 						</div>

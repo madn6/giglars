@@ -8,7 +8,10 @@ interface PostScheduleSelectorProps {
 	setScheduledDate: (date: Date) => void;
 }
 
-export default function PostScheduleSelector({ scheduledDate, setScheduledDate }: PostScheduleSelectorProps) {
+export default function PostScheduleSelector({
+	scheduledDate,
+	setScheduledDate
+}: PostScheduleSelectorProps) {
 	const [isOpen, setIsOpen] = useState(false);
 	const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -31,7 +34,8 @@ export default function PostScheduleSelector({ scheduledDate, setScheduledDate }
 				onClick={() => setIsOpen((prev) => !prev)}
 				className="p-1 w-34 md:w-38 flex items-center justify-between rounded bg-gray-800 text-white outline-none"
 			>
-				{scheduledDate.toLocaleDateString('en-GB')} {scheduledDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+				{scheduledDate.toLocaleDateString('en-GB')}{' '}
+				{scheduledDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
 				{isOpen ? <ChevronUp className="w-4 h-4 ml-2" /> : <ChevronDown className="w-4 h-4 ml-2" />}
 			</button>
 
@@ -42,14 +46,15 @@ export default function PostScheduleSelector({ scheduledDate, setScheduledDate }
 						onChange={(date: Date | null) => {
 							if (date) {
 								setScheduledDate(date);
-								setIsOpen(false); 
+								setIsOpen(false);
 							}
 						}}
 						inline
 						showTimeSelect
-						timeFormat="HH:mm"
+						timeFormat="hh:mm aa"
 						timeIntervals={15}
 						dateFormat="Pp"
+						timeCaption="Time"
 					/>
 				</div>
 			)}
