@@ -13,6 +13,7 @@ import {
 
 import { Editor } from '@tiptap/react';
 import { useRef, useState } from 'react';
+import API from '../utils/axios';
 
 export default function CreatePost() {
 	const [content, setContent] = useState('');
@@ -29,6 +30,7 @@ export default function CreatePost() {
 	const editorRef = useRef<Editor | null>(null);
 	const maxLength = 300;
 	const maxImage = 4;
+
 
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const selectedFiles = e.target.files ? Array.from(e.target.files) : [];
@@ -75,6 +77,17 @@ export default function CreatePost() {
 			visibility,
 			postGif
 		});
+		
+		try {
+			const res = await API.post('/api/post/create-post', formData, {
+				withCredentials:true,
+			})
+			const data = res.data
+			console.log(data)
+		} catch (error) {
+			console.error('Failed to create post:', error);
+		}
+
 	};
 
 	return (
