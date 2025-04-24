@@ -1,35 +1,39 @@
+import { RequestHandler } from 'express';
+import { MulterRequest } from '../types/MulterRequest';
 import Post from '../models/Post.model';
 
-export const createPost = async (req, res) => {
-	const {
-		content,
-		feeling,
-		isAnonymous,
-		postDate,
-		scheduledDate,
-		postGif,
-		tags,
-		visibility,
-		files
-	} = req.body;
-
+export const createPost: RequestHandler = async (req, res) => {
 	try {
-		const newPost = new Post({
+		const {
 			content,
 			feeling,
 			isAnonymous,
 			postDate,
 			scheduledDate,
-			postGif,
 			tags,
 			visibility,
-			files
+			gif
+		} = req.body;
+
+		const files = (req as MulterRequest).files;
+		const imageUrls = files?.map((file) => (file as any).path) || [];
+
+		const newPost = new Post({
+			content,
+			feeling,
+			isAnonymous: isAnonymous === 'true',
+			postDate,
+			scheduledDate,
+			images: imageUrls,
+			tags: JSON.parse(tags),
+			visibility,
+			gif
 		});
 
 		await newPost.save();
-		res.status(201).json({ message: 'post created successfully', post: newPost });
+		res.status(201).json({ message: 'Post created successfully', post: newPost });
 	} catch (error) {
-		console.error('error creating post ', error);
-		res.status(500).json({ messge: 'internal server error' });
+		console.error('Error creating post:', error);
+		res.status(500).json({ message: 'Internal server error' });
 	}
 };

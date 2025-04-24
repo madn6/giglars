@@ -2,15 +2,19 @@ import mongoose from 'mongoose';
 
 const postSchema = new mongoose.Schema(
 	{
-		content: { type: String, },
-		feeling: { type: String, },
-		isAnonymous: { type: Boolean, },
+		content: { type: String },
+		feeling: { type: String },
+		isAnonymous: { type: Boolean },
 		postDate: { type: Date, default: Date.now },
-		scheduledDate: { type: Date, },
-		postGif: { type: String,  }, // Store URL or name if you need to save it
+		scheduledDate: { type: Date },
+		gif: { type: String },
 		tags: { type: [String], default: [] },
-		visibility: { type: String, enum: ['public', 'private', 'friends'],},
-		files: { type: [String], default: [] } // Store image URLs or file paths if needed
+		visibility: {
+			type: String,
+			enum: ['public', 'private', 'friends'],
+			default: 'public'
+		},
+		images: { type: [String], default: [] } // ✅ Match controller
 	},
 	{ timestamps: true }
 );

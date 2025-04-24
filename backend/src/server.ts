@@ -1,12 +1,12 @@
 import './config/back.dotenv';
 import express from 'express';
-import dotenv from 'dotenv';
 import cors from 'cors';
 import connectDB from './config/db';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import authRoutes from './routes/auth.routes';
 import postRoutes from "./routes/post.routes";
+import { storage } from './utils/cloudinary';
 // import userRoutes from "./routes/userRoutes";
 
 const app = express();
@@ -35,6 +35,8 @@ app.get('/api/debug-cookies', (req, res) => {
 app.get('/', (req, res) => {
 	res.send("api working")
 })
+
+
 
 
 // Routes
