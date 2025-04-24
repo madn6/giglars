@@ -7,7 +7,7 @@ const postSchema = new mongoose.Schema(
 		isAnonymous: { type: Boolean },
 		postDate: { type: Date, default: Date.now },
 		scheduledDate: { type: Date },
-		gif: { type: String },
+		gifs: { type: [String],default:[] },
 		tags: { type: [String], default: [] },
 		visibility: {
 			type: String,

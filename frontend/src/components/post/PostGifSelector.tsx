@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 type Props = {
 	onSelectGif: (gifUrl: string) => void;
-	setPostGif: React.Dispatch<React.SetStateAction<string>>;
+	setPostGif: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 const GIPHY_API_KEY = import.meta.env.VITE_GIPHY_API_KEY;
@@ -48,10 +48,9 @@ export default function PostGifSelector({ onSelectGif, setPostGif }: Props) {
 			console.error('Failed to fetch search GIFs:', error);
 		}
 	};
-
 	const handleGifClick = (gifUrl: string) => {
-		onSelectGif(gifUrl);
-		setPostGif(gifUrl);
+		onSelectGif(gifUrl); // ✅ Pass string directly
+		setPostGif((prev) => [...prev, gifUrl]); // ✅ Add to array of gifs
 		setIsOpen(false);
 	};
 
@@ -91,7 +90,7 @@ export default function PostGifSelector({ onSelectGif, setPostGif }: Props) {
 						<button
 							type="button"
 							onClick={handleSearch}
-							className="px-3 py-1 bg-purple-600 text-white rounded"
+							className="px-3 py-1 cursor-pointer bg-purple-600 text-white rounded"
 						>
 							Search
 						</button>

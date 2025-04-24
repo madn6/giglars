@@ -25,7 +25,7 @@ export default function CreatePost() {
 	const [previews, setPreviews] = useState<string[]>([]);
 	const [tags, setTags] = useState<string[]>([]);
 	const [visibility, setVisibility] = useState<string>('public');
-	const [postGif, setPostGif] = useState<string>('');
+	const [postGif, setPostGif] = useState<string[]>([]);
 
 	const editorRef = useRef<Editor | null>(null);
 	const maxLength = 300;
@@ -45,7 +45,7 @@ export default function CreatePost() {
 	};
 
 	const handleInsertGif = (gifUrl: string) => {
-		setPostGif(gifUrl); // Save for submission
+		setPostGif((prev) => [...prev, gifUrl]);
 		editorRef.current?.commands.setContent(
 			editorRef.current?.getHTML() + `<img src="${gifUrl}" alt="gif" />`
 		); // Optional: visually insert in editor
@@ -64,7 +64,7 @@ export default function CreatePost() {
 		files.forEach((file) => formData.append('files', file));
 		formData.append('tags', JSON.stringify(tags));
 		formData.append('visibility', visibility);
-		formData.append('gif', postGif);
+		formData.append('gifs', JSON.stringify(postGif));
 
 		console.log('form data:', {
 			content,

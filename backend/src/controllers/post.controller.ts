@@ -4,16 +4,8 @@ import Post from '../models/Post.model';
 
 export const createPost: RequestHandler = async (req, res) => {
 	try {
-		const {
-			content,
-			feeling,
-			isAnonymous,
-			postDate,
-			scheduledDate,
-			tags,
-			visibility,
-			gif
-		} = req.body;
+		const { content, feeling, isAnonymous, postDate, scheduledDate, tags, visibility, gifs } =
+			req.body;
 
 		const files = (req as MulterRequest).files;
 		const imageUrls = files?.map((file) => (file as any).path) || [];
@@ -25,9 +17,9 @@ export const createPost: RequestHandler = async (req, res) => {
 			postDate,
 			scheduledDate,
 			images: imageUrls,
-			tags: JSON.parse(tags),
+			tags: JSON.parse(tags) || [],
 			visibility,
-			gif
+			gifs: JSON.parse(gifs || '[]')
 		});
 
 		await newPost.save();
