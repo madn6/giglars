@@ -7,6 +7,7 @@ import helmet from 'helmet';
 import authRoutes from './routes/auth.routes';
 import postRoutes from "./routes/post.routes";
 import { storage } from './utils/cloudinary';
+import { errorHandler } from './middleware/errrorHandler';
 // import userRoutes from "./routes/userRoutes";
 
 const app = express();
@@ -15,6 +16,7 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(helmet());
+app.use(errorHandler)
 
 app.use(
 	cors({
