@@ -6,7 +6,7 @@ export interface AuthenticatedRequest extends Request {
 	userId?: string;
 }
 
-export const verifyToken = (req: AuthenticatedRequest, res: Response, next: NextFunction): void => {
+export const verifyToken = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
 	const token = req.cookies?.accessToken;
 	if (!token) {
 		res.status(401).json({ error: 'Not authenticated' });

@@ -43,7 +43,7 @@ app.get('/', (req, res) => {
 
 // Routes
 app.use('/api/auth', authRoutes);
-app.use("/api/post", postRoutes);
+app.use('/api/post', postRoutes);
 // app.use("/api/users", userRoutes);
 
 // Connect to database and start server

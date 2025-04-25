@@ -9,6 +9,9 @@ export const createPost = async (req: Request, res: Response) => {
 	const files = (req as MulterRequest).files;
 	const imageUrls = files?.map((file) => (file as any).path) || [];
 
+	const tagsArray = Array.isArray(tags) ? tags : JSON.parse(tags || '[]');
+	const gifsArray = Array.isArray(gifs) ? gifs : JSON.parse(gifs || '[]');
+
 	const newPost = new Post({
 		content,
 		feeling,
@@ -16,11 +19,23 @@ export const createPost = async (req: Request, res: Response) => {
 		postDate,
 		scheduledDate,
 		images: imageUrls,
-		tags: JSON.parse(tags) || [],
+		tags: tagsArray,
 		visibility,
-		gifs: JSON.parse(gifs || '[]')
+		gifs: gifsArray
 	});
 
 	await newPost.save();
 	res.status(201).json({ message: 'Post created successfully', post: newPost });
+};
+
+export const getAllPosts = async (req: Request, res: Response) => {
+	const posts = await Post.find(); //get all posts
+	if (!posts || posts.length === 0) {
+		res.status(404).json('no posts avilable');
+	}
+
+	res.status(200).json({
+		success: true,
+		posts: posts
+	});
 };

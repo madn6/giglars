@@ -1,4 +1,4 @@
-import { Request, Response, RequestHandler } from 'express';
+import { Request, Response, RequestHandler, NextFunction } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.model';
@@ -94,7 +94,7 @@ export const loginUser: RequestHandler<{}, {}, LoginUserBody> = async (
 		const isMatch = await bcrypt.compare(password, user.password);
 		if (!isMatch) {
 			res.status(400).json({ message: 'Invalid password' });
-			return 
+			return;
 		}
 
 		const { accessToken, refreshToken } = generateTokens(user._id.toString());
@@ -151,14 +151,14 @@ export const checkAuth = async (req: AuthenticatedRequest, res: Response): Promi
 export const logoutUser: RequestHandler = (req, res) => {
 	res.clearCookie('accessToken', {
 		httpOnly: true,
-		secure:true,
-		sameSite: 'none',
+		secure: true,
+		sameSite: 'none'
 	});
 
 	res.clearCookie('refreshToken', {
 		httpOnly: true,
-		secure:true,
-		sameSite: 'none',
+		secure: true,
+		sameSite: 'none'
 	});
 
 	res.status(200).json({ message: 'Logged out' });
@@ -182,7 +182,7 @@ export const refreshToken: RequestHandler = async (req, res): Promise<void> => {
 
 		res.cookie('accessToken', newAccessToken, {
 			httpOnly: true,
-			secure:true,
+			secure: true,
 			sameSite: 'none',
 			maxAge: 15 * 60 * 1000
 		});
@@ -190,5 +190,29 @@ export const refreshToken: RequestHandler = async (req, res): Promise<void> => {
 		res.status(200).json({ message: 'Access token refreshed' });
 	} catch (err) {
 		res.status(403).json({ error: 'Invalid refresh token' });
+	}
+};
+
+export const getUserInfo = async (
+	req: AuthenticatedRequest,
+	res: Response,
+	next: NextFunction
+): Promise<void> => {
+	const userId = req.userId;
+
+	try {
+		const user = await User.findById(userId);
+		if (!user) {
+			res.status(404).json({ message: 'User not found' });
+			return;
+		}
+
+		res.json({
+			profileImage: user.profileImage,
+			email: user.email,
+			username: user.username
+		});
+	} catch (err) {
+		next(err);
 	}
 };
