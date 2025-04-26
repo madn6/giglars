@@ -34,13 +34,13 @@ export default function PostTagsInput({ tags, setTags }: Props) {
 	};
 
 	return (
-		<div className="flex items-center gap-2 text-xs text-gray-400">
+		<div className="flex items-center justify-center gap-2 text-xs text-gray-400">
 			<span>Tags:</span>
-			<div className="flex flex-wrap max-h-24 overflow-y-auto gap-2 p-2 bg-gray-900 rounded">
+			<div className="flex flex-wrap max-h-16  border border-border overflow-y-auto gap-2 p-2 bg-gray-900 rounded">
 				{tags.map((tag) => (
 					<span
 						key={tag}
-						className="bg-gray-700 text-white px-2 py-1 rounded cursor-pointer"
+						className="bg-gray-700 border border-border text-white text-wrap p-1 rounded cursor-pointer"
 						onClick={() => removeTag(tag)}
 					>
 						{tag}
@@ -50,7 +50,7 @@ export default function PostTagsInput({ tags, setTags }: Props) {
 			<input
 				type="text"
 				placeholder="#luckymoment"
-				className="p-1 w-23 rounded bg-gray-800 text-white outline-none"
+				className="p-1  px-1 w-23  rounded bg-gray-800 placeholder:text-white outline-none"
 				onChange={handleInputChange}
 				onKeyDown={handleKeyDown}
 				value={inputValue}

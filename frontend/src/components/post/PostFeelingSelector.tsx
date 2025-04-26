@@ -22,7 +22,7 @@ export default function PostFeelingSelector({ feeling, setFeeling }: Props) {
 	};
 
 	return (
-		<div className="flex items-center text-sm gap-2">
+		<div className="flex items-center justify-center text-sm gap-2 text-gray-400">
 			<span className="text-sm">Mood:</span>
 			<Listbox value={selected} onChange={handleChange}>
 				{({ open }) => (

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 // import { CircleX } from 'lucide-react';
+import { Transition } from '@headlessui/react';
 
 type Props = {
 	onSelectGif: (gifUrl: string) => void;
@@ -75,60 +76,71 @@ export default function PostGifSelector({ onSelectGif, setPostGif, postGif }: Pr
 	};
 
 	return (
-		<div className="text-xs text-gray-400">
-			<div className="flex items-center gap-2">
-				<span>Add GIF:</span>
-				<button
-					type="button"
-					onClick={() => {
-						if (postGif.length >= 3) return;
-						setIsOpen((prev) => !prev);
-					}}
-					className="p-1 rounded cursor-pointer bg-gray-800 text-white hover:bg-gray-700"
-				>
-					{isOpen ? 'Close' : 'Open'} GIF Picker
-				</button>
-			</div>
-
-			{isOpen && (
-				<div className="mt-2 p-4 border border-border bg-zinc-900 rounded-md max-h-[300px] overflow-y-auto">
-					<div className="mb-3 flex gap-2">
-						<input
-							type="text"
-							placeholder="Search GIFs..."
-							value={searchQuery}
-							onChange={(e) => setSearchQuery(e.target.value)}
-							onKeyDown={(e) => {
-								if (e.key === 'Enter') {
-									e.preventDefault();
-									handleSearch();
-								}
-							}}
-							className="flex-1 px-3 py-1 rounded bg-gray-800 text-white placeholder-gray-400"
-						/>
-						<button
-							type="button"
-							disabled={postGif.length >= 3}
-							onClick={handleSearch}
-							className="px-3 py-1 cursor-pointer bg-purple-600 text-white rounded"
-						>
-							Search
-						</button>
-					</div>
-
-					<div className="grid grid-cols-3 gap-2">
-						{gifs.map((url, idx) => (
-							<img
-								key={idx}
-								src={url}
-								alt="GIF"
-								className="cursor-pointer rounded hover:scale-105 transition-transform"
-								onClick={() => handleGifClick(url)}
-							/>
-						))}
-					</div>
+		<div className="text-xs flex items-center justify-center text-gray-400">
+			<div className="flex flex-col items-center justify-center">
+				<div className="flex items-center gap-2">
+					<span>Add GIF:</span>
+					<button
+						type="button"
+						onClick={() => {
+							if (postGif.length >= 3) return;
+							setIsOpen((prev) => !prev);
+						}}
+						className="p-1 rounded cursor-pointer bg-gray-800 text-white hover:bg-gray-700"
+					>
+						{isOpen ? 'Close' : 'Open'} GIF Picker
+					</button>
 				</div>
-			)}
+
+				<Transition
+					appear
+					show={isOpen}
+					enter="transition-all duration-300 ease-out"
+					enterFrom="opacity-0 scale-95 max-h-0"
+					enterTo="opacity-100 scale-100 "
+					leave="transition-all duration-200 ease-in"
+					leaveFrom="opacity-100 scale-100 max-h-[300px]"
+					leaveTo="opacity-0 scale-35 max-h-0"
+				>
+					<div className="mt-2 p-4 border border-border bg-zinc-900 rounded-md overflow-y-auto">
+						<div className="mb-3 flex gap-2">
+							<input
+								type="text"
+								placeholder="Search GIFs..."
+								value={searchQuery}
+								onChange={(e) => setSearchQuery(e.target.value)}
+								onKeyDown={(e) => {
+									if (e.key === 'Enter') {
+										e.preventDefault();
+										handleSearch();
+									}
+								}}
+								className="flex-1 px-3 py-1 rounded bg-gray-800 text-white placeholder-gray-400"
+							/>
+							<button
+								type="button"
+								disabled={postGif.length >= 3}
+								onClick={handleSearch}
+								className="px-3 py-1 cursor-pointer bg-purple-600 text-white rounded disabled:opacity-50 disabled:cursor-not-allowed"
+							>
+								Search
+							</button>
+						</div>
+
+						<div className="grid grid-cols-3 gap-2">
+							{gifs.map((url, idx) => (
+								<img
+									key={idx}
+									src={url}
+									alt="GIF"
+									className="cursor-pointer rounded hover:scale-105 transition-transform"
+									onClick={() => handleGifClick(url)}
+								/>
+							))}
+						</div>
+					</div>
+				</Transition>
+			</div>
 		</div>
 	);
 }

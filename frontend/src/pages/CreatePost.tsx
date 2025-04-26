@@ -1,4 +1,6 @@
 import PostImageUpload from '../components/post/PostImageUpload';
+import { motion } from 'framer-motion';
+
 import {
 	PostTextArea,
 	PostFeelingSelector,
@@ -25,7 +27,6 @@ export default function CreatePost() {
 	const editorRef = useRef<Editor | null>(null);
 	const maxLength = 300;
 	const maxImage = 4;
-
 
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const selectedFiles = e.target.files ? Array.from(e.target.files) : [];
@@ -67,24 +68,23 @@ export default function CreatePost() {
 			visibility,
 			postGif
 		});
-		
+
 		try {
 			const res = await API.post('/api/post/create-post', formData, {
-				withCredentials:true,
-			})
-			const data = res.data
-			console.log(data)
+				withCredentials: true
+			});
+			const data = res.data;
+			console.log(data);
 		} catch (error) {
 			console.error('Failed to create post:', error);
 		}
-
 	};
 
 	return (
-		<div className="min-h-screen flex justify-center items-center pt-10 px-2">
-			<div className="w-full max-w-2xl">
+		<motion.div layout className="h-screen flex justify-center items-center font-inter px-2">
+			<motion.div layout className="w-full max-w-2xl">
 				<form onSubmit={handleSubmit} className="rounded-2xl text-white p-4 md:p-6">
-					<div className="w-full border border-border rounded-md space-y-6 p-4">
+					<motion.div layout className="w-full border border-border rounded-md space-y-6 p-4">
 						<PostTextArea
 							onEditorReady={(editor) => (editorRef.current = editor)}
 							content={content}
@@ -92,8 +92,7 @@ export default function CreatePost() {
 							maxLength={maxLength}
 						/>
 
-						<div className="flex flex-col md:flex-row md:items-center md:gap-4 gap-2">
-							<PostFeelingSelector feeling={feeling} setFeeling={setFeeling} />
+						<div>
 							<PostImageUpload
 								files={files}
 								previews={previews}
@@ -103,27 +102,40 @@ export default function CreatePost() {
 							/>
 						</div>
 
-						<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-4">
-							<PostTagsInput tags={tags} setTags={setTags} />
-							<PostVisibilitySelector visibility={visibility} setVisibility={setVisibility} />
-						</div>
+						<motion.div
+							layout
+							className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-4"
+						>
+							<motion.div layout className="border-border border rounded-md p-3 w-full">
+								<PostFeelingSelector feeling={feeling} setFeeling={setFeeling} />
+							</motion.div>
+							<motion.div layout className="border-border border rounded-md p-3 w-full">
+								<PostTagsInput tags={tags} setTags={setTags} />
+							</motion.div>
+						</motion.div>
 
-						<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-4">
+						<motion.div
+							layout
+							className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-4"
+						>
+							<motion.div layout className="border-border border rounded-md p-3 w-full">
+								<PostVisibilitySelector visibility={visibility} setVisibility={setVisibility} />
+							</motion.div>
+							<motion.div layout className="border-border border rounded-md p-3 w-full">
+								<PostGifSelector
+									onSelectGif={handleInsertGif}
+									setPostGif={setPostGif}
+									postGif={postGif}
+								/>
+							</motion.div>
+						</motion.div>
 
-							<PostGifSelector
-								onSelectGif={handleInsertGif}
-								setPostGif={setPostGif}
-								postGif={postGif}
-							/>
-
-						</div>
-
-						<div className="pt-2">
+						<motion.div layout className="pt-2">
 							<PostSubmitButton />
-						</div>
-					</div>
+						</motion.div>
+					</motion.div>
 				</form>
-			</div>
-		</div>
+			</motion.div>
+		</motion.div>
 	);
 }

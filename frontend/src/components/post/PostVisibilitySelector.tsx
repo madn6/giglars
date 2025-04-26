@@ -24,7 +24,7 @@ export default function PostVisibilitySelector({ visibility, setVisibility }: Pr
 	const selected = options.find((opt) => opt.value === visibility) || options[0];
 
 	return (
-		<div className="flex items-center gap-2 text-xs text-gray-400">
+		<div className="flex items-center justify-center gap-2 text-xs text-gray-400">
 			<span>Visibility:</span>
 			<Listbox value={selected} onChange={(val)=>setVisibility(val.value)}>
 				{({ open }) => (
