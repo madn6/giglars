@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
+// import { CircleX } from 'lucide-react';
 
 type Props = {
 	onSelectGif: (gifUrl: string) => void;
 	setPostGif: React.Dispatch<React.SetStateAction<string[]>>;
+	postGif: string[];
 };
 
 const GIPHY_API_KEY = import.meta.env.VITE_GIPHY_API_KEY;
 
-export default function PostGifSelector({ onSelectGif, setPostGif }: Props) {
+export default function PostGifSelector({ onSelectGif, setPostGif, postGif }: Props) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [gifs, setGifs] = useState<string[]>([]);
 	const [searchQuery, setSearchQuery] = useState('');
@@ -49,8 +51,22 @@ export default function PostGifSelector({ onSelectGif, setPostGif }: Props) {
 		}
 	};
 	const handleGifClick = (gifUrl: string) => {
-		onSelectGif(gifUrl); // ✅ Pass string directly
-		setPostGif((prev) => [...prev, gifUrl]); // ✅ Add to array of gifs
+		setPostGif((prev) => {
+			// If already selected 3, block
+			if (prev.length >= 3) {
+				return prev;
+			}
+
+			// If this gif already exists, block
+			if (prev.includes(gifUrl)) {
+				return prev;
+			}
+
+			const updated = [...prev, gifUrl];
+			onSelectGif(gifUrl); // Optional: fire only if actually added
+			return updated;
+		});
+
 		setIsOpen(false);
 	};
 
@@ -64,7 +80,10 @@ export default function PostGifSelector({ onSelectGif, setPostGif }: Props) {
 				<span>Add GIF:</span>
 				<button
 					type="button"
-					onClick={() => setIsOpen((prev) => !prev)}
+					onClick={() => {
+						if (postGif.length >= 3) return;
+						setIsOpen((prev) => !prev);
+					}}
 					className="p-1 rounded cursor-pointer bg-gray-800 text-white hover:bg-gray-700"
 				>
 					{isOpen ? 'Close' : 'Open'} GIF Picker
@@ -89,6 +108,7 @@ export default function PostGifSelector({ onSelectGif, setPostGif }: Props) {
 						/>
 						<button
 							type="button"
+							disabled={postGif.length >= 3}
 							onClick={handleSearch}
 							className="px-3 py-1 cursor-pointer bg-purple-600 text-white rounded"
 						>

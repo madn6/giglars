@@ -127,6 +127,7 @@ export default function CreatePost() {
 							<PostGifSelector
 								onSelectGif={handleInsertGif}
 								setPostGif={setPostGif}
+								postGif={postGif}
 							/>
 							<PostScheduleSelector
 								scheduledDate={scheduledDate}
