@@ -9,12 +9,11 @@ export interface Post {
 	time?: string;
 
 	content?: string;
-	images?: string[];
+	images: string[];
 	feeling: string;
-	isAnonymous: boolean;
 	tags: string[];
+	gifs: string[];
 	visibility: string;
-	postDate: Date;
 
 	stats?: {
 		luck: number;

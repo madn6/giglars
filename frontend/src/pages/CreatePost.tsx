@@ -2,12 +2,9 @@ import PostImageUpload from '../components/post/PostImageUpload';
 import {
 	PostTextArea,
 	PostFeelingSelector,
-	PostDatePicker,
 	PostTagsInput,
 	PostVisibilitySelector,
-	PostAnonymousToggle,
 	PostGifSelector,
-	PostScheduleSelector,
 	PostSubmitButton
 } from '../components';
 
@@ -18,9 +15,7 @@ import API from '../utils/axios';
 export default function CreatePost() {
 	const [content, setContent] = useState('');
 	const [feeling, setFeeling] = useState<'lucky' | 'unlucky'>('lucky');
-	const [postDate, setPostDate] = useState(new Date());
-	const [scheduledDate, setScheduledDate] = useState(new Date());
-	const [isAnonymous, setIsAnonymous] = useState(false);
+
 	const [files, setFiles] = useState<File[]>([]);
 	const [previews, setPreviews] = useState<string[]>([]);
 	const [tags, setTags] = useState<string[]>([]);
@@ -58,9 +53,7 @@ export default function CreatePost() {
 		const content = editorRef.current?.getHTML() || '';
 		formData.append('content', content);
 		formData.append('feeling', feeling);
-		formData.append('isAnonymous', String(isAnonymous));
-		formData.append('postDate', postDate.toISOString());
-		formData.append('scheduledDate', scheduledDate.toISOString());
+
 		files.forEach((file) => formData.append('files', file));
 		formData.append('tags', JSON.stringify(tags));
 		formData.append('visibility', visibility);
@@ -69,9 +62,6 @@ export default function CreatePost() {
 		console.log('form data:', {
 			content,
 			feeling,
-			isAnonymous,
-			postDate,
-			scheduledDate,
 			files,
 			tags,
 			visibility,
@@ -114,25 +104,18 @@ export default function CreatePost() {
 						</div>
 
 						<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-4">
-							<PostDatePicker date={postDate} setDate={setPostDate} />
 							<PostTagsInput tags={tags} setTags={setTags} />
 							<PostVisibilitySelector visibility={visibility} setVisibility={setVisibility} />
 						</div>
 
 						<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-4">
-							<PostAnonymousToggle
-								isAnonymous={isAnonymous}
-								handleToggle={(e) => setIsAnonymous(e.target.checked)}
-							/>
+
 							<PostGifSelector
 								onSelectGif={handleInsertGif}
 								setPostGif={setPostGif}
 								postGif={postGif}
 							/>
-							<PostScheduleSelector
-								scheduledDate={scheduledDate}
-								setScheduledDate={setScheduledDate}
-							/>
+
 						</div>
 
 						<div className="pt-2">

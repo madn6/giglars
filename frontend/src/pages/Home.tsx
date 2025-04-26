@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store/store';
 import { useEffect, useState } from 'react';
 import API from '../utils/axios';
-import { setPosts } from '../redux/features/posts/postsSlice';
+import { Post, setPosts } from '../redux/features/posts/postsSlice';
 
 const Home: React.FC = () => {
 	const [loading, setLoading] = useState(true);
@@ -22,9 +22,8 @@ const Home: React.FC = () => {
 				console.log('PostCard received post:', res.data);
 				dispatch(
 					setPosts(
-						res.data.posts.map((post: any) => ({
+						res.data.posts.map((post: Post) => ({
 							...post,
-							postDate: new Date(post.postDate),
 							stats: {
 								luck: post.stats?.luck ?? 0,
 								comments: post.stats?.comments ?? 0,
