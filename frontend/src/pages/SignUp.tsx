@@ -57,7 +57,7 @@ export default function SignUp() {
 		watch,
 		formState: { errors, isSubmitting },
 		reset
-	} = useForm({
+	} = useForm<SignUpFormData>({
 		resolver: yupResolver(signupSchema)
 	});
 

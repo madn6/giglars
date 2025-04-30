@@ -10,6 +10,10 @@ type PostCardProps = {
 };
 
 export default function PostCard({ post }: PostCardProps) {
+	const removeImagesFromHtml = (html: string) => {
+		return html.replace(/<img[^>]*>/g, '');
+	};
+
 	return (
 		<div className="container font-inter shadow-2xl text-white -z-10 bg-transparent border border-border p-4 rounded-xl backdrop-blur-2xl">
 			<div className="top__container flex items-center gap-4">
@@ -26,7 +30,10 @@ export default function PostCard({ post }: PostCardProps) {
 			<div className="post-card">
 				{/* Text Content (with inline GIFs inside content HTML) */}
 				{post.content && (
-					<div className="mt-3 line-clamp-4" dangerouslySetInnerHTML={{ __html: post.content }} />
+					<div
+						className="mt-3 line-clamp-4"
+						dangerouslySetInnerHTML={{ __html: removeImagesFromHtml(post.content) }}
+					/>
 				)}
 
 				{/* Main Visual */}
