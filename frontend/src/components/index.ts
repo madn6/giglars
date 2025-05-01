@@ -1,11 +1,14 @@
-export {default as Header} from './Header'
-export {default as Navbar} from './Navbar'
-export {default as PostCard} from './PostCard'
-export {default as PostTextArea} from './post/PostTextArea'
-export {default as PostFeelingSelector} from './post/PostFeelingSelector'
-export {default as PostImageUpload} from './post/PostImageUpload'
-export {default as PostTagsInput} from './post/PostTagsInput'
-export {default as PostVisibilitySelector} from './post/PostVisibilitySelector'
-export {default as PostGifSelector} from './post/PostGifSelector'
-export {default as PostSubmitButton} from './post/PostSubmitButton'
-export {default as ProfileForm} from './profile/ProfileForm'
+export { default as Header } from './Header';
+export { default as Navbar } from './Navbar';
+export { default as PostCard } from './PostCard';
+export { default as PostTextArea } from './post/PostTextArea';
+export { default as PostFeelingSelector } from './post/PostFeelingSelector';
+export { default as PostImageUpload } from './post/PostImageUpload';
+export { default as PostTagsInput } from './post/PostTagsInput';
+export { default as PostVisibilitySelector } from './post/PostVisibilitySelector';
+export { default as PostGifSelector } from './post/PostGifSelector';
+export { default as PostSubmitButton } from './post/PostSubmitButton';
+export { default as ProfileForm } from './profile/ProfileForm';
+export { default as ProfileProgress } from './profile/ProfileProgress';
+export { default as StepOneFields } from './profile/StepOneFields';
+export { default as StepTwoFields } from './profile/StepTwoFields';

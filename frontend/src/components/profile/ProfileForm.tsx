@@ -1,11 +1,12 @@
-import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react';
-import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
-import DatePicker from 'react-datepicker';
+
 import 'react-datepicker/dist/react-datepicker.css';
 import { useState } from 'react';
+import ProfileProgress from './ProfileProgress';
+import StepOneFields from './StepOneFields';
+import StepTwoFields from './StepTwoFields';
 
 const profileSetupSchema = yup.object({
 	displayName: yup
@@ -54,17 +55,9 @@ const profileSetupSchema = yup.object({
 		.optional()
 });
 
-type ProfileFormData = yup.InferType<typeof profileSetupSchema>;
+export type ProfileFormData = yup.InferType<typeof profileSetupSchema>;
 
-const genderOptions = [
-	{ label: 'Please select gender', value: '' },
-	{ label: 'Male', value: 'male' },
-	{ label: 'Female', value: 'female' },
-	{ label: 'Other', value: 'other' },
-	{ label: 'Prefer not to say', value: 'prefer_not_to_say' }
-] as const;
 
-type GenderOption = (typeof genderOptions)[number];
 
 export default function ProfileForm() {
 	const [step, setStep] = useState(1);
@@ -116,197 +109,17 @@ export default function ProfileForm() {
 			<div className="w-full max-w-xs px-4">
 				<h2 className="text-center text-xl font-semibold mb-2 text-white">Profile Setup</h2>
 
-				{/* Progress Bar */}
-				<div className=" w-54  mx-auto">
-					<div className="flex items-center justify-between my-6">
-						{/* Step 1 */}
-						<div
-							className={`h-10 w-10 rounded-full flex items-center justify-center ${
-								step >= 1 ? 'bg-blue-600' : 'bg-gray-300'
-							} transition-colors`}
-						>
-							1
-						</div>
-
-						{/* Connector */}
-						<div
-							className={`h-1 flex-1 ${
-								step >= 2 ? 'bg-blue-600' : 'bg-gray-300'
-							}  transition-colors`}
-						></div>
-
-						{/* Step 2 */}
-						<div
-							className={`h-10 w-10 rounded-full flex items-center justify-center ${
-								step >= 2 ? 'bg-blue-600' : 'bg-gray-300 text-blue-600'
-							} transition-colors`}
-						>
-							2
-						</div>
-					</div>
-				</div>
+				<ProfileProgress step={step} />
 
 				<form onSubmit={handleSubmit(onSubmit)} className="space-y-6 max-w-md mx-auto">
-					{step === 1 && (
-						<>
-							<input
-								{...register('displayName')}
-								placeholder="Display Name"
-								className="w-full  border-border border px-3 py-2 rounded"
-							/>
-							{errors.displayName && (
-								<p className="text-red-500 text-sm">{errors.displayName.message}</p>
-							)}
-							<input
-								{...register('username')}
-								placeholder="@username"
-								className="w-full  border-border border px-3 py-2 rounded"
-							/>
-
-							{errors.username && (
-								<p className="text-red-500 text-sm">{errors.username?.message}</p>
-							)}
-
-							<textarea
-								{...register('bio')}
-								placeholder="Bio"
-								className="w-full resize-none  border-border border px-3 py-2 rounded"
-							/>
-							{errors.bio && <p className="text-red-500 text-sm">{errors.bio?.message}</p>}
-
-							<input
-								{...register('location')}
-								placeholder="Location"
-								className="w-full  border-border border px-3 py-2 rounded"
-							/>
-							{errors.location && (
-								<p className="text-red-500 text-sm">{errors.location?.message}</p>
-							)}
-
-							<button
-								type="button"
-								onClick={handleNextStep}
-								className="bg-blue-600 text-white px-4 py-2 rounded w-full"
-							>
-								Next
-							</button>
-						</>
-					)}
-
+					{step === 1 && <StepOneFields register={register} errors={errors} onNext={handleNextStep} />}
 					{step === 2 && (
-						<>
-							<input
-								{...register('website')}
-								placeholder="Website URL"
-								className="w-full  border-border border px-3 py-2 rounded"
-							/>
-							<p className="text-red-500 text-sm">{errors.website?.message}</p>
-
-							<Controller
-								control={control}
-								name="gender"
-								render={({ field }) => {
-									const selectedGender =
-										genderOptions.find((option) => option.value === field.value) ||
-										genderOptions[0];
-
-									return (
-										<Listbox
-											value={selectedGender}
-											onChange={(g: GenderOption) => field.onChange(g.value)}
-										>
-											<div className="relative mt-1">
-												<ListboxButton className="relative w-full cursor-pointer rounded  border-border border py-2 pl-3 pr-10 text-left shadow-sm focus:outline-none">
-													<span
-														className={`block truncate ${
-															selectedGender.value === '' ? 'text-gray-400' : 'text-gray-900'
-														}`}
-													>
-														{selectedGender.label}
-													</span>
-													<span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-														<ChevronUpDownIcon className="h-5 w-5 text-gray-400" />
-													</span>
-												</ListboxButton>
-
-												<ListboxOptions className="absolute z-10 mt-1 w-full rounded bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none">
-													{genderOptions.map((option) => (
-														<ListboxOption
-															key={option.value}
-															value={option}
-															disabled={option.value === ''}
-															className={({ active, disabled }) =>
-																`relative cursor-pointer select-none py-2 pl-10 pr-4 ${
-																	disabled
-																		? 'text-gray-400 cursor-not-allowed'
-																		: active
-																		? 'bg-blue-100 text-blue-900'
-																		: 'text-gray-900'
-																}`
-															}
-														>
-															{({ selected }) => (
-																<>
-																	<span
-																		className={`block truncate ${
-																			selected ? 'font-medium' : 'font-normal'
-																		}`}
-																	>
-																		{option.label}
-																	</span>
-																	{selected && option.value !== '' && (
-																		<span className="absolute inset-y-0 left-0 flex items-center pl-3 text-blue-600">
-																			<CheckIcon className="h-5 w-5" />
-																		</span>
-																	)}
-																</>
-															)}
-														</ListboxOption>
-													))}
-												</ListboxOptions>
-											</div>
-										</Listbox>
-									);
-								}}
-							/>
-							<p className="text-red-500 text-sm">{errors.gender?.message}</p>
-
-							<Controller
-								control={control}
-								name="dob"
-								rules={{ required: 'Date of Birth is required' }}
-								render={({ field }) => (
-									<DatePicker
-										placeholderText="Choose Date of Birth"
-										selected={field.value}
-										onChange={(date) => field.onChange(date)}
-										dateFormat="dd/MM/yyyy"
-										className=" w-72  border-border border px-3 py-2 rounded"
-									/>
-								)}
-							/>
-							<p className="text-red-500 text-sm">{errors.dob?.message}</p>
-
-							<input
-								{...register('interests.0')}
-								placeholder="Interests ex:Music, Sports"
-								className="w-full  border-border border px-3 py-2 rounded"
-							/>
-							<p className="text-red-500 text-sm">{errors.interests?.[0]?.message}</p>
-
-							<div className="flex justify-between">
-								<button
-									type="button"
-									onClick={handlePreviousStep}
-									className="bg-gray-600 text-white px-4 py-2 rounded"
-								>
-									Back
-								</button>
-								<button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
-									Submit
-								</button>
-							</div>
-						</>
+						<StepTwoFields
+							register={register}
+							errors={errors}
+							control={control}
+							onBack={handlePreviousStep}
+						/>
 					)}
 				</form>
 			</div>
