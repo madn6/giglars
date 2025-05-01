@@ -118,7 +118,7 @@ export default function ProfileForm() {
 
 				{/* Progress Bar */}
 				<div className=" w-54  mx-auto">
-					<div className="flex items-center justify-between mb-4">
+					<div className="flex items-center justify-between my-6">
 						{/* Step 1 */}
 						<div
 							className={`h-10 w-10 rounded-full flex items-center justify-center ${
@@ -146,13 +146,13 @@ export default function ProfileForm() {
 					</div>
 				</div>
 
-				<form onSubmit={handleSubmit(onSubmit)} className="space-y-4 max-w-md mx-auto">
+				<form onSubmit={handleSubmit(onSubmit)} className="space-y-6 max-w-md mx-auto">
 					{step === 1 && (
 						<>
 							<input
 								{...register('displayName')}
 								placeholder="Display Name"
-								className="w-full border px-3 py-2 rounded"
+								className="w-full  border-border border px-3 py-2 rounded"
 							/>
 							{errors.displayName && (
 								<p className="text-red-500 text-sm">{errors.displayName.message}</p>
@@ -160,7 +160,7 @@ export default function ProfileForm() {
 							<input
 								{...register('username')}
 								placeholder="@username"
-								className="w-full border px-3 py-2 rounded"
+								className="w-full  border-border border px-3 py-2 rounded"
 							/>
 
 							{errors.username && (
@@ -170,16 +170,18 @@ export default function ProfileForm() {
 							<textarea
 								{...register('bio')}
 								placeholder="Bio"
-								className="w-full border px-3 py-2 rounded"
+								className="w-full resize-none  border-border border px-3 py-2 rounded"
 							/>
-							<p className="text-red-500 text-sm">{errors.bio?.message}</p>
+							{errors.bio && <p className="text-red-500 text-sm">{errors.bio?.message}</p>}
 
 							<input
 								{...register('location')}
 								placeholder="Location"
-								className="w-full border px-3 py-2 rounded"
+								className="w-full  border-border border px-3 py-2 rounded"
 							/>
-							<p className="text-red-500 text-sm">{errors.location?.message}</p>
+							{errors.location && (
+								<p className="text-red-500 text-sm">{errors.location?.message}</p>
+							)}
 
 							<button
 								type="button"
@@ -196,7 +198,7 @@ export default function ProfileForm() {
 							<input
 								{...register('website')}
 								placeholder="Website URL"
-								className="w-full border px-3 py-2 rounded"
+								className="w-full  border-border border px-3 py-2 rounded"
 							/>
 							<p className="text-red-500 text-sm">{errors.website?.message}</p>
 
@@ -214,7 +216,7 @@ export default function ProfileForm() {
 											onChange={(g: GenderOption) => field.onChange(g.value)}
 										>
 											<div className="relative mt-1">
-												<ListboxButton className="relative w-full cursor-pointer rounded border py-2 pl-3 pr-10 text-left shadow-sm focus:outline-none">
+												<ListboxButton className="relative w-full cursor-pointer rounded  border-border border py-2 pl-3 pr-10 text-left shadow-sm focus:outline-none">
 													<span
 														className={`block truncate ${
 															selectedGender.value === '' ? 'text-gray-400' : 'text-gray-900'
@@ -279,7 +281,7 @@ export default function ProfileForm() {
 										selected={field.value}
 										onChange={(date) => field.onChange(date)}
 										dateFormat="dd/MM/yyyy"
-										className=" w-72 border px-3 py-2 rounded"
+										className=" w-72  border-border border px-3 py-2 rounded"
 									/>
 								)}
 							/>
@@ -288,7 +290,7 @@ export default function ProfileForm() {
 							<input
 								{...register('interests.0')}
 								placeholder="Interests ex:Music, Sports"
-								className="w-full border px-3 py-2 rounded"
+								className="w-full  border-border border px-3 py-2 rounded"
 							/>
 							<p className="text-red-500 text-sm">{errors.interests?.[0]?.message}</p>
 
