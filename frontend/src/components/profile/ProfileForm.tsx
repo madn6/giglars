@@ -3,6 +3,8 @@ import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const profileSetupSchema = yup.object({
 	displayName: yup.string().min(2).max(20).required(),
@@ -158,13 +160,24 @@ export default function ProfileForm() {
 						}}
 					/>
 					<p className="text-red-500 text-sm">{errors.gender?.message}</p>
-
-					<input type="date" {...register('dob')} className="w-full border px-3 py-2 rounded" />
-					<p className="text-red-500 text-sm">{errors.dob?.message}</p>
+					<Controller
+						control={control}
+						name="dob"
+						rules={{ required: 'Date of Birth is required' }}
+						render={({ field }) => (
+							<DatePicker
+								placeholderText="Choose Date of Birth"
+								selected={field.value}
+								onChange={(date) => field.onChange(date)}
+                        dateFormat="dd/MM/yyyy"
+								className=" w-72 border px-3 py-2 rounded"
+							/>
+						)}
+					/>
 
 					<input
 						{...register('interests.0')}
-						placeholder="Interest 1"
+						placeholder="Interests ex:Music, Sports"
 						className="w-full border px-3 py-2 rounded"
 					/>
 					<p className="text-red-500 text-sm">{errors.interests?.[0]?.message}</p>
