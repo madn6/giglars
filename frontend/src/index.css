@@ -16,6 +16,10 @@
 	--color-highlight: #007a5e;
 }
 /* src/styles/global.css */
+button{
+	cursor: pointer;
+}
+
 
 /* TipTap default styles */
 .ProseMirror {

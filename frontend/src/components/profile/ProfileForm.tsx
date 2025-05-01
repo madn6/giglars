@@ -8,20 +8,50 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { useState } from 'react';
 
 const profileSetupSchema = yup.object({
-	displayName: yup.string().min(2).max(20).required(),
+	displayName: yup
+		.string()
+		.min(2, 'Display name must be at least 2 characters')
+		.max(20, 'Display name must not exceed 20 characters')
+		.required('Display name is required'),
+
 	username: yup
 		.string()
-		.matches(/^@[\w_]{3,20}$/, 'Invalid username')
-		.required(),
-	bio: yup.string().max(160).notRequired(),
-	location: yup.string().max(100).notRequired(),
-	website: yup.string().url().nullable().notRequired(),
+		.matches(
+			/^@[\w_]{3,20}$/,
+			'Username must start with @ and contain 3–20 characters (letters, numbers, or underscores)'
+		)
+		.required('Username is required'),
+
+	bio: yup.string().max(160, 'Bio must not exceed 160 characters').notRequired(),
+
+	location: yup.string().max(100, 'Location must not exceed 100 characters').notRequired(),
+
+	website: yup
+		.string()
+		.url('Website must be a valid URL (e.g., https://example.com)')
+		.nullable()
+		.notRequired(),
+
 	gender: yup
 		.string()
-		.oneOf(['male', 'female', 'other', 'prefer_not_to_say'], 'Please select a gender')
+		.oneOf(['male', 'female', 'other', 'prefer_not_to_say'], 'Please select a valid gender option')
 		.required('Gender is required'),
-	dob: yup.date().typeError('Please enter a valid date').required(),
-	interests: yup.array().of(yup.string().max(30).required()).max(10).optional()
+
+	dob: yup
+		.date()
+		.typeError('Date of birth must be a valid date')
+		.required('Date of birth is required'),
+
+	interests: yup
+		.array()
+		.of(
+			yup
+				.string()
+				.max(30, 'Each interest must be under 30 characters')
+				.required('Interest cannot be empty')
+		)
+		.max(10, 'You can specify up to 10 interests only')
+		.optional()
 });
 
 type ProfileFormData = yup.InferType<typeof profileSetupSchema>;
@@ -47,6 +77,7 @@ export default function ProfileForm() {
 		formState: { errors }
 	} = useForm<ProfileFormData>({
 		resolver: yupResolver(profileSetupSchema) as never,
+		mode: 'onChange',
 		defaultValues: {
 			displayName: '',
 			username: '',
@@ -83,21 +114,36 @@ export default function ProfileForm() {
 	return (
 		<div className="h-screen flex items-center font-inter justify-center">
 			<div className="w-full max-w-xs px-4">
-				<h2 className="text-center text-xl font-semibold text-white">Profile Setup</h2>
+				<h2 className="text-center text-xl font-semibold mb-2 text-white">Profile Setup</h2>
 
 				{/* Progress Bar */}
-				<div className="flex items-center justify-between mb-4">
-					<div
-						className={`h-2 flex-1 rounded-full ${
-							step >= 1 ? 'bg-blue-600' : 'bg-gray-300'
-						} transition-colors`}
-					></div>
-					<div className="w-2"></div>
-					<div
-						className={`h-2 flex-1 rounded-full ${
-							step >= 2 ? 'bg-blue-600' : 'bg-gray-300'
-						} transition-colors`}
-					></div>
+				<div className=" w-54  mx-auto">
+					<div className="flex items-center justify-between mb-4">
+						{/* Step 1 */}
+						<div
+							className={`h-10 w-10 rounded-full flex items-center justify-center ${
+								step >= 1 ? 'bg-blue-600' : 'bg-gray-300'
+							} transition-colors`}
+						>
+							1
+						</div>
+
+						{/* Connector */}
+						<div
+							className={`h-1 flex-1 ${
+								step >= 2 ? 'bg-blue-600' : 'bg-gray-300'
+							}  transition-colors`}
+						></div>
+
+						{/* Step 2 */}
+						<div
+							className={`h-10 w-10 rounded-full flex items-center justify-center ${
+								step >= 2 ? 'bg-blue-600' : 'bg-gray-300 text-blue-600'
+							} transition-colors`}
+						>
+							2
+						</div>
+					</div>
 				</div>
 
 				<form onSubmit={handleSubmit(onSubmit)} className="space-y-4 max-w-md mx-auto">
@@ -108,14 +154,18 @@ export default function ProfileForm() {
 								placeholder="Display Name"
 								className="w-full border px-3 py-2 rounded"
 							/>
-							<p className="text-red-500 text-sm">{errors.displayName?.message}</p>
-
+							{errors.displayName && (
+								<p className="text-red-500 text-sm">{errors.displayName.message}</p>
+							)}
 							<input
 								{...register('username')}
 								placeholder="@username"
 								className="w-full border px-3 py-2 rounded"
 							/>
-							<p className="text-red-500 text-sm">{errors.username?.message}</p>
+
+							{errors.username && (
+								<p className="text-red-500 text-sm">{errors.username?.message}</p>
+							)}
 
 							<textarea
 								{...register('bio')}
