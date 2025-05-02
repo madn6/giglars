@@ -15,21 +15,24 @@ export default function ProfileLocation({ register, errors }: LocationProps) {
 	const [selected, setSelected] = useState('');
 
 	// Memoize all "Country, State" pairs
-	const locations = useMemo(() => {
-		const list: string[] = [];
-		const countries = Country.getAllCountries();
-
-		countries.forEach((country) => {
-			const states = State.getStatesOfCountry(country.isoCode);
-			if (states.length) {
-				states.forEach((state) => list.push(`${country.name}, ${state.name}`));
-			} else {
-				list.push(`${country.name}`);
-			}
-		});
-
-		return list;
-	}, []);
+   const locations = useMemo(() => {
+      const list: string[] = [];
+      const countries = Country.getAllCountries();
+   
+      countries.forEach((country) => {
+         const states = State.getStatesOfCountry(country.isoCode);
+         states.forEach((state) => list.push(`${country.name}, ${state.name}`));
+      });
+   
+      // Randomize the list using Fisher-Yates shuffle
+      for (let i = list.length - 1; i > 0; i--) {
+         const j = Math.floor(Math.random() * (i + 1));
+         [list[i], list[j]] = [list[j], list[i]];
+      }
+   
+      return list;
+   }, []);
+   
 
 	// Filter matches (case-insensitive)
 	const filtered = query === ''
@@ -46,10 +49,10 @@ export default function ProfileLocation({ register, errors }: LocationProps) {
 			}}>
 				<div className="relative">
 					{/* Input */}
-					<div className="relative w-full cursor-default overflow-hidden rounded border bg-white text-left">
+					<div className="relative w-full cursor-default overflow-hidden rounded border  text-left">
 						<ComboboxInput
 							{...register('location')}
-							className="w-full border-none py-2 pl-3 pr-10 leading-5 text-gray-900 focus:ring-0"
+							className="w-full border-none py-2 pl-3 pr-10 leading-5  focus:ring-0"
 							displayValue={() => query}
 							onChange={(e) => setQuery(e.target.value)}
 							placeholder="Select your location (e.g. India, Tamil Nadu)"
@@ -78,7 +81,7 @@ export default function ProfileLocation({ register, errors }: LocationProps) {
 										value={loc}
 										className={({ active }) =>
 											`cursor-default select-none relative py-2 pl-10 pr-4 ${
-												active ? 'bg-indigo-600 text-white' : 'text-gray-900'
+												active ? 'bg-gray-600 text-white cursor-pointer' : 'text-gray-900'
 											}`
 										}
 									>
