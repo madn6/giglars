@@ -1,7 +1,7 @@
 import { Request, Response, RequestHandler, NextFunction } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import User from '../models/User.model';
+import User from '../models/Auth.model';
 import { AuthenticatedRequest } from '../middleware/verifyToken';
 
 interface RegisterUserBody {

@@ -7,6 +7,7 @@ import { useState } from 'react';
 import ProfileProgress from './ProfileProgress';
 import StepOneFields from './StepOneFields';
 import StepTwoFields from './StepTwoFields';
+import API from '../../utils/axios';
 
 const profileSetupSchema = yup.object({
 	displayName: yup
@@ -15,13 +16,12 @@ const profileSetupSchema = yup.object({
 		.max(20, 'Display name must not exceed 20 characters')
 		.required('Display name is required'),
 
-	username: yup
+	uniqueUsername: yup
 		.string()
 		.matches(
 			/^@[\w_]{3,20}$/,
-			'Username must start with @ and contain 3–20 characters (letters, numbers, or underscores)'
-		)
-		.required('Username is required'),
+			'UniqueUsername must start with @ and contain 3–20 characters (letters, numbers, or underscores)'
+		),
 
 	bio: yup.string().max(160, 'Bio must not exceed 160 characters').notRequired(),
 
@@ -73,7 +73,7 @@ export default function ProfileForm() {
 		mode: 'onChange',
 		defaultValues: {
 			displayName: '',
-			username: '',
+			uniqueUsername: '',
 			bio: '',
 			location: '',
 			website: '',
@@ -83,15 +83,28 @@ export default function ProfileForm() {
 		}
 	});
 
-	const onSubmit: SubmitHandler<ProfileFormData> = (data) => {
-		console.log(data);
+
+
+	const onSubmit: SubmitHandler<ProfileFormData> = async (data) => {
+
+		console.log('Form data:', data); // Debugging line to check form data
+		try {
+			// Send data to backend for profile setup
+			await API.put('/api/profile/profile-setup', data, { withCredentials: true });
+			// Handle success (e.g., redirect to another page)
+			alert('Profile updated successfully');
+		} catch (error) {
+			console.error('Profile setup failed', error);
+			alert('Failed to update profile');
+		}
 	};
+	
 
 	const handleNextStep = async () => {
 		// Validate fields for the current step
 		const fieldsToValidate: Array<keyof ProfileFormData> =
 			step === 1
-				? ['displayName', 'username', 'bio', 'location']
+				? ['displayName', 'uniqueUsername', 'bio', 'location']
 				: ['website', 'gender', 'dob', 'interests'];
 		const isValid = await trigger(fieldsToValidate);
 

@@ -8,6 +8,7 @@ import authRoutes from './routes/auth.routes';
 import postRoutes from "./routes/post.routes";
 import { storage } from './utils/cloudinary';
 import { errorHandler } from './middleware/errrorHandler';
+import profileRoutes from './routes/profile.routes';
 // import userRoutes from "./routes/userRoutes";
 
 const app = express();
@@ -44,7 +45,7 @@ app.get('/', (req, res) => {
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/post', postRoutes);
-// app.use("/api/users", userRoutes);
+app.use('/api/profile', profileRoutes);
 
 // Connect to database and start server
 const PORT: number = parseInt(process.env.PORT || '5000', 10);

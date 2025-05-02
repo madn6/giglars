@@ -10,8 +10,6 @@ import { useDispatch } from 'react-redux';
 import { login } from '../redux/features/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
 import API from '../utils/axios';
-
-
 const signupSchema = yup.object().shape({
 	username: yup
 		.string()
@@ -93,7 +91,7 @@ export default function SignUp() {
 				})
 			);
 
-			navigate('/');
+			navigate('/profile-setup');
 			reset();
 		} catch (error) {
 			if (axios.isAxiosError(error)) {

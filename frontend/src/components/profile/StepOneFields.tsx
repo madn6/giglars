@@ -19,11 +19,11 @@ export default function StepOne({ register, errors, onNext }: StepOneProps) {
 			{errors.displayName && <p className="text-red-500 text-sm">{errors.displayName.message}</p>}
 
 			<input
-				{...register('username')}
-				placeholder="@username"
+				{...register('uniqueUsername')}
+				placeholder="@uniqueUsername"
 				className="w-full border px-3 py-2 rounded"
 			/>
-			{errors.username && <p className="text-red-500 text-sm">{errors.username.message}</p>}
+			{errors.uniqueUsername && <p className="text-red-500 text-sm">{errors.uniqueUsername.message}</p>}
 
 			<textarea
 				{...register('bio')}
