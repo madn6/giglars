@@ -32,6 +32,7 @@
     "@tiptap/react": "^2.11.7",
     "@tiptap/starter-kit": "^2.11.7",
     "axios": "^1.8.4",
+    "country-state-city": "^3.2.1",
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.7",
     "framer-motion": "^12.9.2",
@@ -49,6 +50,7 @@
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.4.1",
     "react-toastify": "^11.0.5",
+    "world-countries-capitals": "^3.4.0",
     "yup": "^1.6.1"
   },
   "devDependencies": {

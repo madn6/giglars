@@ -1,5 +1,6 @@
 import { UseFormRegister, FieldErrors } from 'react-hook-form';
 import { ProfileFormData } from './ProfileForm';
+import ProfileLocation from './ProfileLocation';
 
 interface StepOneProps {
 	register: UseFormRegister<ProfileFormData>;
@@ -31,12 +32,8 @@ export default function StepOne({ register, errors, onNext }: StepOneProps) {
 			/>
 			{errors.bio && <p className="text-red-500 text-sm">{errors.bio.message}</p>}
 
-			<input
-				{...register('location')}
-				placeholder="Location"
-				className="w-full border px-3 py-2 rounded"
-			/>
-			{errors.location && <p className="text-red-500 text-sm">{errors.location.message}</p>}
+			
+			<ProfileLocation register={register} errors={errors} />
 
 			<button
 				type="button"

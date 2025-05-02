@@ -12,3 +12,4 @@ export { default as ProfileForm } from './profile/ProfileForm';
 export { default as ProfileProgress } from './profile/ProfileProgress';
 export { default as StepOneFields } from './profile/StepOneFields';
 export { default as StepTwoFields } from './profile/StepTwoFields';
+export { default as ProfileLocation } from './profile/ProfileLocation';
