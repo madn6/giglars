@@ -14,6 +14,8 @@ export interface Post {
 	tags: string[];
 	gifs: string[];
 	visibility: string;
+	createdAt?: string; 
+	updatedAt?: string;
 
 	stats?: {
 		luck: number;

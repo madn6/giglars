@@ -4,24 +4,33 @@ import { GiBilledCap } from 'react-icons/gi';
 import { FaRegComment, FaRegBookmark, FaRegShareSquare } from 'react-icons/fa';
 import { Post } from '../redux/features/posts/postsSlice';
 import { EllipsisVertical } from 'lucide-react';
+import { formatDistanceToNow } from 'date-fns';
+
 
 type PostCardProps = {
 	post: Post;
+	userData: { profileImage: string; uniqueUsername: string; displayName: string }
 };
 
-export default function PostCard({ post }: PostCardProps) {
+export default function PostCard({ post ,userData}: PostCardProps) {
 	const removeImagesFromHtml = (html: string) => {
 		return html.replace(/<img[^>]*>/g, '');
 	};
 
+
+	const timeAgo = post.createdAt
+		? formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })
+		: 'Unknown';
+
+
 	return (
 		<div className="container font-inter shadow-2xl text-white -z-10 bg-transparent border border-border p-4 rounded-xl backdrop-blur-2xl">
 			<div className="top__container flex items-center gap-4">
-				<img className="w-10 h-10 rounded-full" src="" alt="" />
+				<img className="w-10 h-10 rounded-full" src={userData.profileImage} alt="" />
 				<div className="flex-1">
-					<div className="font-bold">{null}</div>
+					<div className="font-bold">{userData.displayName}</div>
 					<div className="text-sm text-gray">
-						@{null} • {null}
+						{userData.uniqueUsername} • {timeAgo}
 					</div>
 				</div>
 				<EllipsisVertical className="cursor-pointer" />

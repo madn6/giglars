@@ -135,6 +135,7 @@ export const checkAuth = async (req: AuthenticatedRequest, res: Response): Promi
 		if (!user) {
 			res.status(404).json({ error: 'User not found' });
 			return;
+			return;
 		}
 
 		res.status(200).json({
@@ -198,21 +199,24 @@ export const getUserInfo = async (
 	res: Response,
 	next: NextFunction
 ): Promise<void> => {
-	const userId = req.userId;
-
 	try {
-		const user = await User.findById(userId);
+		const userId = req.userId;
+
+		const user = await User.findById(userId).select('profileImage displayName uniqueUsername ');
+
 		if (!user) {
-			res.status(404).json({ message: 'User not found' });
-			return;
+			res.status(404).json({ error: 'User not found' });
+			return; // Returning response here
 		}
 
-		res.json({
-			profileImage: user.profileImage,
-			email: user.email,
-			username: user.username
+		// Sending the response and returning nothing, since the response is a side-effect
+		res.status(200).json({
+			profileImage: user?.profileImage ?? '',
+			displayName: user?.displayName ?? 'N/A',
+			uniqueUsername: user?.uniqueUsername ?? 'N/A'
 		});
-	} catch (err) {
-		next(err);
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ error: 'Internal server error' });
 	}
 };

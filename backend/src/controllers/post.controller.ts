@@ -28,8 +28,8 @@ export const createPost = async (req: Request, res: Response) => {
 	res.status(201).json({ message: 'Post created successfully', post: newPost });
 };
 
-export const getAllPosts = async (req: Request, res: Response) => {
-	const posts = await Post.find(); //get all posts
+export const getAllPosts = async (_req: Request, res: Response) => {
+	const posts = await Post.find().sort({ createdAt: -1 }); 
 	if (!posts || posts.length === 0) {
 		res.status(404).json('no posts avilable');
 	}
