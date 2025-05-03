@@ -6,10 +6,8 @@ import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import authRoutes from './routes/auth.routes';
 import postRoutes from "./routes/post.routes";
-import { storage } from './utils/cloudinary';
 import { errorHandler } from './middleware/errrorHandler';
 import profileRoutes from './routes/profile.routes';
-// import userRoutes from "./routes/userRoutes";
 
 const app = express();
 

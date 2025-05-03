@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
 import { MulterRequest } from '../types/MulterRequest';
 import Post from '../models/Post.model';
-import { AuthRequest } from '../middleware/verifyToken'; // Adjust the import path as necessary
+import { AuthRequest } from '../middleware/verifyToken';
+import { AppError } from '../utils/AppError';
 
 export const createPost = async (req: AuthRequest, res: Response): Promise<void> => {
 	const { content, feeling, isAnonymous, postDate, scheduledDate, tags, visibility, gifs } =
