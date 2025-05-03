@@ -39,8 +39,7 @@ export const getAllPosts = async (req: AuthRequest, res: Response) => {
 		.sort({ createdAt: -1 }); // Get posts sorted by creation date
 
 	if (!posts || posts.length === 0) {
-		res.status(404).json({ message: 'No posts available' });
-		return;
+		throw new AppError('No posts found', 404);
 	}
 
 	res.status(200).json({
