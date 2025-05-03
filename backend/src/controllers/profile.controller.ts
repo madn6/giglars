@@ -1,8 +1,8 @@
 import { Response } from 'express';
-import { AuthenticatedRequest } from '../middleware/verifyToken'; 
+import { AuthRequest } from '../middleware/verifyToken'; 
 import User from '../models/Auth.model';
 
-export const setupProfile = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+export const setupProfile = async (req: AuthRequest, res: Response): Promise<void> => {
 	const userId = req.userId;
 
 	if (!userId) {

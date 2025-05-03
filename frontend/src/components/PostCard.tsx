@@ -6,22 +6,19 @@ import { Post } from '../redux/features/posts/postsSlice';
 import { EllipsisVertical } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 
-
 type PostCardProps = {
 	post: Post;
-	userData: { profileImage: string; uniqueUsername: string; displayName: string }
+	userData: { profileImage: string; uniqueUsername: string; displayName: string };
 };
 
-export default function PostCard({ post ,userData}: PostCardProps) {
+export default function PostCard({ post, userData }: PostCardProps) {
 	const removeImagesFromHtml = (html: string) => {
 		return html.replace(/<img[^>]*>/g, '');
 	};
 
-
 	const timeAgo = post.createdAt
 		? formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })
 		: 'Unknown';
-
 
 	return (
 		<div className="container font-inter shadow-2xl text-white -z-10 bg-transparent border border-border p-4 rounded-xl backdrop-blur-2xl">

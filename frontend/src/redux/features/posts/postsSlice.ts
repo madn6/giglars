@@ -14,7 +14,7 @@ export interface Post {
 	tags: string[];
 	gifs: string[];
 	visibility: string;
-	createdAt?: string; 
+	createdAt?: string;
 	updatedAt?: string;
 
 	stats?: {
@@ -23,6 +23,12 @@ export interface Post {
 		caps: number;
 		saves: number;
 		shares: number;
+	};
+
+	userId: {
+		profileImage: string;
+		uniqueUsername: string;
+		displayName: string;
 	};
 }
 
@@ -40,8 +46,8 @@ const postsSlice = createSlice({
 		addPost: (state, action: PayloadAction<Post>) => {
 			state.unshift(action.payload); // Adds a new post to the start of the posts array
 		},
-		removePost: (state, action: PayloadAction<number>) => {
-			return state.filter((_, index) => index !== action.payload); // Removes a post by index
+		removePost: (state, action: PayloadAction<string>) => {
+			return state.filter((post) => post._id !== action.payload);
 		}
 	}
 });

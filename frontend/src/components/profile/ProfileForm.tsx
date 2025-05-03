@@ -1,7 +1,7 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-
+import { useNavigate } from 'react-router-dom';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useState } from 'react';
 import ProfileProgress from './ProfileProgress';
@@ -62,6 +62,8 @@ export type ProfileFormData = yup.InferType<typeof profileSetupSchema>;
 export default function ProfileForm() {
 	const [step, setStep] = useState(1);
 
+	const navigate = useNavigate();
+
 	const {
 		register,
 		handleSubmit,
@@ -93,6 +95,7 @@ export default function ProfileForm() {
 			await API.put('/api/profile/profile-setup', data, { withCredentials: true });
 			// Handle success (e.g., redirect to another page)
 			alert('Profile updated successfully');
+			navigate('/'); // Redirect to home page after successful profile setup
 		} catch (error) {
 			console.error('Profile setup failed', error);
 			alert('Failed to update profile');

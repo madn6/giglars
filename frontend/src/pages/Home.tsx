@@ -9,18 +9,18 @@ import { Post, setPosts } from '../redux/features/posts/postsSlice';
 const Home: React.FC = () => {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
-	interface UserData {
-		profileImage: string;
-		displayName: string;
-		uniqueUsername: string;
-	}
+	// interface UserData {
+	// 	profileImage: string;
+	// 	displayName: string;
+	// 	uniqueUsername: string;
+	// }
 
-	const [userData, setUserData] = useState<UserData | null>(null);
+	// const [userData, setUserData] = useState<UserData | null>(null);
 
 	const dispatch = useDispatch();
 	const posts = useSelector((state: RootState) => state.posts);
 
-	console.log('fjl;sdf', posts);
+	console.log('posts', posts);
 
 	useEffect(() => {
 		const fetchPosts = async () => {
@@ -52,21 +52,23 @@ const Home: React.FC = () => {
 		fetchPosts();
 	}, [dispatch]);
 
-	useEffect(() => {
-		// Fetch user data on component mount
-		const fetchUserData = async () => {
-			try {
-				const response = await API.get('/api/auth/user-info'); // Update the URL to your actual endpoint
-				setUserData(response.data); // Store the response in state
-			} catch (error) {
-				console.error('Error fetching user data:', error);
-			}
-		};
+	// useEffect(() => {
+	// 	// Fetch user data on component mount
+	// 	const fetchUserData = async () => {
+	// 		try {
+	// 			const response = await API.get('/api/auth/user-info', {
+	// 				withCredentials: true // Include credentials for authentication
+	// 			}); // Update the URL to your actual endpoint
+	// 			setUserData(response.data); // Store the response in state
+	// 		} catch (error) {
+	// 			console.error('Error fetching user data:', error);
+	// 		}
+	// 	};
 
-		fetchUserData();
-	}, []);
+	// 	fetchUserData();
+	// }, []);
 
-	console.log('User Data:', userData); // Log the user data to check if it's being fetched correctly
+	// console.log('User Data:', userData); // Log the user data to check if it's being fetched correctly
 
 	return (
 		<div className="flex flex-col  font-inter min-h-screen">
@@ -109,16 +111,23 @@ const Home: React.FC = () => {
 			{/* Main Content - Fully Centered and Scrollable */}
 			<div className="flex justify-center items-start md:ml-[120px] py-20 h-screen overflow-y-auto px-2 md:px-6">
 				<div className="max-w-2xl w-full">
-					<div className="grid grid-cols-1  gap-4">
+					<div className="grid grid-cols-1 gap-4">
 						{loading ? (
 							<p className="text-center text-white">Loading posts...</p>
 						) : error ? (
 							<p className="text-center text-red-500">{error}</p>
 						) : (
-							posts.map(
-								(post, index) =>
-									userData && <PostCard key={index} post={post} userData={userData} />
-							)
+							posts.map((post) => (
+								<PostCard
+									key={post._id}
+									post={post}
+									userData={{
+										profileImage: post.userId?.profileImage || '', // fallback to empty string if undefined
+										uniqueUsername: post.userId?.uniqueUsername || 'Unknown', // fallback
+										displayName: post.userId?.displayName || 'Anonymous' // fallback
+									}}
+								/>
+							))
 						)}
 					</div>
 				</div>

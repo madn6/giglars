@@ -11,7 +11,8 @@ const postSchema = new mongoose.Schema(
 			enum: ['public', 'private', 'friends'],
 			default: 'public'
 		},
-		images: { type: [String], default: [] } // ✅ Match controller
+		images: { type: [String], default: [] },
+		userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 	},
 	{ timestamps: true }
 );

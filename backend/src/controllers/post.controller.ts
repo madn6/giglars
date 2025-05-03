@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
 import { MulterRequest } from '../types/MulterRequest';
 import Post from '../models/Post.model';
+import { AuthRequest } from '../middleware/verifyToken'; // Adjust the import path as necessary
 
-export const createPost = async (req: Request, res: Response) => {
+export const createPost = async (req: AuthRequest, res: Response): Promise<void> => {
 	const { content, feeling, isAnonymous, postDate, scheduledDate, tags, visibility, gifs } =
 		req.body;
 
@@ -11,6 +12,8 @@ export const createPost = async (req: Request, res: Response) => {
 
 	const tagsArray = Array.isArray(tags) ? tags : JSON.parse(tags || '[]');
 	const gifsArray = Array.isArray(gifs) ? gifs : JSON.parse(gifs || '[]');
+
+	const userId = req.userId;
 
 	const newPost = new Post({
 		content,
@@ -21,21 +24,26 @@ export const createPost = async (req: Request, res: Response) => {
 		images: imageUrls,
 		tags: tagsArray,
 		visibility,
-		gifs: gifsArray
+		gifs: gifsArray,
+		userId
 	});
 
 	await newPost.save();
 	res.status(201).json({ message: 'Post created successfully', post: newPost });
 };
 
-export const getAllPosts = async (_req: Request, res: Response) => {
-	const posts = await Post.find().sort({ createdAt: -1 }); 
+export const getAllPosts = async (req: AuthRequest, res: Response) => {
+	const posts = await Post.find()
+		.populate('userId', 'displayName profileImage uniqueUsername') // Populate user data
+		.sort({ createdAt: -1 }); // Get posts sorted by creation date
+
 	if (!posts || posts.length === 0) {
-		res.status(404).json('no posts avilable');
+		res.status(404).json({ message: 'No posts available' });
+		return;
 	}
 
 	res.status(200).json({
 		success: true,
-		posts: posts
+		posts
 	});
 };

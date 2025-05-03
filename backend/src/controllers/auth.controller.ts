@@ -1,15 +1,10 @@
-import { Request, Response, RequestHandler, NextFunction } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/Auth.model';
-import { AuthenticatedRequest } from '../middleware/verifyToken';
+import { AuthRequest } from '../middleware/verifyToken'; 
 
-interface RegisterUserBody {
-	username: string;
-	email: string;
-	password: string;
-	confirmPassword: string;
-}
+
 
 const generateTokens = (userId: string) => {
 	const accessToken = jwt.sign({ userId }, process.env.JWT_SECRET as string, {
@@ -23,10 +18,11 @@ const generateTokens = (userId: string) => {
 	return { accessToken, refreshToken };
 };
 
-export const registerUser: RequestHandler<{}, {}, RegisterUserBody> = async (
-	req,
-	res,
-	next
+
+export const registerUser = async (
+	req: AuthRequest,
+	res: Response,
+	next: NextFunction
 ): Promise<void> => {
 	try {
 		const { username, email, password, confirmPassword } = req.body;
@@ -49,15 +45,15 @@ export const registerUser: RequestHandler<{}, {}, RegisterUserBody> = async (
 
 		res.cookie('accessToken', accessToken, {
 			httpOnly: true,
-			sameSite: 'none',
-			secure: true,
+			sameSite: 'lax',
+			secure: false,
 			maxAge: 15 * 60 * 1000
 		});
 
 		res.cookie('refreshToken', refreshToken, {
 			httpOnly: true,
-			sameSite: 'none',
-			secure: true,
+			sameSite: 'lax',
+			secure: false,
 			maxAge: 7 * 24 * 60 * 60 * 1000
 		});
 
@@ -77,10 +73,10 @@ interface LoginUserBody {
 	password: string;
 }
 
-export const loginUser: RequestHandler<{}, {}, LoginUserBody> = async (
-	req,
-	res,
-	next
+export const loginUser = async (
+	req: Request<{}, {}, LoginUserBody>,
+	res: Response,
+	next: NextFunction
 ): Promise<void> => {
 	try {
 		const { email, password } = req.body;
@@ -101,15 +97,15 @@ export const loginUser: RequestHandler<{}, {}, LoginUserBody> = async (
 
 		res.cookie('accessToken', accessToken, {
 			httpOnly: true,
-			sameSite: 'none',
-			secure: true,
+			sameSite: 'lax',
+			secure: false,
 			maxAge: 15 * 60 * 1000
 		});
 
 		res.cookie('refreshToken', refreshToken, {
 			httpOnly: true,
-			sameSite: 'none',
-			secure: true,
+			sameSite: 'lax',
+			secure: false,
 			maxAge: 7 * 24 * 60 * 60 * 1000
 		});
 
@@ -124,7 +120,7 @@ export const loginUser: RequestHandler<{}, {}, LoginUserBody> = async (
 	}
 };
 
-export const checkAuth = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+export const checkAuth = async (req: AuthRequest, res: Response): Promise<void> => {
 	try {
 		if (!req.userId) {
 			res.status(401).json({ error: 'Unauthorized' });
@@ -134,7 +130,6 @@ export const checkAuth = async (req: AuthenticatedRequest, res: Response): Promi
 		const user = await User.findById(req.userId);
 		if (!user) {
 			res.status(404).json({ error: 'User not found' });
-			return;
 			return;
 		}
 
@@ -149,23 +144,23 @@ export const checkAuth = async (req: AuthenticatedRequest, res: Response): Promi
 	}
 };
 
-export const logoutUser: RequestHandler = (req, res) => {
+export const logoutUser = (req: Request, res: Response): void => {
 	res.clearCookie('accessToken', {
 		httpOnly: true,
-		secure: true,
-		sameSite: 'none'
+		secure: false,
+		sameSite: 'lax'
 	});
 
 	res.clearCookie('refreshToken', {
 		httpOnly: true,
-		secure: true,
-		sameSite: 'none'
+		secure: false,
+		sameSite: 'lax'
 	});
 
 	res.status(200).json({ message: 'Logged out' });
 };
 
-export const refreshToken: RequestHandler = async (req, res): Promise<void> => {
+export const refreshToken = async (req: Request, res: Response): Promise<void> => {
 	const token = req.cookies.refreshToken;
 	if (!token) {
 		res.status(401).json({ error: 'No refresh token' });
@@ -183,8 +178,8 @@ export const refreshToken: RequestHandler = async (req, res): Promise<void> => {
 
 		res.cookie('accessToken', newAccessToken, {
 			httpOnly: true,
-			secure: true,
-			sameSite: 'none',
+			secure: false,
+			sameSite: 'lax',
 			maxAge: 15 * 60 * 1000
 		});
 
@@ -195,7 +190,7 @@ export const refreshToken: RequestHandler = async (req, res): Promise<void> => {
 };
 
 export const getUserInfo = async (
-	req: AuthenticatedRequest,
+	req: AuthRequest,
 	res: Response,
 	next: NextFunction
 ): Promise<void> => {
