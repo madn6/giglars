@@ -33,7 +33,7 @@ export const getProfileData = async (req: AuthRequest, res: Response): Promise<v
 	if (!user) {
 		throw new AppError('user not found', 404);
 	}
-	res.status(200).json({ user });
+	res.status(200).json({message:"user data", user });
 };
 
 export const updateProfile = async (req: AuthRequest, res: Response): Promise<void> => {

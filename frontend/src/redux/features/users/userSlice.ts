@@ -38,6 +38,9 @@ export const getProfileData = createAsyncThunk(
 	}
 );
 
+// getProfileData = "Fetch my info from the server when the page opens."
+// updateUser = "Send updated info to the server when I click save."
+
 const userSlice = createSlice({
 	name: 'user',
 	initialState,
