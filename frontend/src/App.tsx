@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
-import {  CreatePost, Home, ProfileSetup, SignIn, SignUp } from './pages';
+import {  CreatePost, Home, ProfileSetup, SignIn, SignUp, UpdateProfile } from './pages';
 import { Navbar } from './components';
 import { checkAuth } from './api/axiosInstance'; 
 import 'react-toastify/dist/ReactToastify.css';
@@ -23,6 +23,7 @@ const AppContent: React.FC = () => {
 				<Route path="/sign-up" element={<SignUp />} />
 				<Route path="/create-post" element={<CreatePost />} />
 				<Route path="/profile-setup" element={<ProfileSetup />} />
+				<Route path="/update-profile" element={<UpdateProfile />} />
 			</Routes>
 		</>
 	);
