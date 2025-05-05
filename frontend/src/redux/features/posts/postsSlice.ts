@@ -1,48 +1,8 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import API from '../../../utils/axios';
+import { Post } from './postsTypes'; // Import the Post type
 
-// Define the Post Type
-export interface Post {
-	_id?: string;
-	profileImage?: string;
-	userName?: string;
-	email?: string;
-	time?: string;
 
-	content?: string;
-	images: string[];
-	feeling: string;
-	tags: string[];
-	gifs: string[];
-	visibility: string;
-	createdAt?: string;
-	updatedAt?: string;
-
-	stats?: {
-		luck: number;
-		comments: number;
-		caps: number;
-		saves: number;
-		shares: number;
-	};
-
-	userId: {
-		profileImage: string;
-		uniqueUsername: string;
-		displayName: string;
-	};
-}
-
-export interface CreatePostPayload {
-	content: string;
-	feeling: string;
-	files: File[];
-	tags: string[];
-	visibility: string;
-	postGif: string[];
-}
-
-// Define the initial state with the correct type
 const initialState: Post[] = []; // This is the initial state (an empty array of posts)
 
 // Async thunk to create a post

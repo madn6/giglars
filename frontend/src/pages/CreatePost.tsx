@@ -1,7 +1,8 @@
 import PostImageUpload from '../components/post/PostImageUpload';
 import { motion } from 'framer-motion';
 import { useDispatch } from 'react-redux';
-import { createPost, CreatePostPayload } from '../redux/features/posts/postsSlice';
+import { createPost, } from '../redux/features/posts/postsSlice';
+import { CreatePostPayload } from '../redux/features/posts/postsTypes';
 import type { AppDispatch } from '../redux/store/store'; 
 
 import {
