@@ -9,13 +9,6 @@ import { Post, setPosts } from '../redux/features/posts/postsSlice';
 const Home: React.FC = () => {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
-	// interface UserData {
-	// 	profileImage: string;
-	// 	displayName: string;
-	// 	uniqueUsername: string;
-	// }
-
-	// const [userData, setUserData] = useState<UserData | null>(null);
 
 	const dispatch = useDispatch();
 	const posts = useSelector((state: RootState) => state.posts);
@@ -51,24 +44,6 @@ const Home: React.FC = () => {
 
 		fetchPosts();
 	}, [dispatch]);
-
-	// useEffect(() => {
-	// 	// Fetch user data on component mount
-	// 	const fetchUserData = async () => {
-	// 		try {
-	// 			const response = await API.get('/api/auth/user-info', {
-	// 				withCredentials: true // Include credentials for authentication
-	// 			}); // Update the URL to your actual endpoint
-	// 			setUserData(response.data); // Store the response in state
-	// 		} catch (error) {
-	// 			console.error('Error fetching user data:', error);
-	// 		}
-	// 	};
-
-	// 	fetchUserData();
-	// }, []);
-
-	// console.log('User Data:', userData); // Log the user data to check if it's being fetched correctly
 
 	return (
 		<div className="flex flex-col  font-inter min-h-screen">

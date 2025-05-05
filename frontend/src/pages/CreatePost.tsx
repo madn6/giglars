@@ -1,5 +1,8 @@
 import PostImageUpload from '../components/post/PostImageUpload';
 import { motion } from 'framer-motion';
+import { useDispatch } from 'react-redux';
+import { createPost, CreatePostPayload } from '../redux/features/posts/postsSlice';
+import type { AppDispatch } from '../redux/store/store'; 
 
 import {
 	PostTextArea,
@@ -12,11 +15,12 @@ import {
 
 import { Editor } from '@tiptap/react';
 import { useRef, useState } from 'react';
-import API from '../utils/axios';
 
 export default function CreatePost() {
 	const [content, setContent] = useState('');
 	const [feeling, setFeeling] = useState<'lucky' | 'unlucky'>('lucky');
+
+	const dispatch = useDispatch<AppDispatch>();
 
 	const [files, setFiles] = useState<File[]>([]);
 	const [previews, setPreviews] = useState<string[]>([]);
@@ -50,31 +54,20 @@ export default function CreatePost() {
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 
-		const formData = new FormData();
+		// Prepare form data
 		const content = editorRef.current?.getHTML() || '';
-		formData.append('content', content);
-		formData.append('feeling', feeling);
-
-		files.forEach((file) => formData.append('files', file));
-		formData.append('tags', JSON.stringify(tags));
-		formData.append('visibility', visibility);
-		formData.append('gifs', JSON.stringify(postGif));
-
-		console.log('form data:', {
+		const formData:CreatePostPayload = {
 			content,
 			feeling,
 			files,
 			tags,
 			visibility,
 			postGif
-		});
+		};
 
+		// Dispatch the createPost async thunk
 		try {
-			const res = await API.post('/api/post/create-post', formData, {
-				withCredentials: true
-			});
-			const data = res.data;
-			console.log(data);
+			dispatch(createPost(formData));
 		} catch (error) {
 			console.error('Failed to create post:', error);
 		}
