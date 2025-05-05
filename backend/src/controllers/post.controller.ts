@@ -5,7 +5,7 @@ import { AuthRequest } from '../middleware/verifyToken';
 import { AppError } from '../utils/AppError';
 
 export const createPost = async (req: AuthRequest, res: Response): Promise<void> => {
-	const { content, feeling, isAnonymous, postDate, scheduledDate, tags, visibility, gifs } =
+	const { content, feeling, isAnonymous, tags, visibility, gifs } =
 		req.body;
 
 	const files = (req as MulterRequest).files;
@@ -20,8 +20,6 @@ export const createPost = async (req: AuthRequest, res: Response): Promise<void>
 		content,
 		feeling,
 		isAnonymous: isAnonymous === 'true',
-		postDate,
-		scheduledDate,
 		images: imageUrls,
 		tags: tagsArray,
 		visibility,

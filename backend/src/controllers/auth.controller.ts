@@ -189,29 +189,3 @@ export const refreshToken = async (req: Request, res: Response): Promise<void> =
 	}
 };
 
-export const getUserInfo = async (
-	req: AuthRequest,
-	res: Response,
-	next: NextFunction
-): Promise<void> => {
-	try {
-		const userId = req.userId;
-
-		const user = await User.findById(userId).select('profileImage displayName uniqueUsername ');
-
-		if (!user) {
-			res.status(404).json({ error: 'User not found' });
-			return; // Returning response here
-		}
-
-		// Sending the response and returning nothing, since the response is a side-effect
-		res.status(200).json({
-			profileImage: user?.profileImage ?? '',
-			displayName: user?.displayName ?? 'N/A',
-			uniqueUsername: user?.uniqueUsername ?? 'N/A'
-		});
-	} catch (error) {
-		console.error(error);
-		res.status(500).json({ error: 'Internal server error' });
-	}
-};
