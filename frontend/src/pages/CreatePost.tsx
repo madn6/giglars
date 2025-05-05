@@ -1,9 +1,9 @@
 import PostImageUpload from '../components/post/PostImageUpload';
 import { motion } from 'framer-motion';
 import { useDispatch } from 'react-redux';
-import { createPost, } from '../redux/features/posts/postsSlice';
-import { CreatePostPayload } from '../redux/features/posts/postsTypes';
-import type { AppDispatch } from '../redux/store/store'; 
+import { createPost } from '../redux/features/posts/postsSlice';
+import { CreatePostPayload } from '../redux/features/posts/postTypes';
+import type { AppDispatch } from '../redux/store/store';
 
 import {
 	PostTextArea,
@@ -57,7 +57,7 @@ export default function CreatePost() {
 
 		// Prepare form data
 		const content = editorRef.current?.getHTML() || '';
-		const formData:CreatePostPayload = {
+		const formData: CreatePostPayload = {
 			content,
 			feeling,
 			files,

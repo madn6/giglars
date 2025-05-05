@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import API from '../../../utils/axios';
-import { Post } from './postsTypes'; // Import the Post type
-
+import { Post } from './postTypes'; // Import the Post type
 
 const initialState: Post[] = []; // This is the initial state (an empty array of posts)
 
