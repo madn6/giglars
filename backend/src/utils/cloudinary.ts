@@ -13,7 +13,7 @@ const postImageStorage = new CloudinaryStorage({
 	cloudinary,
 	params: async (req, file) => ({
 		folder: 'giglars_post_image_uploads',
-		allowed_formats: ['jpg', 'png', 'jpeg', 'gif'],
+		allowed_formats: ['jpg', 'png', 'jpeg', 'gif',"webp"],
 		upload_preset: 'giglars_post_upload_preset'
 	})
 });
@@ -23,7 +23,7 @@ const profileImageStorage = new CloudinaryStorage({
 	cloudinary,
 	params: async (req, file) => ({
 		folder: 'giglars-user-profile',
-		allowed_formats: ['jpg', 'jpeg', 'png'],
+		allowed_formats: ['jpg', 'jpeg', 'png',"webp"],
 		upload_preset: 'giglars-profile-pictures'
 	})
 });
