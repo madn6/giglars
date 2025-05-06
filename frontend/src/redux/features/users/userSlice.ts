@@ -46,13 +46,14 @@ export const updateUserProfileImage = createAsyncThunk(
 			const formData = new FormData();
 			formData.append('profileImage', file);
 
-			const res = await fetch('/api/profile/upload-profile-image', {
-				method: 'POST',
-				body: formData,
-				credentials: 'include'
+			const res = await API.post('/api/profile/upload-profile-image', formData, {
+				withCredentials: true,
+				headers: {
+					'Content-Type': 'multipart/form-data'
+				}
 			});
 
-			const data = await res.json();
+			const data = res.data;
 
 			// Sync to auth slice too
 			dispatch(
@@ -66,7 +67,7 @@ export const updateUserProfileImage = createAsyncThunk(
 
 			return data.user.profileImage;
 		} catch (err) {
-			console.log(err);
+			console.error(err);
 			return rejectWithValue('Failed to update profile image');
 		}
 	}
