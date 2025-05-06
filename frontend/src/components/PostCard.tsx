@@ -1,7 +1,7 @@
 import { PiCloverFill } from 'react-icons/pi';
 import { GiBilledCap } from 'react-icons/gi';
 import { FaRegComment, FaRegBookmark, FaRegShareSquare } from 'react-icons/fa';
-import { Post } from '../redux/features/posts/postsSlice';
+import { Post } from '../redux/features/posts/postTypes';
 import { EllipsisVertical } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 
@@ -20,19 +20,23 @@ export default function PostCard({ post, userData }: PostCardProps) {
 		: 'Unknown';
 
 	return (
-		<div className="container font-inter shadow-2xl text-white -z-10 bg-transparent border border-border p-4 rounded-xl backdrop-blur-2xl">
-			<div className="top__container flex items-center gap-4">
-				<img className="w-10 h-10 rounded-full" src={userData.profileImage} alt="" />
+		<div className="container font-inter bg-secondary shadow-2xl text-white -z-10 border border-border/20  p-3 rounded-xl backdrop-blur-2xl">
+			<div className="top__container flex items-center justify-between gap-4 border border-border/20 p-2 rounded-full ">
+				<div className="rounded-full  flex items-center justify-center border-2 border-border/60 ">
+					<img className="w-8 h-8 rounded-full object-cover " src={userData.profileImage} alt="" />
+				</div>
 				<div className="flex-1">
 					<div className="font-bold">{userData.displayName}</div>
 					<div className="text-sm text-gray">
 						{userData.uniqueUsername} • {timeAgo}
 					</div>
 				</div>
-				<EllipsisVertical className="cursor-pointer" />
+				<div className="">
+					<EllipsisVertical className="cursor-pointer" />
+				</div>
 			</div>
 
-			<div className="post-card">
+			<div className="post-card border border-border/20 p-4 rounded-xl mt-4">
 				{/* Text Content (with inline GIFs inside content HTML) */}
 				{post.content && (
 					<div

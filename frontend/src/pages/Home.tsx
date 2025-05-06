@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store/store';
 import { useEffect, useState } from 'react';
 import API from '../utils/axios';
-import { Post, setPosts } from '../redux/features/posts/postsSlice';
+import { setPosts } from '../redux/features/posts/postsSlice';
+import { Post } from '../redux/features/posts/postTypes';
 
 const Home: React.FC = () => {
 	const [loading, setLoading] = useState(true);
@@ -49,7 +50,7 @@ const Home: React.FC = () => {
 		<div className="flex flex-col  font-inter min-h-screen">
 			{/* Left Sidebar - Fixed on Large Screens, Bottom on Small Screens */}
 			<nav
-				className="bg-[#081420] border-t md:border-l-0 md:border-t md:border-r md:border-b border-border/20 text-white py-5 fixed bottom-0 w-full flex justify-around 
+				className="bg-primary border-t md:border-l-0 md:border-t md:border-r md:border-b border-border/20 text-white py-5 fixed bottom-0 w-full flex justify-around 
                md:w-[120px] md:h-[350px] md:left-0 md:top-1/2 md:-translate-y-1/2 md:flex-col md:space-y-6 
                rounded-tl-xl rounded-tr-xl rounded-bl-none rounded-br-none
                md:rounded-tl-none md:rounded-bl-none md:rounded-tr-xl md:rounded-br-xl"

@@ -52,29 +52,29 @@ const UserMenu = ({ isLoggedIn, user }: UserMenuProps) => {
 		<div className="relative" ref={menuRef}>
 			<img
 				onClick={() => setOpen((prev) => !prev)}
-				className="w-9 h-9 rounded-full cursor-pointer shadow-md hover:shadow-lg"
+				className="w-9 h-9 rounded-full cursor-pointer object-cover shadow-md hover:shadow-lg"
 				src={user.image}
 				alt={user.name}
 			/>
 			{open && (
-				<div className="absolute text-white right-0 mt-2 w-48 bg-primary border border-border rounded-lg shadow-lg z-50 p-2">
+				<div className="absolute text-white right-0 mt-2 w-48 bg-secondary border border-border/20 rounded-lg shadow-2xl z-50 p-2">
 					<div className="flex flex-col">
 						{/* Header */}
-						<div className="border-b border-border pb-1 mb-2">
+						<div className="border-b border-border/20 pb-1 mb-2">
 							<p className="text-sm px-3 font-medium">{user.name}</p>
 							<p className="text-xs px-3 mb-1 truncate">{user.email}</p>
 						</div>
 						{/* Menu Links */}
 						<div className="flex flex-col space-y-1">
-							<Link to="/update-profile" onClick={()=>setOpen(false)} className="block px-3 py-2 rounded hover:bg-[#081522] text-sm">
+							<Link to="/update-profile" onClick={()=>setOpen(false)} className="block px-3 py-2 rounded hover:bg-gray text-sm">
 								Profile
 							</Link>
-							<Link to="/profile-settings" onClick={()=>setOpen(false)}  className="block px-3 py-2 rounded hover:bg-[#0B1C2C] text-sm">
+							<Link to="/profile-settings" onClick={()=>setOpen(false)}  className="block px-3 py-2 rounded hover:bg-gray text-sm">
 								Settings
 							</Link>
 							<button
 								onClick={handleLogout}
-								className="text-left cursor-pointer text-sm text-red-500 hover:bg-[#111111] px-3 py-2 rounded"
+								className="text-left cursor-pointer text-sm text-red-500 hover:bg-[#] px-3 py-2 rounded"
 							>
 								Logout
 							</button>

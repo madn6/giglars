@@ -81,20 +81,23 @@ export default function UpdateProfile() {
 			<div className="w-full max-w-xs px-4">
 				<h2 className="text-center text-xl font-semibold text-white">Edit Profile</h2>
 				<div className="flex items-center justify-center mt-2">
-					<div className="relative w-24 h-24">
+					<div className="relative w-40 h-40">
 						{profileImage && (
 							<img
 								src={profileImage}
 								alt="Profile"
-								className="w-24 h-24 rounded-full object-cover border-2 border-gray-300 cursor-pointer"
+								className="w-40 h-40 rounded-full object-cover border-5 border-border/40 cursor-pointer"
 								onClick={() => document.getElementById('profileImageInput')?.click()}
 							/>
 						)}
 
 						{/* Pencil Icon - Decorative Only */}
-						<div className="absolute bottom-1 right-1 bg-white rounded-full p-1 shadow">
-							<Pencil size={16} />
-						</div>
+						<button
+							onClick={() => document.getElementById('profileImageInput')?.click()}
+							className="absolute bottom-1 right-1 bg-secondary border text-white p-2 border-border/40 rounded-full shadow"
+						>
+							<Pencil size={20} />
+						</button>
 
 						{/* Hidden File Input */}
 						<input
@@ -113,14 +116,14 @@ export default function UpdateProfile() {
 						type="text"
 						value={formData.displayName}
 						onChange={handleChange}
-						className="w-full text-white p-3 rounded-lg border border-border placeholder:text-white focus:outline-none"
+						className="w-full text-white p-3 rounded-lg border border-border/40 placeholder:text-white focus:outline-none"
 					/>
 					<input
 						name="email"
 						type="email"
 						value={formData.email}
 						onChange={handleChange}
-						className="w-full text-white p-3 rounded-lg border border-border placeholder:text-white focus:outline-none"
+						className="w-full text-white p-3 rounded-lg border border-border/40 placeholder:text-white focus:outline-none"
 					/>
 					<input
 						name="password"
@@ -128,12 +131,12 @@ export default function UpdateProfile() {
 						onChange={handleChange}
 						placeholder="New Password (optional)"
 						type="password"
-						className="w-full text-white p-3 rounded-lg border border-border placeholder:text-white focus:outline-none"
+						className="w-full text-white p-3 rounded-lg border border-border/40 placeholder:text-white focus:outline-none"
 					/>
 					<button
 						type="submit"
 						disabled={loading}
-						className="w-full text-white p-3 rounded-lg border border-border placeholder:text-white focus:outline-none"
+						className="w-full text-white p-3 rounded-lg border border-border/40 placeholder:text-white focus:outline-none"
 					>
 						{loading ? 'Updating...' : 'Update'}
 					</button>

@@ -7,14 +7,16 @@
 @import 'tailwindcss';
 
 @theme {
-	--color-primary: #0b1c2c;
-	--color-secondary: #ffffff1a;
+	--color-primary: #0f1014;
+	--color-secondary: #15181f;
 	--color-border: #ffffff4d;
-	--color-gray: #d1d5db;
+	--color-gray: #212227;
 	--color-unlucky: #d72323;
 	--color-white: #ffffff;
 	--color-highlight: #007a5e;
 }
+
+
 /* src/styles/global.css */
 button{
 	cursor: pointer;
@@ -28,7 +30,7 @@ button{
 }
 
 html {
-	background-color: #0b1c2c;
+	background-color: #0F1014;
 }
 
 .font-romantic {

@@ -20,7 +20,7 @@ const Navbar: React.FC = () => {
 
 	return (
 		<div className="">
-			<nav className="fixed bg-[#081420]  border-b border-border/20  top-0 left-0 w-full z-50 font-poppins text-white shadow-2xl  ">
+			<nav className="fixed border-b border-border/20 bg-[#0f1014]  top-0 left-0 w-full z-50 font-poppins text-white shadow-2xl  ">
 				<ul className="flex items-center justify-between px-5 py-4">
 					<li className="font-rangile text-2xl ">
 						<Link to="/">Giglars</Link>
