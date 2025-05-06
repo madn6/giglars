@@ -1,3 +1,4 @@
+// utils/cloudinary.ts
 import { v2 as cloudinary } from 'cloudinary';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
 
@@ -7,18 +8,24 @@ cloudinary.config({
 	api_secret: process.env.CLOUDINARY_API_SECRET!
 });
 
-// Updated Cloudinary storage with upload_preset
-const storage = new CloudinaryStorage({
+// Storage for post images
+const postImageStorage = new CloudinaryStorage({
 	cloudinary,
-	params: {
-		folder: 'giglars_post_image_uploads', // The folder where the images will be stored
-		allowed_formats: ['jpg', 'png', 'jpeg', 'gif'], // Allowed image formats
-		upload_preset: 'giglars_post_upload_preset' // Your upload preset (make sure it matches the preset you created in Cloudinary)
-	} as {
-		folder: string;
-		allowed_formats: string[];
-		upload_preset: string; // Include upload_preset in the params
-	}
+	params: async (req, file) => ({
+		folder: 'giglars_post_image_uploads',
+		allowed_formats: ['jpg', 'png', 'jpeg', 'gif'],
+		upload_preset: 'giglars_post_upload_preset'
+	})
 });
 
-export { cloudinary, storage };
+// Storage for profile pictures
+const profileImageStorage = new CloudinaryStorage({
+	cloudinary,
+	params: async (req, file) => ({
+		folder: 'giglars-user-profile',
+		allowed_formats: ['jpg', 'jpeg', 'png'],
+		upload_preset: 'giglars-profile-pictures'
+	})
+});
+
+export { cloudinary, postImageStorage, profileImageStorage };

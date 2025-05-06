@@ -33,7 +33,7 @@ export const getProfileData = async (req: AuthRequest, res: Response): Promise<v
 	if (!user) {
 		throw new AppError('user not found', 404);
 	}
-	res.status(200).json({message:"user data", user });
+	res.status(200).json({ message: 'user data', user });
 };
 
 export const updateProfile = async (req: AuthRequest, res: Response): Promise<void> => {
@@ -59,4 +59,26 @@ export const deleteAccount = async (req: AuthRequest, res: Response): Promise<vo
 	await User.findByIdAndDelete(req.userId);
 	res.clearCookie('jwt', { httpOnly: true, secure: false, sameSite: 'lax' });
 	res.status(200).json({ message: 'Account deleted' });
+};
+
+export const updateProfileImage = async (req: AuthRequest, res: Response): Promise<void> => {
+	if (!req.file) {
+		res.status(400).json({ message: 'No file uploaded' });
+		return;
+	}
+
+	const imageUrl = req.file.path // Multer + Cloudinary 
+	const userId = req.userId;
+
+	const user = await User.findByIdAndUpdate(
+		userId,
+		{ profileImage: imageUrl },
+		{ new: true }
+	).select('-password -__v');
+
+	if (!user) {
+		throw new AppError('user not found', 404);
+	}
+
+	res.status(200).json({ message: 'Profile image updated', user, imageUrl });
 };

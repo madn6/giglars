@@ -12,9 +12,6 @@ const UserMenu = ({ isLoggedIn, user }: UserMenuProps) => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
-	console.log('isLoggedIn:', isLoggedIn);
-	console.log('user:', user);
-
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
 			if (menuRef.current && !menuRef.current.contains(event.target as Node)) {

@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { UserState } from './userTypes';
 import API from '../../../utils/axios';
+import { login } from '../auth/authSlice';
 
 const initialState: UserState = {
 	displayName: '',
@@ -38,6 +39,39 @@ export const getProfileData = createAsyncThunk(
 	}
 );
 
+export const updateUserProfileImage = createAsyncThunk(
+	'user/updateProfileImage',
+	async (file: File, { dispatch, rejectWithValue }) => {
+		try {
+			const formData = new FormData();
+			formData.append('profileImage', file);
+
+			const res = await fetch('/api/profile/upload-profile-image', {
+				method: 'POST',
+				body: formData,
+				credentials: 'include'
+			});
+
+			const data = await res.json();
+
+			// Sync to auth slice too
+			dispatch(
+				login({
+					userid: data.user._id,
+					profileImage: data.user.profileImage,
+					email: data.user.email,
+					name: data.user.name
+				})
+			);
+
+			return data.user.profileImage;
+		} catch (err) {
+			console.log(err);
+			return rejectWithValue('Failed to update profile image');
+		}
+	}
+);
+
 // getProfileData = "Fetch my info from the server when the page opens."
 // updateUser = "Send updated info to the server when I click save."
 
@@ -56,6 +90,7 @@ const userSlice = createSlice({
 	},
 	extraReducers: (builder) => {
 		builder
+			//updateUser
 			.addCase(updateUser.pending, (state) => {
 				state.loading = true;
 				state.error = null;
@@ -69,7 +104,7 @@ const userSlice = createSlice({
 				state.loading = false;
 				state.error = action.payload as string;
 			})
-
+			//getProfileData
 			.addCase(getProfileData.pending, (state) => {
 				state.loading = true;
 				state.error = null;

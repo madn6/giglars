@@ -1,5 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { updateUser, clearUser, getProfileData } from '../redux/features/users/userSlice';
+import { Pencil } from 'lucide-react';
+
+import {
+	updateUser,
+	clearUser,
+	getProfileData,
+	updateUserProfileImage
+} from '../redux/features/users/userSlice';
 import { logout } from '../redux/features/auth/authSlice';
 import { useEffect, useState } from 'react';
 import API from '../utils/axios';
@@ -11,6 +18,7 @@ export default function UpdateProfile() {
 	const email = useSelector((state: RootState) => state.users.email);
 	const loading = useSelector((state: RootState) => state.users.loading);
 	const error = useSelector((state: RootState) => state.users.error);
+	const profileImage = useSelector((state: RootState) => state.auth.profileImage);
 
 	const dispatch = useDispatch<AppDispatch>();
 	const navigate = useNavigate();
@@ -61,10 +69,44 @@ export default function UpdateProfile() {
 		navigate('/log-in');
 	};
 
+	const handleProfileImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const file = e.target.files?.[0];
+		if (!file) return;
+
+		dispatch(updateUserProfileImage(file));
+	};
+
 	return (
 		<div className="h-screen flex items-center font-inter justify-center">
 			<div className="w-full max-w-xs px-4">
-				<h2 className="text-center text-xl font-semibold text-white">Profile</h2>
+				<h2 className="text-center text-xl font-semibold text-white">Edit Profile</h2>
+				<div className="flex items-center justify-center mt-2">
+					<div className="relative w-24 h-24">
+						{profileImage && (
+							<img
+								src={profileImage}
+								alt="Profile"
+								className="w-24 h-24 rounded-full object-cover border-2 border-gray-300 cursor-pointer"
+								onClick={() => document.getElementById('profileImageInput')?.click()}
+							/>
+						)}
+
+						{/* Pencil Icon - Decorative Only */}
+						<div className="absolute bottom-1 right-1 bg-white rounded-full p-1 shadow">
+							<Pencil size={16} />
+						</div>
+
+						{/* Hidden File Input */}
+						<input
+							type="file"
+							id="profileImageInput"
+							accept="image/*"
+							onChange={handleProfileImageUpload}
+							className="hidden"
+						/>
+					</div>
+				</div>
+
 				<form onSubmit={handleUpdate} className="flex flex-col gap-3 mt-4">
 					<input
 						name="displayName"
