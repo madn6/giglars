@@ -85,8 +85,8 @@ const Home: React.FC = () => {
 			</nav>
 
 			{/* Main Content - Fully Centered and Scrollable */}
-			<div className="flex-1 pt-20 pb-[100px] md:pl-[140px] px-2 md:px-6 mx-auto w-full max-w-3xl overflow-y-auto">
-				<div className="max-w-2xl w-full">
+			<div className="flex-1 min-h-0 pt-20 pb-22 md:pl-[140px] px-2 md:px-6 mx-auto w-full max-w-3xl overflow-y-auto">
+			<div className="max-w-2xl w-full">
 					<div className="grid grid-cols-1 gap-4">
 						{loading ? (
 							<p className="text-center text-white">Loading posts...</p>

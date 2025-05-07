@@ -6,6 +6,7 @@ import { FaRegComment, FaRegBookmark, FaRegShareSquare } from 'react-icons/fa';
 import { Post } from '../redux/features/posts/postTypes';
 import { EllipsisVertical } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
+import ReadMoreText from './post/ReadMoreText';
 
 type PostCardProps = {
 	post: Post;
@@ -56,10 +57,9 @@ export default function PostCard({ post, userData }: PostCardProps) {
 			<div className="post-card border border-border/20 p-4 rounded-xl mt-4 bg-secondary text-white shadow-lg">
 				{/* Text Content */}
 				{post.content && (
-					<div
-						className="mt-2 text-base leading-relaxed text-white/90 line-clamp-4"
-						dangerouslySetInnerHTML={{ __html: removeImagesFromHtml(post.content) }}
-					/>
+					<div className="text-base leading-relaxed text-white/90 line-clamp-4">
+						<ReadMoreText html={removeImagesFromHtml(post.content)} charLimit={150} />
+					</div>
 				)}
 
 				{/* Media Section */}
@@ -68,7 +68,7 @@ export default function PostCard({ post, userData }: PostCardProps) {
 						{allMedia.length > 1 ? (
 							<Splide
 								options={{
-									type: "loop",
+									type: 'loop',
 									perPage: 1,
 									pagination: true,
 									arrows: true,
@@ -95,7 +95,7 @@ export default function PostCard({ post, userData }: PostCardProps) {
 													'https://via.placeholder.com/600x400?text=Image+Not+Found';
 											}}
 											className="w-full object-cover rounded-md"
-											/>
+										/>
 									</SplideSlide>
 								))}
 							</Splide>

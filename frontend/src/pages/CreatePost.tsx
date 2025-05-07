@@ -31,7 +31,7 @@ export default function CreatePost() {
 	const [postGif, setPostGif] = useState<string[]>([]);
 
 	const editorRef = useRef<Editor | null>(null);
-	const maxLength = 300;
+	const maxLength = 600;
 	const maxImage = 4;
 	const maxReached = files.length + postGif.length >= maxImage;
 
