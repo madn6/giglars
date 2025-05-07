@@ -42,7 +42,7 @@ export default function CreatePost() {
 		const totalSlotsLeft = maxImage - postGif.length - files.length;
 
 		const availableFiles = selectedFiles.slice(0, totalSlotsLeft);
-		const updatedFiles = [...files, ...availableFiles].slice(0, totalSlotsLeft);
+		const updatedFiles = [...files, ...availableFiles];
 
 		setFiles(updatedFiles);
 		setPreviews(updatedFiles.map((file) => URL.createObjectURL(file)));
