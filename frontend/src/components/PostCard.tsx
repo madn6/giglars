@@ -21,13 +21,13 @@ export default function PostCard({ post, userData }: PostCardProps) {
 
 	return (
 		<div className="container font-inter bg-secondary shadow-2xl text-white -z-10 border border-border/20  p-3 rounded-xl backdrop-blur-2xl">
-			<div className="top__container flex items-center justify-between gap-4 border border-border/20 p-2 rounded-full ">
-				<div className="rounded-full  flex items-center justify-center border-2 border-border/60 ">
+			<div className="top__container flex items-center justify-between gap-4 border border-border/20 p-2 rounded-xl ">
+				<div className="rounded-full flex items-center justify-center border-2 border-border/60 ">
 					<img className="w-8 h-8 rounded-full object-cover " src={userData.profileImage} alt="" />
 				</div>
 				<div className="flex-1">
 					<div className="font-bold">{userData.displayName}</div>
-					<div className="text-sm text-gray">
+					<div className="text-sm text-gray-text">
 						{userData.uniqueUsername} • {timeAgo}
 					</div>
 				</div>
