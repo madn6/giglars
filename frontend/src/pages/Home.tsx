@@ -50,7 +50,7 @@ const Home: React.FC = () => {
 		<div className="flex flex-col  font-inter min-h-screen">
 			{/* Left Sidebar - Fixed on Large Screens, Bottom on Small Screens */}
 			<nav
-				className="bg-primary border-t md:border-l-0 md:border-t md:border-r z-50 :border-b border-border/20 text-white py-5 fixed bottom-0 w-full flex justify-around 
+				className="bg-primary border-t md:border-l-0 md:border-t md:border-b md:border-r z-50 :border-b border-border/20 text-white py-5 fixed bottom-0 w-full flex justify-around 
                md:w-[120px] md:h-[350px] md:left-0 md:top-1/2 md:-translate-y-1/2 md:flex-col md:space-y-6 
                rounded-tl-xl rounded-tr-xl rounded-bl-none rounded-br-none
                md:rounded-tl-none md:rounded-bl-none md:rounded-tr-xl md:rounded-br-xl"
@@ -85,8 +85,8 @@ const Home: React.FC = () => {
 			</nav>
 
 			{/* Main Content - Fully Centered and Scrollable */}
-			<div className="flex-1 min-h-0 pt-20 pb-22 md:pl-[140px] px-2 md:px-6 mx-auto w-full max-w-3xl overflow-y-auto">
-			<div className="max-w-2xl w-full">
+			<div className="flex-1 h-full pt-20 pb-22 md:pl-[140px] px-2 md:px-6 mx-auto w-full max-w-3xl overflow-y-auto">
+				<div className="max-w-2xl w-full">
 					<div className="grid grid-cols-1 gap-4">
 						{loading ? (
 							<p className="text-center text-white">Loading posts...</p>

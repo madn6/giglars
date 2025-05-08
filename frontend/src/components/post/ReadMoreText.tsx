@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 
 interface ReadMoreHTMLProps {
 	html: string;
@@ -8,26 +8,30 @@ interface ReadMoreHTMLProps {
 const ReadMoreHTML = ({ html, charLimit = 150 }: ReadMoreHTMLProps) => {
 	const [isExpanded, setIsExpanded] = useState(false);
 	const [plainText, setPlainText] = useState('');
-	const shouldTruncate = useRef(false); // Only set once
 
 	useEffect(() => {
 		const tempEl = document.createElement('div');
 		tempEl.innerHTML = html;
 		const text = tempEl.textContent || tempEl.innerText || '';
 		setPlainText(text);
+	}, [html]);
 
-		if (text.length > charLimit) {
-			shouldTruncate.current = true;
-		}
-	}, [html, charLimit]);
+	const shouldTruncate = plainText.length > charLimit;
 
 	return (
-		<div>
-			<div className="transition-all text-white/90">
-				{isExpanded ? plainText : `${plainText.slice(0, charLimit)}...`}
+		<div className="text-white">
+			<div>
+				{isExpanded || !shouldTruncate ? (
+					<div dangerouslySetInnerHTML={{ __html: html }} />
+				) : (
+					<div>
+						{plainText.slice(0, charLimit)}
+						{'...'}
+					</div>
+				)}
 			</div>
 
-			{shouldTruncate.current && (
+			{shouldTruncate && (
 				<button
 					onClick={() => setIsExpanded((prev) => !prev)}
 					className="mt-2 text-sm text-blue-400 hover:underline"

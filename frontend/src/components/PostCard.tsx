@@ -1,5 +1,5 @@
+import '@splidejs/react-splide/css';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
-import '@splidejs/splide/dist/css/splide.min.css';
 import { PiCloverFill } from 'react-icons/pi';
 import { GiBilledCap } from 'react-icons/gi';
 import { FaRegComment, FaRegBookmark, FaRegShareSquare } from 'react-icons/fa';
@@ -57,18 +57,18 @@ export default function PostCard({ post, userData }: PostCardProps) {
 			<div className="post-card border border-border/20 p-4 rounded-xl mt-4 bg-secondary text-white shadow-lg">
 				{/* Text Content */}
 				{post.content && (
-					<div className="text-base leading-relaxed text-white/90 line-clamp-4">
+					<div className="text-base leading-relaxed">
 						<ReadMoreText html={removeImagesFromHtml(post.content)} charLimit={150} />
 					</div>
 				)}
 
 				{/* Media Section */}
 				{allMedia.length > 0 && (
-					<div className="mt-4 rounded-md">
+					<div className="mt-4  rounded-md">
 						{allMedia.length > 1 ? (
 							<Splide
 								options={{
-									type: 'loop',
+									type: 'slide',
 									perPage: 1,
 									pagination: true,
 									arrows: true,
@@ -83,7 +83,7 @@ export default function PostCard({ post, userData }: PostCardProps) {
 									}
 								}}
 								aria-label="Post media carousel"
-								className="rounded-md"
+								className="rounded-md splide"
 							>
 								{allMedia.map((src, index) => (
 									<SplideSlide key={index}>
@@ -92,9 +92,9 @@ export default function PostCard({ post, userData }: PostCardProps) {
 											alt={`Post media ${index + 1}`}
 											onError={(e) => {
 												e.currentTarget.src =
-													'https://via.placeholder.com/600x400?text=Image+Not+Found';
+													'https://salonlfc.com/wp-content/uploads/2018/01/image-not-found-scaled.png';
 											}}
-											className="w-full object-cover rounded-md"
+											className="w-full h-full   object-contain rounded-md"
 										/>
 									</SplideSlide>
 								))}
@@ -104,7 +104,8 @@ export default function PostCard({ post, userData }: PostCardProps) {
 								src={allMedia[0]}
 								alt="Post Media"
 								onError={(e) => {
-									e.currentTarget.src = 'https://via.placeholder.com/600x400?text=Image+Not+Found';
+									e.currentTarget.src =
+										'https://salonlfc.com/wp-content/uploads/2018/01/image-not-found-scaled.png';
 								}}
 								className="w-full h-64 sm:h-80 object-cover rounded-md"
 							/>

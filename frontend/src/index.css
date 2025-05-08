@@ -11,18 +11,16 @@
 	--color-secondary: #15181f;
 	--color-border: #ffffff4d;
 	--color-gray: #212227;
-	--color-gray-text:#ffffff99;
+	--color-gray-text: #ffffff99;
 	--color-unlucky: #d72323;
 	--color-white: #ffffff;
 	--color-highlight: #007a5e;
 }
 
-
 /* src/styles/global.css */
-button{
+button {
 	cursor: pointer;
 }
-
 
 /* TipTap default styles */
 .ProseMirror {
@@ -31,7 +29,7 @@ button{
 }
 
 html {
-	background-color: #0F1014;
+	background-color: #0f1014;
 }
 
 .font-romantic {
@@ -121,6 +119,20 @@ html {
 	grid-template-rows: repeat(auto-fill, minmax(30px, 1fr));
 }
 
+/* splide */
 
+/* Override Splide default pagination button styles */
+.splide .splide__pagination__page {
+	width: 8px !important;
+	height: 8px !important;
+	background-color: var(--color-gray-text) !important;
+	opacity: 1 !important;
+	border-radius: 9999px !important;
+	border: #252525 0.5px solid !important;
+	margin: 0 6px !important;
+	transition: background-color 0.3s ease !important;
+}
 
-
+.splide .splide__pagination__page.is-active {
+	background-color:var(--color-primary) !important; 
+}
