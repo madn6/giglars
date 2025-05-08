@@ -32,7 +32,6 @@ export default function PostCard({ post, userData }: PostCardProps) {
 		) || [])
 	];
 
-	console.log('📸 allMedia:', allMedia);
 	return (
 		<div className="container font-inter bg-secondary shadow-2xl text-white border  border-border/20 p-3 rounded-xl backdrop-blur-2xl">
 			<div className="top__container flex items-center justify-between gap-4 border border-border/20 p-2 rounded-xl  ">
@@ -49,12 +48,35 @@ export default function PostCard({ post, userData }: PostCardProps) {
 						{userData.uniqueUsername} • {timeAgo}
 					</div>
 				</div>
+				{post && (
+					<div
+						className={`text-xs focus:ring-0 outline-none border font-poppins p-1 px-3 rounded-lg ${
+							post.feeling === 'lucky'
+								? 'text-white border-green-700 bg-green-900 '
+								: 'text-white border-red-600 bg-red-900 '
+						}`}
+					>
+						{post.feeling === 'lucky' ? 'Lucky' : 'Unlucky'}
+					</div>
+				)}
 				<div>
 					<EllipsisVertical className="cursor-pointer" />
 				</div>
 			</div>
 
 			<div className="post-card border border-border/20 p-4 rounded-xl mt-4 bg-secondary text-white shadow-lg">
+				{post.tags && (
+					<div className="flex flex-wrap gap-2 mb-2 cursor-pointer text-sm">
+						{post.tags.map((tag, index) => (
+							<span
+								key={index}
+								className="bg-accent text-black text-xs font-semibold px-2 py-1 rounded-full"
+							>
+								{tag}
+							</span>
+						))}
+					</div>
+				)}
 				{/* Text Content */}
 				{post.content && (
 					<div className="text-base leading-relaxed">
