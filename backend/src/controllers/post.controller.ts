@@ -5,8 +5,7 @@ import { AuthRequest } from '../middleware/verifyToken';
 import { AppError } from '../utils/AppError';
 
 export const createPost = async (req: AuthRequest, res: Response): Promise<void> => {
-	const { content, feeling, isAnonymous, tags, visibility, gifs } =
-		req.body;
+	const { content, feeling, tags, visibility, gifs } = req.body;
 
 	const files = (req as MulterRequest).files;
 	const imageUrls = files?.map((file) => (file as any).path) || [];
@@ -19,7 +18,6 @@ export const createPost = async (req: AuthRequest, res: Response): Promise<void>
 	const newPost = new Post({
 		content,
 		feeling,
-		isAnonymous: isAnonymous === 'true',
 		images: imageUrls,
 		tags: tagsArray,
 		visibility,
@@ -31,10 +29,18 @@ export const createPost = async (req: AuthRequest, res: Response): Promise<void>
 	res.status(201).json({ message: 'Post created successfully', post: newPost });
 };
 
-export const getAllPosts = async (req: AuthRequest, res: Response) => {
-	const posts = await Post.find()
-		.populate('userId', 'displayName profileImage uniqueUsername') // Populate user data
-		.sort({ createdAt: -1 }); // Get posts sorted by creation date
+export const getAllPosts = async (req: Request, res: Response) => {
+	const { feeling } = req.query; // Get the "feeling" query parameter
+
+	let filter = {}; // Start with an empty filter
+	if (feeling && feeling !== 'all') {
+		filter = { feeling }; // If feeling is provided, filter posts by feeling
+	}
+
+	// Fetch posts with the feeling filter (if provided)
+	const posts = await Post.find(filter)
+		.populate('userId', 'displayName profileImage uniqueUsername')
+		.sort({ createdAt: -1 }); // Sort posts by creation date
 
 	if (!posts || posts.length === 0) {
 		throw new AppError('No posts found', 404);

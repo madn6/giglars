@@ -3,14 +3,24 @@ import { GiDogHouse } from 'react-icons/gi';
 import { PiCloverFill } from 'react-icons/pi';
 import { MdOutlineAddCircle } from 'react-icons/md';
 import { BiSearchAlt } from 'react-icons/bi';
+import { JSX } from 'react';
 
-const navItems = [
-	{ to: '/', icon: <GiDogHouse size={24} />, match: '/' },
-	{ to: '/lucky', icon: <PiCloverFill size={24} />, match: '/lucky' },
+interface HomeNavigationsProps {
+	feelingFilter: (feeling: 'lucky' | 'unlucky' | 'all') => void;
+}
+
+const navItems: {
+	to: string;
+	icon: JSX.Element;
+	match: string;
+	feeling: 'lucky' | 'unlucky' | 'all';
+}[] = [
+	{ to: '/', icon: <GiDogHouse size={24} />, match: '/', feeling: 'all' },
+	{ to: '/lucky', icon: <PiCloverFill size={24} />, match: '/lucky', feeling: 'lucky' },
 	{
 		to: '/unlucky',
 		icon: (
-			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24}>
 				<path
 					fill="currentColor"
 					fillRule="evenodd"
@@ -19,15 +29,20 @@ const navItems = [
 				/>
 			</svg>
 		),
-		match: '/unlucky'
+		match: '/unlucky',
+		feeling: 'unlucky'
 	},
-	{ to: '/create-post', icon: <MdOutlineAddCircle size={24} />, match: '/create-post' },
-	{ to: '/search', icon: <BiSearchAlt size={24} />, match: '/search' }
+	{
+		to: '/create-post',
+		icon: <MdOutlineAddCircle size={24} />,
+		match: '/create-post',
+		feeling: 'all'
+	},
+	{ to: '/search', icon: <BiSearchAlt size={24} />, match: '/search', feeling: 'all' }
 ];
 
-const Navbar = () => {
-	const location = useLocation();
-	const pathname = location.pathname;
+const HomeNavigations: React.FC<HomeNavigationsProps> = ({ feelingFilter }) => {
+	const { pathname } = useLocation();
 
 	return (
 		<nav
@@ -37,10 +52,20 @@ const Navbar = () => {
          md:rounded-tl-none md:rounded-bl-none md:rounded-tr-xl md:rounded-br-xl"
 		>
 			<ul className="flex w-full justify-around md:flex-col md:w-auto md:items-center md:space-y-6">
-				{navItems.map(({ to, icon, match }, idx) => (
+				{navItems.map(({ to, icon, feeling }, idx) => (
 					<li key={idx}>
-						<Link to={to} className={`${pathname === match ? 'text-yellow-400' : ''}`}>
-							<span className="inline-block transition-transform duration-200 hover:scale-110">
+						<Link
+							to={to}
+							className={`rounded-lg p-2 flex items-center justify-center transition-all duration-200 ${
+								pathname === to ? 'bg-secondary' : ''
+							}`}
+							onClick={() => feelingFilter(feeling)}
+						>
+							<span
+								className={`inline-block transition-transform duration-200 hover:scale-110 ${
+									pathname === to ? 'text-accent' : 'text-white'
+								}`}
+							>
 								{icon}
 							</span>
 						</Link>
@@ -51,4 +76,4 @@ const Navbar = () => {
 	);
 };
 
-export default Navbar;
+export default HomeNavigations;

@@ -23,7 +23,7 @@ const Navbar: React.FC = () => {
 			<nav className="fixed border-b border-border/20 bg-[#0f1014]  top-0 left-0 w-full z-50 font-poppins text-white shadow-2xl  ">
 				<ul className="flex items-center justify-between px-5 py-4">
 					<li className="font-rangile text-2xl ">
-						<Link to="/" className='text-yellow-400'>Giglars</Link>
+						<Link to="/" className='text-accent'>Giglars</Link>
 					</li>
 
 					<div className="">
@@ -35,7 +35,7 @@ const Navbar: React.FC = () => {
 					<UserMenu
 						isLoggedIn={isLoggedIn}
 						user={{
-							image: profileImage || '',
+							image: profileImage || '',       
 							email: email || '',
 							name: name || ''
 						}}

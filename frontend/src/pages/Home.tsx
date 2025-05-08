@@ -8,20 +8,26 @@ import { Post } from '../redux/features/posts/postTypes';
 
 import { HomeNavigations } from '../components';
 
-const Home: React.FC = () => {
+type HomeProps = {
+	filter?: 'lucky' | 'unlucky' | 'all';
+};
+
+const Home: React.FC<HomeProps> = ({ filter = 'all' }) => {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
+	const [feeling, setFeeling] = useState<'lucky' | 'unlucky' | 'all'>(filter);
 
 	const dispatch = useDispatch();
 	const posts = useSelector((state: RootState) => state.posts);
 
 	console.log('posts', posts);
 
-
 	useEffect(() => {
 		const fetchPosts = async () => {
 			try {
-				const res = await API.get('/api/post/get-all-posts');
+				const res = await API.get('/api/post/get-all-posts', {
+					params: { feeling: feeling === 'all' ? undefined : feeling }
+				});
 				console.log('PostCard received post:', res.data);
 				dispatch(
 					setPosts(
@@ -46,11 +52,15 @@ const Home: React.FC = () => {
 		};
 
 		fetchPosts();
-	}, [dispatch]);
+	}, [dispatch, feeling]);
+
+	const handleFeelingFilter = (selectedFeeling: 'lucky' | 'unlucky' | 'all') => {
+		setFeeling(selectedFeeling);
+	};
 
 	return (
 		<div className="flex flex-col  font-inter min-h-screen">
-			<HomeNavigations />
+			<HomeNavigations feelingFilter={handleFeelingFilter} />
 			{/* Main Content - Fully Centered and Scrollable */}
 			<div className="flex-1 h-full pt-20 pb-22 md:pl-[140px] px-2 md:px-6 mx-auto w-full max-w-3xl overflow-y-auto">
 				<div className="max-w-2xl w-full">

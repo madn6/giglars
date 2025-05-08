@@ -18,7 +18,9 @@ const AppContent: React.FC = () => {
 		<>
 			<Navbar />
 			<Routes>
-				<Route path="/" element={<Home />} />
+				<Route path="/" element={<Home filter="all" />} />
+				<Route path="/lucky" element={<Home filter="lucky" />} />
+				<Route path="/unlucky" element={<Home filter="unlucky" />} />{' '}
 				<Route path="/sign-in" element={<SignIn />} />
 				<Route path="/sign-up" element={<SignUp />} />
 				<Route path="/create-post" element={<CreatePost />} />
