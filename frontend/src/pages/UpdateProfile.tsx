@@ -86,7 +86,7 @@ export default function UpdateProfile() {
 							<img
 								src={profileImage}
 								alt="Profile"
-								className="w-40 h-40 rounded-full object-cover border-5 border-border/40 cursor-pointer"
+								className="w-40 h-40 rounded-full object-cover border-5 border-accent cursor-pointer"
 								onClick={() => document.getElementById('profileImageInput')?.click()}
 							/>
 						)}

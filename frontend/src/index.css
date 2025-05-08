@@ -11,7 +11,7 @@
 	--color-secondary: #15181f;
 	--color-border: #ffffff4d;
 	--color-gray: #212227;
-	--color-accent: #FFD700;
+	--color-accent: #ffd700;
 	--color-gray-text: #ffffff99;
 	--color-unlucky: #d72323;
 	--color-white: #ffffff;
@@ -135,5 +135,22 @@ html {
 }
 
 .splide .splide__pagination__page.is-active {
-	background-color:var(--color-primary) !important; 
+	background-color: var(--color-primary) !important;
+}
+
+/* user online blink */
+@keyframes pulse-smooth {
+	0%,
+	100% {
+		opacity: 0.3;
+		transform: scale(1);
+	}
+	50% {
+		opacity: 1;
+		transform: scale(1.2);
+	}
+}
+
+.animate-pulse-smooth {
+	animation: pulse-smooth 2.5s ease-in-out infinite;
 }

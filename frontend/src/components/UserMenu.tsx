@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { logout } from '../redux/features/auth/authSlice';
 import API from '../utils/axios';
 import { toast } from 'react-toastify';
+import { GoDotFill } from 'react-icons/go';
 
 const UserMenu = ({ isLoggedIn, user }: UserMenuProps) => {
 	const [open, setOpen] = useState(false);
@@ -39,8 +40,8 @@ const UserMenu = ({ isLoggedIn, user }: UserMenuProps) => {
 	if (!isLoggedIn) {
 		return (
 			<div className=" px-1 flex items-center gap-1">
-				<img src="/images/entry.png" className='w-8'  alt="" />
-				<Link to="/sign-in" onClick={()=>setOpen(false)} className="text-white hover:underline">
+				<img src="/images/entry.png" className="w-8" alt="" />
+				<Link to="/sign-in" onClick={() => setOpen(false)} className="text-white hover:underline">
 					Sign In
 				</Link>
 			</div>
@@ -50,12 +51,19 @@ const UserMenu = ({ isLoggedIn, user }: UserMenuProps) => {
 	// ✅ If logged in, show profile image and dropdown
 	return (
 		<div className="relative" ref={menuRef}>
-			<img
-				onClick={() => setOpen((prev) => !prev)}
-				className="w-9 h-9 rounded-full cursor-pointer object-cover shadow-md hover:shadow-lg"
-				src={user.image}
-				alt={user.name}
-			/>
+			{isLoggedIn && (
+				<div className="">
+					<img
+						onClick={() => setOpen((prev) => !prev)}
+						className="w-9 h-9 relative border-2  border-white/70 rounded-full cursor-pointer object-cover shadow-md hover:shadow-lg"
+						src={user.image}
+						alt={user.name}
+					/>
+					<span className="absolute bottom-4 left-5 text-5xl  text-green-600">
+						<GoDotFill size={24} className="stroke-1 stroke-black/50" />
+					</span>
+				</div>
+			)}
 			{open && (
 				<div className="absolute text-white right-0 mt-2 w-48 bg-secondary border border-border/20 rounded-lg shadow-2xl z-50 p-2">
 					<div className="flex flex-col">
@@ -66,10 +74,18 @@ const UserMenu = ({ isLoggedIn, user }: UserMenuProps) => {
 						</div>
 						{/* Menu Links */}
 						<div className="flex flex-col space-y-1">
-							<Link to="/update-profile" onClick={()=>setOpen(false)} className="block px-3 py-2 rounded hover:bg-gray text-sm">
+							<Link
+								to="/update-profile"
+								onClick={() => setOpen(false)}
+								className="block px-3 py-2 rounded hover:bg-gray text-sm"
+							>
 								Profile
 							</Link>
-							<Link to="/profile-settings" onClick={()=>setOpen(false)}  className="block px-3 py-2 rounded hover:bg-gray text-sm">
+							<Link
+								to="/profile-settings"
+								onClick={() => setOpen(false)}
+								className="block px-3 py-2 rounded hover:bg-gray text-sm"
+							>
 								Settings
 							</Link>
 							<button
