@@ -10,6 +10,8 @@ import { CgProfile } from 'react-icons/cg';
 import { IoSettingsSharp } from 'react-icons/io5';
 import { FiLogOut } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
+import { MdDashboard } from 'react-icons/md';
+import { ChevronDown } from 'lucide-react';
 
 const UserMenu = ({ isLoggedIn, user }: UserMenuProps) => {
 	const [open, setOpen] = useState(false);
@@ -56,16 +58,28 @@ const UserMenu = ({ isLoggedIn, user }: UserMenuProps) => {
 	return (
 		<div className="relative" ref={menuRef}>
 			{isLoggedIn && (
-				<div className="">
-					<img
-						onClick={() => setOpen((prev) => !prev)}
-						className="w-9 h-9 relative border-2  border-white/70 rounded-full cursor-pointer object-cover shadow-md hover:shadow-lg"
-						src={user.image}
-						alt={user.name}
-					/>
-					<span className="absolute bottom-4 left-6 text-5xl  text-green-600">
-						<GoDotFill size={20} className="stroke-1 stroke-black/50" />
-					</span>
+				<div className="flex items-center gap-1">
+					<div className="cursor-pointer">
+						<img
+							onClick={() => setOpen((prev) => !prev)}
+							className="w-10 h-10 relative border-2  border-white/70 rounded-full  object-cover shadow-md hover:shadow-lg"
+							src={user.image}
+							alt={user.name}
+						/>
+						<span className="absolute bottom-6 left-6 text-5xl  text-green-600">
+							<GoDotFill size={20} className="stroke-1 stroke-black/50" />
+						</span>
+					</div>
+					<div className="cursor-pointer" onClick={() => setOpen((prev) => !prev)}>	
+						<motion.div
+							initial={false}
+							animate={{ rotate: open ? 180 : 0 }}
+							transition={{ duration: 0.2 }}
+							className=""
+						>
+							<ChevronDown size={20} />
+						</motion.div>
+					</div>
 				</div>
 			)}
 			<AnimatePresence>
@@ -80,7 +94,7 @@ const UserMenu = ({ isLoggedIn, user }: UserMenuProps) => {
 						<div className="flex flex-col">
 							{/* Header */}
 							<div className="border-b border-border/20 pb-1 mb-2">
-								<p className="text-base px-3 font-medium">{user.name}</p>
+								<p className="text-base px-3 font-medium text-accent">{user.name}</p>
 								<p className="text-sm px-3 mb-1 truncate">{user.email}</p>
 							</div>
 							{/* Menu Links */}
@@ -89,6 +103,13 @@ const UserMenu = ({ isLoggedIn, user }: UserMenuProps) => {
 									<div className="flex items-center gap-2 px-2 py-2 rounded hover:bg-gray text-base">
 										<CgProfile size={20} />
 										Profile
+									</div>
+								</Link>
+
+								<Link to="/dashborad" onClick={() => setOpen(false)}>
+									<div className="flex items-center gap-2 px-2 py-2 rounded hover:bg-gray text-base">
+										<MdDashboard size={20} />
+										Dashboard
 									</div>
 								</Link>
 
