@@ -52,8 +52,8 @@ export default function PostCard({ post, userData }: PostCardProps) {
 					<div
 						className={`text-xs focus:ring-0 outline-none border font-poppins p-1 px-3 rounded-lg ${
 							post.feeling === 'lucky'
-								? 'text-white border-green-700 bg-green-900 '
-								: 'text-white border-red-700 bg-red-900 '
+								? 'bg-green-500/20 border border-green-500 text-green-200'
+								: 'bg-orange-500/20 border border-orange-500 text-orange-200'
 						}`}
 					>
 						{post.feeling === 'lucky' ? 'Lucky' : 'Unlucky'}

@@ -1,9 +1,8 @@
-import React from 'react'
 
 type Props = {}
 
 export default function EventGrid({}: Props) {
   return (
-    <div>EventGrid</div>
+    <div className='p-12 rounded-md border-border border'>EventGrid</div>
   )
 }

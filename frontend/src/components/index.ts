@@ -1,5 +1,3 @@
-
-export { default as Header } from './Header';
 export { default as Navbar } from './Navbar';
 export { default as PostCard } from './PostCard';
 export { default as PostTextArea } from './post/PostTextArea';
@@ -15,10 +13,14 @@ export { default as StepOneFields } from './profile/StepOneFields';
 export { default as StepTwoFields } from './profile/StepTwoFields';
 export { default as ProfileLocation } from './profile/ProfileLocation';
 export { default as ReadMoreText } from './post/ReadMoreText';
-export { default as HomeNavigations } from './HomeNavigations';   
+export { default as HomeNavigations } from './HomeNavigations';
 export { default as WelcomeGreet } from './dashboard/welcome/WelcomeGreet';
 export { default as EventGrid } from './dashboard/trackerGrid/EventGrid';
 export { default as EventGraph } from './dashboard/eventGraph/EventGraph';
-export { default as EventChart } from './dashboard/eventChart/EventChart'
-export { default as TodayEntryForm } from './dashboard/entryForm/TodayEntryForm'
-export{default as RecentEvents} from './dashboard/eventFeed/RecentEvents'
+export { default as EventChart } from './dashboard/eventChart/EventChart';
+export { default as TodayEntryForm } from './dashboard/entryForm/TodayEntryForm';
+export { default as RecentEvents } from './dashboard/eventFeed/RecentEvents';
+export { default as LuckyEvents } from './dashboard/welcome/LuckyEvents';
+export { default as UnluckyEvents } from './dashboard/welcome/UnluckyEvents';
+export { default as TrackingStreak } from './dashboard/welcome/TrackingStreak';
+export { default as LuckiestDay } from './dashboard/welcome/LuckiestDay';
