@@ -1,9 +1,14 @@
-import React from 'react'
+import { EventChart, EventGraph, EventGrid, RecentEvents, TodayEntryForm, WelcomeGreet } from "../components";
 
-type Props = {}
-
-export default function Dashborad({}: Props) {
-  return (
-    <div className='flex items-center justify-center h-screen text-6xl text-white'>Dashborad</div>
-  )
+export default function Dashborad() {
+	return (
+		<div className="flex items-center justify-center h-screen text-6xl text-white">
+      <WelcomeGreet />
+      <EventGrid />
+      <EventGraph />
+      <EventChart />
+      <TodayEntryForm />
+      <RecentEvents />
+		</div>
+	);
 }
