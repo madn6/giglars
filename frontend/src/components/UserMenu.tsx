@@ -85,24 +85,26 @@ const UserMenu = ({ isLoggedIn, user }: UserMenuProps) => {
 							</div>
 							{/* Menu Links */}
 							<div className="flex flex-col space-y-1">
-								<div className="flex items-center gap-2 px-2 py-2 rounded hover:bg-gray text-base">
-									<CgProfile size={20} />
-									<Link to="/update-profile" onClick={() => setOpen(false)}>
+								<Link to="/update-profile" onClick={() => setOpen(false)}>
+									<div className="flex items-center gap-2 px-2 py-2 rounded hover:bg-gray text-base">
+										<CgProfile size={20} />
 										Profile
-									</Link>
-								</div>
-								<div className="flex items-center gap-2 px-2 py-2 rounded hover:bg-gray text-base">
-									<IoSettingsSharp size={20} />
-									<Link to="/profile-settings" onClick={() => setOpen(false)}>
+									</div>
+								</Link>
+
+								<Link to="/profile-settings" onClick={() => setOpen(false)}>
+									<div className="flex items-center gap-2 px-2 py-2 rounded hover:bg-gray text-base">
+										<IoSettingsSharp size={20} />
 										Settings
-									</Link>
-								</div>
-								<div className="flex items-center gap-2 px-2 py-2 rounded hover:bg-gray text-base">
-									<FiLogOut size={20} />
-									<button onClick={handleLogout} className="cursor-pointer text-base text-red-500">
+									</div>
+								</Link>
+
+								<button onClick={handleLogout} className="cursor-pointer text-base text-red-500">
+									<div className="flex items-center gap-2 px-2 py-2 rounded hover:bg-gray text-base">
+										<FiLogOut size={20} />
 										Logout
-									</button>
-								</div>
+									</div>
+								</button>
 							</div>
 						</div>
 					</motion.div>
