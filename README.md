@@ -7,6 +7,8 @@
 - **State Management:** Redux  
 - **Authentication:** JWT  
 
+![App Preview](/frontend/public/images/app-preview.png)
+
 ## 📌 Features (Completed & Upcoming)  
 - ✅ User authentication (Signup/Login)  
 - ✅ Basic UI setup  

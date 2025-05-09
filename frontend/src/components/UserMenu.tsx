@@ -6,6 +6,10 @@ import { logout } from '../redux/features/auth/authSlice';
 import API from '../utils/axios';
 import { toast } from 'react-toastify';
 import { GoDotFill } from 'react-icons/go';
+import { CgProfile } from 'react-icons/cg';
+import { IoSettingsSharp } from 'react-icons/io5';
+import { FiLogOut } from 'react-icons/fi';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const UserMenu = ({ isLoggedIn, user }: UserMenuProps) => {
 	const [open, setOpen] = useState(false);
@@ -59,45 +63,51 @@ const UserMenu = ({ isLoggedIn, user }: UserMenuProps) => {
 						src={user.image}
 						alt={user.name}
 					/>
-					<span className="absolute bottom-4 left-5 text-5xl  text-green-600">
-						<GoDotFill size={24} className="stroke-1 stroke-black/50" />
+					<span className="absolute bottom-4 left-6 text-5xl  text-green-600">
+						<GoDotFill size={20} className="stroke-1 stroke-black/50" />
 					</span>
 				</div>
 			)}
-			{open && (
-				<div className="absolute text-white right-0 mt-2 w-48 bg-secondary border border-border/20 rounded-lg shadow-2xl z-50 p-2">
-					<div className="flex flex-col">
-						{/* Header */}
-						<div className="border-b border-border/20 pb-1 mb-2">
-							<p className="text-sm px-3 font-medium">{user.name}</p>
-							<p className="text-xs px-3 mb-1 truncate">{user.email}</p>
+			<AnimatePresence>
+				{open && (
+					<motion.div
+						initial={{ opacity: 0, scale: 0.5, originX: 1, originY: 0 }}
+						animate={{ opacity: 1, scale: 1 }}
+						exit={{ opacity: 0, scale: 0.5 }}
+						transition={{ duration: 0.2 }}
+						className="absolute text-white right-0 mt-2 w-48 bg-secondary border border-border/20 rounded-lg shadow-2xl z-50 p-2"
+					>
+						<div className="flex flex-col">
+							{/* Header */}
+							<div className="border-b border-border/20 pb-1 mb-2">
+								<p className="text-base px-3 font-medium">{user.name}</p>
+								<p className="text-sm px-3 mb-1 truncate">{user.email}</p>
+							</div>
+							{/* Menu Links */}
+							<div className="flex flex-col space-y-1">
+								<div className="flex items-center gap-2 px-2 py-2 rounded hover:bg-gray text-base">
+									<CgProfile size={20} />
+									<Link to="/update-profile" onClick={() => setOpen(false)}>
+										Profile
+									</Link>
+								</div>
+								<div className="flex items-center gap-2 px-2 py-2 rounded hover:bg-gray text-base">
+									<IoSettingsSharp size={20} />
+									<Link to="/profile-settings" onClick={() => setOpen(false)}>
+										Settings
+									</Link>
+								</div>
+								<div className="flex items-center gap-2 px-2 py-2 rounded hover:bg-gray text-base">
+									<FiLogOut size={20} />
+									<button onClick={handleLogout} className="cursor-pointer text-base text-red-500">
+										Logout
+									</button>
+								</div>
+							</div>
 						</div>
-						{/* Menu Links */}
-						<div className="flex flex-col space-y-1">
-							<Link
-								to="/update-profile"
-								onClick={() => setOpen(false)}
-								className="block px-3 py-2 rounded hover:bg-gray text-sm"
-							>
-								Profile
-							</Link>
-							<Link
-								to="/profile-settings"
-								onClick={() => setOpen(false)}
-								className="block px-3 py-2 rounded hover:bg-gray text-sm"
-							>
-								Settings
-							</Link>
-							<button
-								onClick={handleLogout}
-								className="text-left cursor-pointer text-sm text-red-500 hover:bg-[#] px-3 py-2 rounded"
-							>
-								Logout
-							</button>
-						</div>
-					</div>
-				</div>
-			)}
+					</motion.div>
+				)}
+			</AnimatePresence>
 		</div>
 	);
 };
