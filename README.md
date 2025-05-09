@@ -10,10 +10,12 @@
 ![App Preview](/frontend/public/images/app-preview.png)
 
 ## 📌 Features (Completed & Upcoming)  
-- ✅ User authentication (Signup/Login)  
-- ✅ Basic UI setup  
-- 🚧 Feature X (In Progress)  
-- ⏳ Upcoming: Feature Y, Feature Z  
+- ✅ User authentication (Signup/Login/logout/deleteAccount)  
+- ✅ UI setup  
+- ✅ Create Post  
+- ✅ Update Profile
+- 🚧 Dashboard(In Progress)  
+- ⏳ Upcoming: Feature X, Feature Y
 
 ## 📢 Updates  
 Stay tuned for updates! More features coming soon.  
