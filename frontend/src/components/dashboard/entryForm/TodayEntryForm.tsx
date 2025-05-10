@@ -1,14 +1,23 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Check, Send, AlertTriangle } from 'lucide-react';
 import { PiCloverFill } from 'react-icons/pi';
 import { BsFillEmojiNeutralFill } from 'react-icons/bs';
 
+import {
+	submitTodayEntry,
+	resetTodayEventState
+} from '../../../redux/features/todayEntry/todayEntrySlice';
+import { toast } from 'react-toastify';
+
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+
 const TodayEntryForm: React.FC = () => {
+	const dispatch = useAppDispatch();
+	const { loading, error, success } = useAppSelector((state) => state.todayEntry);
+
 	const [type, setType] = useState<'lucky' | 'unlucky' | 'neutral' | null>(null);
 	const [description, setDescription] = useState('');
 	const [intensity, setIntensity] = useState(2);
-	const [error, setError] = useState('');
-	const [success, setSuccess] = useState(false);
 
 	const resetForm = () => {
 		setType(null);
@@ -16,31 +25,41 @@ const TodayEntryForm: React.FC = () => {
 		setIntensity(2);
 	};
 
-	const handleSubmit = useCallback(
-		(e: React.FormEvent) => {
-			e.preventDefault();
-			setError('');
+	const handleSubmit = useCallback(() => {
+		if (!type) {
+			toast.error('Please select whether your day was lucky, unlucky, or neutral');
+			return;
+		}
 
-			if (!type) {
-				setError('Please select whether your day was lucky or unlucky');
-				return;
-			}
+		if ((type === 'lucky' || type === 'unlucky') && !description.trim()) {
+			toast.error('Please provide a description of your day');
+			return;
+		}
 
-			if ((type === 'lucky' || type === 'unlucky') && !description.trim()) {
-				setError('Please provide a description of your day');
-				return;
-			}
+		dispatch(
+			submitTodayEntry({
+				type,
+				description,
+				intensity
+			})
+		);
 
-			// Placeholder: replace with actual API call
-			console.log({ type, description, intensity });
+		resetForm();
+	}, [type, description, intensity, dispatch]);
 
-			setSuccess(true);
-			setTimeout(() => setSuccess(false), 3000);
+	useEffect(() => {
+		if (success) {
+			toast.success('Today’s entry saved!');
+			dispatch(resetTodayEventState());
+		}
+	}, [success, dispatch]);
 
-			resetForm();
-		},
-		[type, description, intensity]
-	);
+	useEffect(() => {
+		if (error) {
+			toast.error(error);
+			dispatch(resetTodayEventState());
+		}
+	}, [error, dispatch]);
 
 	return (
 		<div className="bg-secondary font-inter backdrop-blur-md rounded-xl p-6 border border-border/20">
@@ -175,8 +194,13 @@ const TodayEntryForm: React.FC = () => {
 					type="submit"
 					className="w-full py-3 px-4 bg-accent/80 hover:bg-accent text-black font-semibold rounded-lg flex items-center justify-center transition-colors duration-200"
 				>
-					<Send className="mr-2" size={18} />
-					Save Entry
+					{loading ? (
+						'Saving...'
+					) : (
+						<>
+							<Send className="mr-2" size={18} /> Save Entry
+						</>
+					)}
 				</button>
 			</form>
 		</div>

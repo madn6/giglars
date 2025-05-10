@@ -4,10 +4,8 @@ import cors from 'cors';
 import connectDB from './config/db';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
-import authRoutes from './routes/auth.routes';
-import postRoutes from "./routes/post.routes";
+import { authRoutes,dashboardRoutes,postRoutes,profileRoutes } from './routes';
 import { errorHandler } from './middleware/errrorHandler';
-import profileRoutes from './routes/profile.routes';
 
 const app = express();
 
@@ -44,6 +42,7 @@ app.get('/', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/post', postRoutes);
 app.use('/api/profile', profileRoutes);
+app.use('/api/dashboard',dashboardRoutes)
 
 // Connect to database and start server
 const PORT: number = parseInt(process.env.PORT || '5000', 10);
