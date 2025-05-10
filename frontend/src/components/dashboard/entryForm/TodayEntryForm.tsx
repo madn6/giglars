@@ -1,9 +1,10 @@
 import React, { useCallback, useState } from 'react';
-import { Check,Send, AlertTriangle } from 'lucide-react';
+import { Check, Send, AlertTriangle } from 'lucide-react';
 import { PiCloverFill } from 'react-icons/pi';
+import { BsFillEmojiNeutralFill } from 'react-icons/bs';
 
 const TodayEntryForm: React.FC = () => {
-	const [type, setType] = useState<'lucky' | 'unlucky' | null>(null);
+	const [type, setType] = useState<'lucky' | 'unlucky' | 'neutral' | null>(null);
 	const [description, setDescription] = useState('');
 	const [intensity, setIntensity] = useState(2);
 	const [error, setError] = useState('');
@@ -25,7 +26,7 @@ const TodayEntryForm: React.FC = () => {
 				return;
 			}
 
-			if (!description.trim()) {
+			if ((type === 'lucky' || type === 'unlucky') && !description.trim()) {
 				setError('Please provide a description of your day');
 				return;
 			}
@@ -52,8 +53,8 @@ const TodayEntryForm: React.FC = () => {
 					<div className="flex space-x-4">
 						<button
 							type="button"
-							onClick={() => setType('lucky')}
-							className={`flex-1 py-3 px-4 rounded-lg flex items-center justify-center transition-all duration-200 ${
+							onClick={() => setType(type === 'lucky' ? null : 'lucky')}
+							className={`flex-1 md:py-3 md:px-4 py-2 px-2 rounded-lg flex items-center justify-center transition-all duration-200 ${
 								type === 'lucky'
 									? 'bg-green-500/20 border border-green-500 text-green-200'
 									: 'bg-gray border border-border/20 text-gray-text '
@@ -64,8 +65,8 @@ const TodayEntryForm: React.FC = () => {
 						</button>
 						<button
 							type="button"
-							onClick={() => setType('unlucky')}
-							className={`flex-1 py-3 px-4 rounded-lg flex items-center justify-center transition-all duration-200 ${
+							onClick={() => setType(type === 'unlucky' ? null : 'unlucky')}
+							className={`flex-1 md:py-3 md:px-4 py-2 px-2 rounded-lg flex items-center justify-center transition-all duration-200 ${
 								type === 'unlucky'
 									? ' bg-orange-500/20 border border-orange-500 text-orange-200'
 									: 'bg-gray border border-border/20 text-gray-text '
@@ -83,23 +84,37 @@ const TodayEntryForm: React.FC = () => {
 							</div>
 							Unlucky
 						</button>
+						<button
+							type="button"
+							onClick={() => setType(type === 'neutral' ? null : 'neutral')}
+							className={`flex-1 md:py-3 md:px-4 py-2 px-2 rounded-lg flex items-center justify-center transition-all duration-200 ${
+								type === 'neutral'
+									? 'bg-blue-500/20 border border-blue-500 text-blue-200'
+									: 'bg-gray border border-border/20 text-gray-text'
+							}`}
+						>
+							<BsFillEmojiNeutralFill className="mr-1" size={18} />
+							Neutral
+						</button>
 					</div>
 				</div>
 
 				{/* Description */}
-				<div className="mb-6">
-					<label className="block text-gray-text  font-medium mb-2">What happened?</label>
-					<textarea
-						value={description}
-						onChange={(e) => setDescription(e.target.value)}
-						rows={3}
-						className="w-full bg-gray border text-white border-border/20 focus:ring-0 outline-none rounded-lg p-3 resize-none"
-						placeholder="Describe your lucky or unlucky event..."
-					/>
-				</div>
+				{type !== 'neutral' && (
+					<div className="mb-6">
+						<label className="block text-gray-text font-medium mb-2">What happened?</label>
+						<textarea
+							value={description}
+							onChange={(e) => setDescription(e.target.value)}
+							rows={3}
+							className="w-full bg-gray border text-white border-border/20 focus:ring-0 outline-none rounded-lg p-3 resize-none"
+							placeholder="Describe your lucky or unlucky event..."
+						/>
+					</div>
+				)}
 
 				{/* Intensity */}
-				{type && (
+				{type === 'lucky' || type === 'unlucky' ? (
 					<div className="mb-6 flex items-center justify-center flex-col">
 						<label className=" text-gray-text font-medium  mb-2">How intense was it?</label>
 						<div className="flex gap-3">
@@ -130,11 +145,7 @@ const TodayEntryForm: React.FC = () => {
 										type="button"
 										onClick={() => setIntensity(index + 1)}
 										className={`px-4 py-2 rounded-lg border transition-all duration-200 text-sm font-medium
-                        ${
-													isActive
-														? activeColor
-														: 'bg-gray border-border/20 text-gray-text'
-												}
+                        ${isActive ? activeColor : 'bg-gray border-border/20 text-gray-text'}
                `}
 									>
 										{labels[type][index]}
@@ -143,7 +154,7 @@ const TodayEntryForm: React.FC = () => {
 							})}
 						</div>
 					</div>
-				)}
+				) : null}
 
 				{/* Error or Success Messages */}
 				{error && (
