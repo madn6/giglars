@@ -6,11 +6,16 @@ import { MoodEntry } from '../models/Dashborad.model';
 export const createMoodEntry = async (req: AuthRequest, res: Response): Promise<void> => {
 	const { type, intensity, description } = req.body;
 
-	if (!type || !intensity || !description) {
-		throw new AppError('all fields are required', 400);
+	if (!type) {
+		throw new AppError('Type is required', 400);
 	}
+
+	if ((type === 'lucky' || type === 'unlucky') && (!description || !intensity)) {
+		throw new AppError('Description and intensity are required for lucky/unlucky days', 400);
+	}
+
 	const userId = req.userId;
-	
+
 	if (!userId) {
 		throw new AppError('not authorized', 400);
 	}

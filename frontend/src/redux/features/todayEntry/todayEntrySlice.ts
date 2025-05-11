@@ -15,7 +15,10 @@ export const submitTodayEntry = createAsyncThunk(
 		{ rejectWithValue }
 	) => {
 		try {
-			await API.post('/api/dashboard/new-entry', formData);
+			await API.post('/api/dashboard/new-entry', formData, {
+				withCredentials:true
+			});
+			console.log('form data',formData)
 		} catch (err) {
 			console.log(err);
 			return rejectWithValue('something went wrong');

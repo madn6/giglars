@@ -25,41 +25,45 @@ const TodayEntryForm: React.FC = () => {
 		setIntensity(2);
 	};
 
-	const handleSubmit = useCallback(() => {
-		if (!type) {
-			toast.error('Please select whether your day was lucky, unlucky, or neutral');
-			return;
-		}
+	const handleSubmit = useCallback(
+		async (e: React.FormEvent) => {
+			e.preventDefault();
 
-		if ((type === 'lucky' || type === 'unlucky') && !description.trim()) {
-			toast.error('Please provide a description of your day');
-			return;
-		}
+			if (!type) {
+				toast.error('Please select whether your day was lucky, unlucky, or neutral');
+				return;
+			}
 
-		dispatch(
-			submitTodayEntry({
-				type,
-				description,
-				intensity
-			})
-		);
+			if ((type === 'lucky' || type === 'unlucky') && !description.trim()) {
+				toast.error('Please provide a description of your day');
+				return;
+			}
 
-		resetForm();
-	}, [type, description, intensity, dispatch]);
+			try {
+
+				const payload = {
+					type,
+					description: type === 'neutral' ? '' : description,
+					intensity: type === 'neutral' ? 0 : intensity
+				};
+				await dispatch(submitTodayEntry(payload)).unwrap();
+
+				toast.success("Today's entry saved!");
+				resetForm();
+			} catch (err) {
+				console.error('Submission error:', err);
+				toast.error('Something went wrong. Try again.');
+			}
+		},
+		[type, description, intensity, dispatch]
+	);
 
 	useEffect(() => {
-		if (success) {
-			toast.success('Today’s entry saved!');
+		if (success || error) {
 			dispatch(resetTodayEventState());
 		}
-	}, [success, dispatch]);
+	}, [success, error, dispatch]);
 
-	useEffect(() => {
-		if (error) {
-			toast.error(error);
-			dispatch(resetTodayEventState());
-		}
-	}, [error, dispatch]);
 
 	return (
 		<div className="bg-secondary font-inter backdrop-blur-md rounded-xl p-6 border border-border/20">

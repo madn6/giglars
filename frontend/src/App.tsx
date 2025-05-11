@@ -26,7 +26,7 @@ const AppContent: React.FC = () => {
 				<Route path="/create-post" element={<CreatePost />} />
 				<Route path="/profile-setup" element={<ProfileSetup />} />
 				<Route path="/update-profile" element={<UpdateProfile />} />
-				<Route path="/Dashborad" element={<Dashboard/>} />
+				<Route path="/dashboard" element={<Dashboard/>} />
 			</Routes>
 		</>
 	);

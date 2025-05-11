@@ -106,7 +106,7 @@ const UserMenu = ({ isLoggedIn, user }: UserMenuProps) => {
 									</div>
 								</Link>
 
-								<Link to="/dashborad" onClick={() => setOpen(false)}>
+								<Link to="/dashboard" onClick={() => setOpen(false)}>
 									<div className="flex items-center gap-2 px-2 py-2 rounded hover:bg-gray text-base">
 										<MdDashboard size={20} />
 										Dashboard
