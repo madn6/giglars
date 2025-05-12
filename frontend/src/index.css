@@ -152,3 +152,46 @@ html {
 .animate-pulse-smooth {
 	animation: pulse-smooth 2.5s ease-in-out infinite;
 }
+
+.react-calendar-heatmap text {
+	font-size: 8px !important;
+	fill: var(--color-gray-text); /* Tailwind gray-500 */
+}
+
+.react-calendar-heatmap rect {
+	rx: 2;
+	ry: 2;
+	transition: fill 0.2s ease;
+}
+
+.color-empty {
+	fill: var(--color-secondary) !important; /* Tailwind gray-200 */
+}
+/* .color-empty:hover {
+	stroke:var(--color-gray-text) !important;
+	stroke-width: 1px;
+	cursor: default;
+} */
+
+.color-green1 {
+	fill: rgb(34 197 94); /* green-500 */
+}
+.color-green2 {
+	fill: rgb(21 128 61); /* green-700 */
+}
+.color-green3 {
+	fill: rgb(20 83 45); /* green-900 */
+}
+
+.color-orange1 {
+	fill: rgb(249 115 22); /* orange-500 */
+}
+.color-orange2 {
+	fill: rgb(194 65 12); /* orange-700 */
+}
+.color-orange3 {
+	fill: rgb(124 45 18); /* orange-900 */
+}
+.color-blue {
+	fill: rgb(59 130 246);
+}

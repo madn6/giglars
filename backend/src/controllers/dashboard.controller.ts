@@ -30,3 +30,17 @@ export const createMoodEntry = async (req: AuthRequest, res: Response): Promise<
 
 	res.status(201).json({ message: 'Mood entry saved', entry: newEntry });
 };
+
+export const getMoodEntries = async (req: AuthRequest, res: Response) => {
+	const userId = req.userId;
+	if (!userId) {
+		throw new AppError('not authorized', 400);
+	}
+	try {
+		const entries = await MoodEntry.find({ userId });
+		res.status(200).json(entries);
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ message: 'Failed to fetch entries' });
+	}
+};

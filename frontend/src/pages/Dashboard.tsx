@@ -26,17 +26,17 @@ export default function Dashboard() {
 				</div>
 
 				{/* EventGrid - left side on large screen */}
-				<div className="col-span-1 md:col-span-2 lg:col-span-2">
+				<div className="col-span-1 md:col-span-2 lg:col-span-4">
 					<EventGrid />
 				</div>
 
 				{/* TodayEntryForm - right side on large screen */}
-				<div className="col-span-1 md:col-span-2 lg:col-span-2">
+				<div className="col-span-1 md:col-span-1 lg:col-span-2">
 					<TodayEntryForm />
 				</div>
 
 				{/* RecentEvents - full width */}
-				<div className="col-span-1 md:col-span-2 lg:col-span-4">
+				<div className="col-span-1 md:col-span-1 lg:col-span-2">
 					<RecentEvents />
 				</div>
 

@@ -17,7 +17,7 @@ app.use(errorHandler)
 
 app.use(
 	cors({
-		origin: ['http://localhost:5173', 'http://192.168.64.14:5173'], // Allow frontend origin
+		origin: ['http://localhost:5173', 'http://192.168.143.4:5173'], // Allow frontend origin
 		credentials: true // Allow cookies & authentication headers
 	})
 );
