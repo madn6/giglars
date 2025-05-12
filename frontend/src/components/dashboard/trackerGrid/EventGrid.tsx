@@ -14,14 +14,21 @@ export default function Heatmap() {
 		dispatch(fetchMoodEntries());
 	}, [dispatch]);
 
-	const heatmapValues = entries.map((entry) => {
-		const date = new Date(entry.createdAt).toISOString().split('T')[0];
-		return {
-			date,
-			count: Math.max(1, Math.min(3, entry.intensity ?? 1)),
-			type: entry.type ?? 'neutral'
-		};
-	});
+  const heatmapValues = entries.map((entry) => {
+    // convert to Indian time (IST: UTC+5:30)
+    const istDate = new Date(new Date(entry.createdAt).getTime() + 5.5 * 60 * 60 * 1000);
+    
+    // use this adjusted date to extract YYYY-MM-DD for the heatmap
+    const date = istDate.toISOString().split('T')[0];
+  
+    return {
+      date,
+      count: Math.max(1, Math.min(3, entry.intensity ?? 1)),
+      type: entry.type ?? 'neutral',
+      displayDate: istDate.toLocaleDateString('en-GB'), // for tooltips in dd/mm/yyyy
+    };
+  });
+  
 
 	const today = new Date();
 	const yearAgo = new Date();

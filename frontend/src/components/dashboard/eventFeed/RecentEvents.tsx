@@ -6,22 +6,25 @@ import { Clock, Pencil, Trash2 } from 'lucide-react';
 export default function RecentEvents() {
 	const dispatch = useAppDispatch();
 	const { entries } = useAppSelector((state) => state.moodEntry);
+	console.log(entries);
 
 	useEffect(() => {
 		dispatch(fetchMoodEntries());
 	}, [dispatch]);
 
 	return (
-		<div className="p-6 rounded-xl font-inter bg-secondary text-gray-text min-h-[416px] border border-border/20">
+		<div
+			className={`    p-6 rounded-xl font-inter bg-secondary text-gray-text min-h-[416px] border border-border/20`}
+		>
 			<div className="flex items-center mb-6 gap-1 justify-center">
 				<Clock size={18} />
 				<h2 className="text-xl font-semibold text-white">Recent Events</h2>
 			</div>
 
 			{entries.length === 0 ? (
-				<div className="text-center text-gray-400">No events yet.</div>
+				<div className="text-center text-gray-300">No events yet.</div>
 			) : (
-				<div className="space-y-4 max-h-[400px] overflow-y-auto scrollbar-thin">
+				<div className={`  space-y-4 max-h-[300px]  overflow-y-auto scrollbar-thin `}>
 					{entries
 						.slice()
 						.reverse()
@@ -54,14 +57,30 @@ export default function RecentEvents() {
 													i < entry.intensity ? getColor(entry.type, i) : 'bg-gray'
 												}`}
 											></div>
-									))
+									  ))
 									: null;
 
+							const getCardStyle = (type: string) => {
+								switch (type) {
+									case 'lucky':
+										return 'bg-green-500/10 border border-green-50';
+									case 'unlucky':
+										return 'bg-orange-400/10 border border-orange-400';
+									case 'neutral':
+										return 'bg-blue-400/10 border border-blue-400 ';
+									default:
+										return '';
+								}
+							};
+
 							return (
-								<div key={entry._id} className="border border-border p-4 rounded-xl bg-secondary">
+								<div
+									key={entry._id}
+									className={`  border border-border p-4 rounded-xl ${getCardStyle(entry.type)}`}
+								>
 									<div className="top flex items-center justify-between gap-2">
 										<div className="flex items-center gap-2 text-sm">
-                      <div className="dot bg-white w-2 h-2 rounded-full">{ }</div>
+											<div className="dot bg-white w-2 h-2 rounded-full"></div>
 											<span>{date}</span>
 											<span>{time}</span>
 										</div>
@@ -72,11 +91,16 @@ export default function RecentEvents() {
 									</div>
 
 									<div className="my-3 text-white">{entry.description}</div>
-
-									<div className="bottom flex items-center gap-3 text-sm text-gray-text">
-										<span>Intensity:</span>
-										<div className="flex items-center gap-2">{intensityBars}</div>
-									</div>
+									{entry.type === 'lucky' || entry.type === 'unlucky' ? (
+										<div className="bottom flex items-center gap-3 text-sm text-gray-text">
+											<span>Intensity:</span>
+											<div className="flex items-center gap-2">{intensityBars}</div>
+										</div>
+									) : (
+										<>
+											<div className="">Neutral</div>
+										</>
+									)}
 								</div>
 							);
 						})}
