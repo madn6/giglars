@@ -165,13 +165,8 @@ html {
 }
 
 .color-empty {
-	fill: var(--color-secondary) !important; /* Tailwind gray-200 */
+	fill: var(--color-gray) !important; /* Tailwind gray-200 */
 }
-/* .color-empty:hover {
-	stroke:var(--color-gray-text) !important;
-	stroke-width: 1px;
-	cursor: default;
-} */
 
 .color-green1 {
 	fill: rgb(34 197 94); /* green-500 */
@@ -195,3 +190,10 @@ html {
 .color-blue {
 	fill: rgb(59 130 246);
 }
+
+@layer utilities {
+	.scrollbar-thin::-webkit-scrollbar {
+		height: 6px;
+	}
+}
+
