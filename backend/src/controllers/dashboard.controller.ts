@@ -1,5 +1,5 @@
 import { AuthRequest } from '../middleware/verifyToken';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { AppError } from '../utils/AppError';
 import { MoodEntry } from '../models/Dashborad.model';
 
@@ -40,31 +40,46 @@ export const getMoodEntries = async (req: AuthRequest, res: Response) => {
 	res.status(200).json(entries);
 };
 
-export const updateMoodEntry = async (req: Request, res: Response) => {
-	const { id } = req.params;
-	const updatedData = req.body();
-
-	const updatedEntry = await MoodEntry.findByIdAndUpdate(id, updatedData, {
-		new: true,
-		runValidators: true
-	});
-
-	if (!updatedEntry) {
-		throw new AppError('Mood entry not found', 404);
+export const updateMoodEntry = async (req: AuthRequest, res: Response) => {
+	const userId = req.userId;
+	if (!userId) {
+		throw new AppError('Not authorized', 401);
 	}
 
-	res.status(200).json(updatedEntry);
+	const { id } = req.params;
+	console.log('this is params id ', id)
+	const updatedData = req.body;
+
+	const entry = await MoodEntry.findOneAndUpdate(
+		{ _id: id, userId: userId }, // only update if entry belongs to this user
+		updatedData,
+		{ new: true, runValidators: true }
+	);
+
+	if (!entry) {
+		throw new AppError('Mood entry not found or unauthorized', 404);
+	}
+
+	res.status(200).json(entry);
 };
 
-export const deleteMoodEntry = async(req: Request, res: Response) => {
+
+export const deleteMoodEntry = async (req: AuthRequest, res: Response) => {
+	const userId = req.userId;
+	if (!userId) {
+		throw new AppError('Not authorized', 401);
+	}
 
 	const { id } = req.params;
 
-	const deletedEntry = await MoodEntry.findByIdAndDelete(id);
-	if (!deletedEntry) {
-		throw new AppError('Mood entry not found', 404);
+	const deletedEntry = await MoodEntry.findOneAndDelete({
+		_id: id,
+		userId: userId, // only delete if it belongs to the user
+	});
 
+	if (!deletedEntry) {
+		throw new AppError('Mood entry not found or unauthorized', 404);
 	}
 
-	res.status(200).json({message:"mood entry deleted",id})
+	res.status(200).json({ message: 'Mood entry deleted', id });
 };

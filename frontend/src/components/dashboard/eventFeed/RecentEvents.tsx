@@ -92,11 +92,11 @@ export default function RecentEvents() {
 								return (
 									<div
 										key={entry._id}
-										className="bg-red-600 p-4 rounded-xl text-white border border-red-400"
+										className="bg-red-500/20  p-4 rounded-xl text-white border border-red-500"
 									>
 										<div className="flex items-center mb-2">
-											<AlertTriangle className="mr-2" size={18} />
-											<span className="font-medium">Confirm deletion</span>
+											<AlertTriangle className="mr-2 text-amber-400" size={18} />
+											<span className="font-medium text-amber-200">Confirm deletion</span>
 										</div>
 										<p className="text-sm mb-3">
 											Are you sure you want to delete this event? This action cannot be undone.
@@ -110,7 +110,7 @@ export default function RecentEvents() {
 											</button>
 											<button
 												onClick={() => handleDelete(entry._id)}
-												className="px-3 py-1 bg-white text-red-600 rounded text-sm"
+												className="px-3 py-1 bg-red-600 text-white rounded text-sm"
 											>
 												Delete
 											</button>
@@ -164,7 +164,7 @@ export default function RecentEvents() {
 														description: e.target.value
 													}))
 												}
-												className="bg-gray-800 text-white p-2 rounded w-full"
+												className="bg-gray border border-border/20 resize-none text-white p-3 rounded-md w-full"
 											/>
 
 											<div className="flex gap-3 items-center">
@@ -176,7 +176,7 @@ export default function RecentEvents() {
 															type: e.target.value as "lucky" | "unlucky" | "neutral" | undefined
 														}))
 													}
-													className="bg-gray-700 text-white rounded px-2 py-1"
+													className="bg-gray-700 text-white  rounded px-2 py-1"
 												>
 													<option value="lucky">Lucky</option>
 													<option value="unlucky">Unlucky</option>
@@ -200,7 +200,7 @@ export default function RecentEvents() {
 											<div className="flex justify-end gap-2">
 												<button
 													onClick={() => setEditingEntryId(null)}
-													className="px-3 py-1 text-sm rounded bg-gray-600 text-white"
+													className="px-3 py-1 text-sm rounded bg-gray-700 text-white"
 												>
 													Cancel
 												</button>
