@@ -57,7 +57,6 @@ export const updateMoodEntry = createAsyncThunk(
 	}
 );
 
-
 const moodEntrySlice = createSlice({
 	name: 'moodEntry',
 	initialState,

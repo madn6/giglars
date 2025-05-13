@@ -36,11 +36,35 @@ export const getMoodEntries = async (req: AuthRequest, res: Response) => {
 	if (!userId) {
 		throw new AppError('not authorized', 400);
 	}
-	try {
-		const entries = await MoodEntry.find({ userId });
-		res.status(200).json(entries);
-	} catch (err) {
-		console.error(err);
-		res.status(500).json({ message: 'Failed to fetch entries' });
+	const entries = await MoodEntry.find({ userId });
+	res.status(200).json(entries);
+};
+
+export const updateMoodEntry = async (req: Request, res: Response) => {
+	const { id } = req.params;
+	const updatedData = req.body();
+
+	const updatedEntry = await MoodEntry.findByIdAndUpdate(id, updatedData, {
+		new: true,
+		runValidators: true
+	});
+
+	if (!updatedEntry) {
+		throw new AppError('Mood entry not found', 404);
 	}
+
+	res.status(200).json(updatedEntry);
+};
+
+export const deleteMoodEntry = async(req: Request, res: Response) => {
+
+	const { id } = req.params;
+
+	const deletedEntry = await MoodEntry.findByIdAndDelete(id);
+	if (!deletedEntry) {
+		throw new AppError('Mood entry not found', 404);
+
+	}
+
+	res.status(200).json({message:"mood entry deleted",id})
 };

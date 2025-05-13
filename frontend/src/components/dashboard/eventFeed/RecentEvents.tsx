@@ -10,7 +10,8 @@ import { Clock, Pencil, Trash2, AlertTriangle } from 'lucide-react';
 
 export default function RecentEvents() {
 	const dispatch = useAppDispatch();
-	const { entries } = useAppSelector((state) => state.moodEntry);
+   const { entries } = useAppSelector((state) => state.moodEntry);
+   console.log(entries)
 
 	const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 	const [editingEntryId, setEditingEntryId] = useState<string | null>(null);
@@ -129,7 +130,7 @@ export default function RecentEvents() {
 														: 'bg-gray'
 												}`}
 											></div>
-									  ))
+									))
 									: null;
 
 							return (
