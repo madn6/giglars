@@ -63,11 +63,11 @@ export default function RecentEvents() {
 							const getCardStyle = (type: string) => {
 								switch (type) {
 									case 'lucky':
-										return 'bg-green-500/10 border border-green-50';
+										return 'bg-green-400/20 border border-green-400';
 									case 'unlucky':
-										return 'bg-orange-400/10 border border-orange-400';
+										return 'bg-orange-400/20 border border-orange-400';
 									case 'neutral':
-										return 'bg-blue-400/10 border border-blue-400 ';
+										return 'bg-blue-400/20 border border-blue-400 ';
 									default:
 										return '';
 								}
@@ -76,7 +76,7 @@ export default function RecentEvents() {
 							return (
 								<div
 									key={entry._id}
-									className={`  border border-border p-4 rounded-xl ${getCardStyle(entry.type)}`}
+									className={` shadow-2xl  p-4 rounded-xl ${getCardStyle(entry.type)}`}
 								>
 									<div className="top flex items-center justify-between gap-2">
 										<div className="flex items-center gap-2 text-sm">
@@ -94,11 +94,11 @@ export default function RecentEvents() {
 									{entry.type === 'lucky' || entry.type === 'unlucky' ? (
 										<div className="bottom flex items-center gap-3 text-sm text-gray-text">
 											<span>Intensity:</span>
-											<div className="flex items-center gap-2">{intensityBars}</div>
+											<div className="flex items-center gap-2 ">{intensityBars}</div>
 										</div>
 									) : (
 										<>
-											<div className="">Neutral</div>
+											<div className="text-white">Neutral</div>
 										</>
 									)}
 								</div>

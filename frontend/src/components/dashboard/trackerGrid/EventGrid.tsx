@@ -18,7 +18,7 @@ export default function Heatmap() {
     // convert to Indian time (IST: UTC+5:30)
     const istDate = new Date(new Date(entry.createdAt).getTime() + 5.5 * 60 * 60 * 1000);
     
-    // use this adjusted date to extract YYYY-MM-DD for the heatmap
+    // adjusted date to extract YYYY-MM-DD for the heatmap
     const date = istDate.toISOString().split('T')[0];
   
     return {
@@ -36,7 +36,7 @@ export default function Heatmap() {
 
 	return (
 		<div className="w-full overflow-x-auto ">
-			<div className="min-w-[900px] p-4 border bg-secondary border-border/20 rounded-md h-full  scrollbar-thin ">
+			<div className="min-w-[900px] p-4 border bg-secondary border-border/20 rounded-xl h-full  scrollbar-thin ">
 				<CalendarHeatmap
 					startDate={yearAgo}
 					endDate={today}
