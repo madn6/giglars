@@ -164,10 +164,10 @@ export default function RecentEvents() {
 														description: e.target.value
 													}))
 												}
-												className="bg-gray border border-border/20 resize-none text-white p-3 rounded-md w-full"
+												className="bg-gray focus:outline-none focus:ring-0 border border-border/20 resize-none text-white p-3 rounded-md w-full"
 											/>
 
-											<div className="flex gap-3 items-center">
+											<div className="flex gap-3 custom-select-wrapper items-center">
 												<select
 													value={editedEntry.type ?? 'neutral'}
 													onChange={(e) =>
@@ -176,7 +176,7 @@ export default function RecentEvents() {
 															type: e.target.value as "lucky" | "unlucky" | "neutral" | undefined
 														}))
 													}
-													className="bg-gray-700 text-white  rounded px-2 py-1"
+													className="bg-gray-700 focus:outline-none focus:ring-0  text-white custom-select rounded px-2 py-1"
 												>
 													<option value="lucky">Lucky</option>
 													<option value="unlucky">Unlucky</option>

@@ -47,7 +47,6 @@ export const updateMoodEntry = async (req: AuthRequest, res: Response) => {
 	}
 
 	const { id } = req.params;
-	console.log('this is params id ', id)
 	const updatedData = req.body;
 
 	const entry = await MoodEntry.findOneAndUpdate(
