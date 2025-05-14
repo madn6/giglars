@@ -4,14 +4,16 @@ import { MoodEntry } from '../../../redux/features/moodEntry/moodEntryTypes';
 import {
 	fetchMoodEntries,
 	deleteMoodEntry,
-	updateMoodEntry,
+	updateMoodEntry
 } from '../../../redux/features/moodEntry/moodEntrySlice';
-import { Clock, Pencil, Trash2, AlertTriangle } from 'lucide-react';
+import { Clock, Pencil, Trash2 } from 'lucide-react';
+import IsEditing from './IsEditing';
+import IsDeleting from './isDeleting';
 
 export default function RecentEvents() {
 	const dispatch = useAppDispatch();
-   const { entries } = useAppSelector((state) => state.moodEntry);
-   console.log(entries)
+	const { entries } = useAppSelector((state) => state.moodEntry);
+	console.log(entries);
 
 	const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 	const [editingEntryId, setEditingEntryId] = useState<string | null>(null);
@@ -62,9 +64,9 @@ export default function RecentEvents() {
 
 	return (
 		<div className="p-6 rounded-xl font-inter bg-secondary text-gray-text min-h-[416px] border border-border/20">
-			<div className="flex items-center mb-6 gap-1 justify-center">
-				<Clock size={18} />
-				<h2 className="text-xl font-semibold text-white">Recent Events</h2>
+			<div className="flex items-center mb-6 text-white gap-1 justify-center">
+				<Clock size={20} />
+				<h2 className="text-xl font-semibold ">Recent Events</h2>
 			</div>
 
 			{entries.length === 0 ? (
@@ -90,32 +92,13 @@ export default function RecentEvents() {
 
 							if (isDeleting) {
 								return (
-									<div
-										key={entry._id}
-										className="bg-red-500/20  p-4 rounded-xl text-white border border-red-500"
-									>
-										<div className="flex items-center mb-2">
-											<AlertTriangle className="mr-2 text-amber-400" size={18} />
-											<span className="font-medium text-amber-200">Confirm deletion</span>
-										</div>
-										<p className="text-sm mb-3">
-											Are you sure you want to delete this event? This action cannot be undone.
-										</p>
-										<div className="flex justify-end space-x-2">
-											<button
-												onClick={() => setConfirmDeleteId(null)}
-												className="px-3 py-1 bg-gray-700 text-white rounded text-sm"
-											>
-												Cancel
-											</button>
-											<button
-												onClick={() => handleDelete(entry._id)}
-												className="px-3 py-1 bg-red-600 text-white rounded text-sm"
-											>
-												Delete
-											</button>
-										</div>
-									</div>
+									<>
+										<IsDeleting
+											entry={entry}
+											setConfirmDeleteId={setConfirmDeleteId}
+											handleDelete={handleDelete}
+										/>
+									</>
 								);
 							}
 
@@ -155,63 +138,13 @@ export default function RecentEvents() {
 									</div>
 
 									{isEditing ? (
-										<div className="mt-3 space-y-2">
-											<textarea
-												value={editedEntry.description ?? ''}
-												onChange={(e) =>
-													setEditedEntry((prev) => ({
-														...prev,
-														description: e.target.value
-													}))
-												}
-												className="bg-gray focus:outline-none focus:ring-0 border border-border/20 resize-none text-white p-3 rounded-md w-full"
-											/>
-
-											<div className="flex gap-3 custom-select-wrapper items-center">
-												<select
-													value={editedEntry.type ?? 'neutral'}
-													onChange={(e) =>
-														setEditedEntry((prev) => ({
-															...prev,
-															type: e.target.value as "lucky" | "unlucky" | "neutral" | undefined
-														}))
-													}
-													className="bg-gray-700 focus:outline-none focus:ring-0  text-white custom-select rounded px-2 py-1"
-												>
-													<option value="lucky">Lucky</option>
-													<option value="unlucky">Unlucky</option>
-													<option value="neutral">Neutral</option>
-												</select>
-
-												<input
-													type="range"
-													min={1}
-													max={3}
-													value={editedEntry.intensity ?? 1}
-													onChange={(e) =>
-														setEditedEntry((prev) => ({
-															...prev,
-															intensity: parseInt(e.target.value)
-														}))
-													}
-												/>
-											</div>
-
-											<div className="flex justify-end gap-2">
-												<button
-													onClick={() => setEditingEntryId(null)}
-													className="px-3 py-1 text-sm rounded bg-gray-700 text-white"
-												>
-													Cancel
-												</button>
-												<button
-													onClick={() => handleSave(entry._id)}
-													className="px-3 py-1 text-sm rounded bg-blue-600 text-white"
-												>
-													Save
-												</button>
-											</div>
-										</div>
+										<IsEditing
+											entry={entry}
+											editedEntry={editedEntry}
+											setEditedEntry={setEditedEntry}
+											setEditingEntryId={setEditingEntryId}
+											handleSave={handleSave}
+										/>
 									) : (
 										<div className="my-3 text-white">{entry.description}</div>
 									)}
