@@ -82,6 +82,9 @@ export default function RecentEvents() {
 								day: 'numeric',
 								month: 'short'
 							});
+							const isToday =
+								new Date(entry.createdAt).toDateString() === new Date().toDateString();
+
 							const time = dateObj.toLocaleTimeString('en-US', {
 								hour: '2-digit',
 								minute: '2-digit'
@@ -113,7 +116,7 @@ export default function RecentEvents() {
 														: 'bg-gray'
 												}`}
 											></div>
-									))
+									  ))
 									: null;
 
 							return (
@@ -122,19 +125,29 @@ export default function RecentEvents() {
 									className={`shadow-2xl p-4 rounded-xl ${getCardStyle(entry.type)}`}
 								>
 									<div className="flex justify-between items-center text-sm">
-										<div className="flex items-center gap-2 text-white">
+										<div className="flex items-center text-xs md:text-sm gap-1 text-white">
 											<div className="w-2 h-2 bg-white rounded-full"></div>
 											<span>{date}</span>
 											<span>{time}</span>
 										</div>
-										<div className="flex gap-2 items-center">
-											<button onClick={() => handleEdit(entry)}>
-												<Pencil size={18} className="hover:text-blue-400" />
-											</button>
-											<button onClick={() => setConfirmDeleteId(entry._id)}>
-												<Trash2 size={18} className="hover:text-red-400" />
-											</button>
-										</div>
+										{entry.updatedAt &&
+											entry.createdAt &&
+											new Date(entry.updatedAt).getTime() !==
+												new Date(entry.createdAt).getTime() && (
+												<div className="text-xs text-gray-400">
+													Updated at {new Date(entry.updatedAt).toLocaleTimeString()}
+												</div>
+											)}
+										{isToday && (
+											<div className="flex gap-2 items-center">
+												<button onClick={() => handleEdit(entry)}>
+													<Pencil size={18} className="hover:text-blue-400" />
+												</button>
+												<button onClick={() => setConfirmDeleteId(entry._id)}>
+													<Trash2 size={18} className="hover:text-red-400" />
+												</button>
+											</div>
+										)}
 									</div>
 
 									{isEditing ? (

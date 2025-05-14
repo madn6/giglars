@@ -1,7 +1,8 @@
-export type MoodEntry = {
+export interface MoodEntry {
 	_id: string;
-	type: 'lucky' | 'unlucky' | 'neutral';
 	description: string;
+	type: string;
 	intensity: number;
 	createdAt: string;
-};
+	updatedAt: string;
+}

@@ -49,19 +49,25 @@ export const updateMoodEntry = async (req: AuthRequest, res: Response) => {
 	const { id } = req.params;
 	const updatedData = req.body;
 
-	const entry = await MoodEntry.findOneAndUpdate(
-		{ _id: id, userId: userId }, // only update if entry belongs to this user
-		updatedData,
-		{ new: true, runValidators: true }
-	);
-
+	const entry = await MoodEntry.findOne({ _id: id, userId: userId });
 	if (!entry) {
 		throw new AppError('Mood entry not found or unauthorized', 404);
 	}
 
-	res.status(200).json(entry);
-};
+	//Same-day restriction
+	const createdDate = new Date(entry.createdAt).toDateString();
+	const today = new Date().toDateString();
+	if (createdDate !== today) {
+		throw new AppError('You can only update entries on the same day they were created', 403);
+	}
 
+	const updatedEntry = await MoodEntry.findByIdAndUpdate(id, updatedData, {
+		new: true,
+		runValidators: true,
+	});
+
+	res.status(200).json(updatedEntry);
+};
 
 export const deleteMoodEntry = async (req: AuthRequest, res: Response) => {
 	const userId = req.userId;
@@ -71,14 +77,20 @@ export const deleteMoodEntry = async (req: AuthRequest, res: Response) => {
 
 	const { id } = req.params;
 
-	const deletedEntry = await MoodEntry.findOneAndDelete({
-		_id: id,
-		userId: userId, // only delete if it belongs to the user
-	});
-
-	if (!deletedEntry) {
+	const entry = await MoodEntry.findOne({ _id: id, userId: userId });
+	if (!entry) {
 		throw new AppError('Mood entry not found or unauthorized', 404);
 	}
 
+	//Same-day restriction
+	const createdDate = new Date(entry.createdAt).toDateString();
+	const today = new Date().toDateString();
+	if (createdDate !== today) {
+		throw new AppError('You can only delete entries on the same day they were created', 403);
+	}
+
+	await MoodEntry.findByIdAndDelete(id);
+
 	res.status(200).json({ message: 'Mood entry deleted', id });
 };
+
