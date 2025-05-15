@@ -129,10 +129,16 @@ export default function RecentEvents() {
 									{entry.updatedAt &&
 										entry.createdAt &&
 										new Date(entry.updatedAt).getTime() !== new Date(entry.createdAt).getTime() && (
-											<div className="text-xs text-gray-400">
-												Updated at {new Date(entry.updatedAt).toLocaleTimeString()}
+											<div className="text-xs text-gray-text">
+												Updated at{' '}
+												{new Date(entry.updatedAt).toLocaleTimeString([], {
+													hour: 'numeric',
+													minute: '2-digit',
+													hour12: true
+												})}
 											</div>
 										)}
+
 									{isToday && (
 										<div className="flex gap-2 items-center">
 											<button onClick={() => handleEdit(entry)}>
@@ -154,7 +160,9 @@ export default function RecentEvents() {
 										handleSave={handleSave}
 									/>
 								) : (
-									<div className="my-3 text-white">{entry.description}</div>
+									<>
+										<div className="my-3 text-white">{entry.description}</div>
+									</>
 								)}
 
 								{entry.type === 'lucky' || entry.type === 'unlucky' ? (

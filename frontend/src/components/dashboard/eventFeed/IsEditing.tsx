@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { MoodEntry } from '../../../redux/features/moodEntry/moodEntryTypes';
 
 type Props = {
@@ -15,19 +16,37 @@ export default function IsEditing({
 	setEditingEntryId,
 	handleSave
 }: Props) {
+	const [error, setError] = useState<string>('');
+
+	const handleClickSave = () => {
+		if (
+			editedEntry.type !== 'neutral' &&
+			(!editedEntry.description || editedEntry.description.trim() === '')
+		) {
+			setError('Description is required for Lucky or Unlucky entries.');
+			return;
+		}
+
+		setError('');
+		handleSave(entry._id);
+	};
+
 	return (
 		<div className="mt-3 space-y-2">
 			{editedEntry.type !== 'neutral' && (
-				<textarea
-					value={editedEntry.description ?? ''}
-					onChange={(e) =>
-						setEditedEntry((prev) => ({
-							...prev,
-							description: e.target.value
-						}))
-					}
-					className="bg-gray focus:outline-none focus:ring-0 border border-border/20 resize-none text-white p-3 rounded-md w-full"
-				/>
+				<div className="space-y-1">
+					<textarea
+						value={editedEntry.description ?? ''}
+						onChange={(e) =>
+							setEditedEntry((prev) => ({
+								...prev,
+								description: e.target.value
+							}))
+						}
+						className="bg-gray focus:outline-none focus:ring-0 border border-border/20 resize-none text-white p-3 rounded-md w-full"
+					/>
+					{error && <p className="text-red-500 text-sm">{error}</p>}
+				</div>
 			)}
 
 			<div className="flex gap-3 custom-select-wrapper items-center">
@@ -35,10 +54,16 @@ export default function IsEditing({
 					value={editedEntry.type ?? 'neutral'}
 					onChange={(e) => {
 						const newType = e.target.value as 'lucky' | 'unlucky' | 'neutral';
+
 						setEditedEntry((prev) => ({
 							...prev,
 							type: newType,
-							intensity: newType === 'neutral' ? 0 : prev.intensity ?? 1,
+							intensity:
+								newType === 'neutral'
+									? 0
+									: prev.intensity && prev.intensity > 0
+									? prev.intensity
+									: 1, // default to 1 if not previously set
 							description: newType === 'neutral' ? '' : prev.description ?? ''
 						}));
 					}}
@@ -84,7 +109,7 @@ export default function IsEditing({
 					Cancel
 				</button>
 				<button
-					onClick={() => handleSave(entry._id)}
+					onClick={handleClickSave}
 					className="px-3 py-1 text-sm rounded bg-blue-600 text-white"
 				>
 					Save
