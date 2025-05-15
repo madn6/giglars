@@ -73,106 +73,101 @@ export default function RecentEvents() {
 				<div className="text-center text-gray-300">No events yet.</div>
 			) : (
 				<div className="space-y-4 max-h-[300px] overflow-y-auto scrollbar-thin">
-					{entries
-						.slice()
-						.reverse()
-						.map((entry) => {
-							const dateObj = new Date(entry.createdAt);
-							const date = dateObj.toLocaleDateString('en-GB', {
-								day: 'numeric',
-								month: 'short'
-							});
-							const isToday =
-								new Date(entry.createdAt).toDateString() === new Date().toDateString();
+					{entries.map((entry) => {
+						const dateObj = new Date(entry.createdAt);
+						const date = dateObj.toLocaleDateString('en-GB', {
+							day: 'numeric',
+							month: 'short'
+						});
+						const isToday = new Date(entry.createdAt).toDateString() === new Date().toDateString();
 
-							const time = dateObj.toLocaleTimeString('en-US', {
-								hour: '2-digit',
-								minute: '2-digit'
-							});
+						const time = dateObj.toLocaleTimeString('en-US', {
+							hour: '2-digit',
+							minute: '2-digit'
+						});
 
-							const isEditing = editingEntryId === entry._id;
-							const isDeleting = confirmDeleteId === entry._id;
+						const isEditing = editingEntryId === entry._id;
+						const isDeleting = confirmDeleteId === entry._id;
 
-							if (isDeleting) {
-								return (
-									<>
-										<IsDeleting
-											entry={entry}
-											setConfirmDeleteId={setConfirmDeleteId}
-											handleDelete={handleDelete}
-										/>
-									</>
-								);
-							}
-
-							const intensityBars =
-								entry.type !== 'neutral'
-									? Array.from({ length: 3 }, (_, i) => (
-											<div
-												key={i}
-												className={`w-4 h-2 rounded-full ${
-													i < (isEditing ? editedEntry.intensity ?? 0 : entry.intensity)
-														? getColor(entry.type, i)
-														: 'bg-gray'
-												}`}
-											></div>
-									  ))
-									: null;
-
+						if (isDeleting) {
 							return (
-								<div
-									key={entry._id}
-									className={`shadow-2xl p-4 rounded-xl ${getCardStyle(entry.type)}`}
-								>
-									<div className="flex justify-between items-center text-sm">
-										<div className="flex items-center text-xs md:text-sm gap-1 text-white">
-											<div className="w-2 h-2 bg-white rounded-full"></div>
-											<span>{date}</span>
-											<span>{time}</span>
-										</div>
-										{entry.updatedAt &&
-											entry.createdAt &&
-											new Date(entry.updatedAt).getTime() !==
-												new Date(entry.createdAt).getTime() && (
-												<div className="text-xs text-gray-400">
-													Updated at {new Date(entry.updatedAt).toLocaleTimeString()}
-												</div>
-											)}
-										{isToday && (
-											<div className="flex gap-2 items-center">
-												<button onClick={() => handleEdit(entry)}>
-													<Pencil size={18} className="hover:text-blue-400" />
-												</button>
-												<button onClick={() => setConfirmDeleteId(entry._id)}>
-													<Trash2 size={18} className="hover:text-red-400" />
-												</button>
+								<>
+									<IsDeleting
+										entry={entry}
+										setConfirmDeleteId={setConfirmDeleteId}
+										handleDelete={handleDelete}
+									/>
+								</>
+							);
+						}
+
+						const intensityBars =
+							entry.type !== 'neutral'
+								? Array.from({ length: 3 }, (_, i) => (
+										<div
+											key={i}
+											className={`w-4 h-2 rounded-full ${
+												i < (isEditing ? editedEntry.intensity ?? 0 : entry.intensity)
+													? getColor(entry.type, i)
+													: 'bg-gray'
+											}`}
+										></div>
+								  ))
+								: null;
+
+						return (
+							<div
+								key={entry._id}
+								className={`shadow-2xl p-4 rounded-xl ${getCardStyle(entry.type)}`}
+							>
+								<div className="flex justify-between items-center text-sm">
+									<div className="flex items-center text-xs md:text-sm gap-1 text-white">
+										<div className="w-2 h-2 bg-white rounded-full"></div>
+										<span>{date}</span>
+										<span>{time}</span>
+									</div>
+									{entry.updatedAt &&
+										entry.createdAt &&
+										new Date(entry.updatedAt).getTime() !== new Date(entry.createdAt).getTime() && (
+											<div className="text-xs text-gray-400">
+												Updated at {new Date(entry.updatedAt).toLocaleTimeString()}
 											</div>
 										)}
-									</div>
-
-									{isEditing ? (
-										<IsEditing
-											entry={entry}
-											editedEntry={editedEntry}
-											setEditedEntry={setEditedEntry}
-											setEditingEntryId={setEditingEntryId}
-											handleSave={handleSave}
-										/>
-									) : (
-										<div className="my-3 text-white">{entry.description}</div>
-									)}
-
-									{entry.type === 'lucky' || entry.type === 'unlucky' ? (
-										<div className="flex items-center gap-3 text-sm text-gray-text">
-											<span>Intensity:</span>
-											<div className="flex items-center gap-2">{intensityBars}</div>
+									{isToday && (
+										<div className="flex gap-2 items-center">
+											<button onClick={() => handleEdit(entry)}>
+												<Pencil size={18} className="hover:text-blue-400" />
+											</button>
+											<button onClick={() => setConfirmDeleteId(entry._id)}>
+												<Trash2 size={18} className="hover:text-red-400" />
+											</button>
 										</div>
-									) : (
-										<div className="text-white">Neutral</div>
 									)}
 								</div>
-							);
-						})}
+
+								{isEditing ? (
+									<IsEditing
+										entry={entry}
+										editedEntry={editedEntry}
+										setEditedEntry={setEditedEntry}
+										setEditingEntryId={setEditingEntryId}
+										handleSave={handleSave}
+									/>
+								) : (
+									<div className="my-3 text-white">{entry.description}</div>
+								)}
+
+								{entry.type === 'lucky' || entry.type === 'unlucky' ? (
+									<div className="flex items-center gap-3 text-sm text-gray-text">
+										<span>Intensity:</span>
+										<div className="flex items-center gap-2">{intensityBars}</div>
+									</div>
+								) : (
+									<div className="text-white">Neutral</div>
+								)}
+							</div>
+						);
+					})}
 				</div>
 			)}
 		</div>

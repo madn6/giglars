@@ -36,7 +36,7 @@ export const getMoodEntries = async (req: AuthRequest, res: Response) => {
 	if (!userId) {
 		throw new AppError('not authorized', 400);
 	}
-	const entries = await MoodEntry.find({ userId });
+	const entries = await MoodEntry.find({ userId }).sort({ createdAt: -1 });
 	res.status(200).json(entries);
 };
 
@@ -63,7 +63,7 @@ export const updateMoodEntry = async (req: AuthRequest, res: Response) => {
 
 	const updatedEntry = await MoodEntry.findByIdAndUpdate(id, updatedData, {
 		new: true,
-		runValidators: true,
+		runValidators: true
 	});
 
 	res.status(200).json(updatedEntry);
@@ -93,4 +93,3 @@ export const deleteMoodEntry = async (req: AuthRequest, res: Response) => {
 
 	res.status(200).json({ message: 'Mood entry deleted', id });
 };
-
