@@ -72,7 +72,7 @@ export default function RecentEvents() {
 			{entries.length === 0 ? (
 				<div className="text-center text-gray-300">No events yet.</div>
 			) : (
-				<div className="space-y-4 max-h-[300px] overflow-y-auto scrollbar-thin">
+				<div className="space-y-4 lg:h-[770px] h-[300px] overflow-y-auto scrollbar-thin">
 					{entries.map((entry) => {
 						const dateObj = new Date(entry.createdAt);
 						const date = dateObj.toLocaleDateString('en-GB', {
