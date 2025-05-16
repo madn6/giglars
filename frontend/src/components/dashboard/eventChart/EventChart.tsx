@@ -1,6 +1,10 @@
 import { Pie } from 'react-chartjs-2';
 import { MoodEntry } from '../../../redux/features/moodEntry/moodEntryTypes';
 import 'chart.js/auto';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
+Chart.register(ArcElement, Tooltip, Legend, ChartDataLabels);
+
 
 type Props = {
 	entries: MoodEntry[];
@@ -41,13 +45,27 @@ export default function EventChart({ entries }: Props) {
 			},
 			tooltip: {
 				enabled: true
+			},
+			datalabels: {
+				color: '#fff',
+				font: {
+					weight: 'bold' as const,
+					size: 16,
+					family:'font-poppins'
+					
+				},
+				formatter: (value: number) => {
+					const total = data.datasets[0].data.reduce((acc, val) => acc + val, 0);
+					const percentage = total === 0 ? 0 : (value / total) * 100;
+					return `${percentage.toFixed(1)}%`;
+				}
 			}
 		},
 		maintainAspectRatio: false
 	};
 
 	return (
-		<div className="lg:p-6 p-4 rounded-xl bg-secondary h-full border border-border/20 text-white flex flex-col items-center justify-center">
+		<div className="lg:p-6 p-4  rounded-xl bg-secondary h-full border border-border/20 text-white flex flex-col items-center justify-center">
 			<h2 className="text-xl font-semibold mb-4">Mood Distribution</h2>
 
 			<div className="flex flex-col md:flex-row items-center justify-center md:gap-6 gap-4 w-full">
@@ -62,7 +80,7 @@ export default function EventChart({ entries }: Props) {
 				<div className="text-center md:text-left">
 					<div className="text-green-500 font-dm-sans">
 						<span className="text-5xl sm:text-6xl lg:text-8xl font-bold">{luckyPercentage}%</span>
-						<div className="text-xl sm:text-2xl font-semibold">Lucky Percentage</div>
+						<div className="text-xl sm:text-2xl font-poppins font-semibold">Lucky Percentage</div>
 					</div>
 				</div>
 			</div>
