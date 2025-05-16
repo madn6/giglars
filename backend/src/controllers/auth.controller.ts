@@ -5,6 +5,10 @@ import User from '../models/Auth.model';
 import { AuthRequest } from '../middleware/verifyToken'; 
 
 
+interface LoginUserBody {
+	email: string;
+	password: string;
+}
 
 const generateTokens = (userId: string) => {
 	const accessToken = jwt.sign({ userId }, process.env.JWT_SECRET as string, {
@@ -67,11 +71,6 @@ export const registerUser = async (
 		next(error);
 	}
 };
-
-interface LoginUserBody {
-	email: string;
-	password: string;
-}
 
 export const loginUser = async (
 	req: Request<{}, {}, LoginUserBody>,

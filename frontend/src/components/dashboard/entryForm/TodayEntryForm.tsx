@@ -10,6 +10,7 @@ import {
 import { toast } from 'react-toastify';
 
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import { fetchMoodEntries } from '../../../redux/features/moodEntry/moodEntrySlice';
 
 const TodayEntryForm: React.FC = () => {
 	const dispatch = useAppDispatch();
@@ -40,13 +41,15 @@ const TodayEntryForm: React.FC = () => {
 			}
 
 			try {
-
 				const payload = {
 					type,
-					description,
+					description: type === 'neutral' && description === '' ? 'neutral' : description,
 					intensity: type === 'neutral' ? 0 : intensity
 				};
 				await dispatch(submitTodayEntry(payload)).unwrap();
+
+				// ✅ Refetch entries after successful submission
+				dispatch(fetchMoodEntries());
 
 				toast.success("Today's entry saved!");
 				resetForm();
@@ -63,7 +66,6 @@ const TodayEntryForm: React.FC = () => {
 			dispatch(resetTodayEventState());
 		}
 	}, [success, error, dispatch]);
-
 
 	return (
 		<div className="bg-secondary font-inter backdrop-blur-md rounded-xl h-fit p-6 border border-border/20">
@@ -123,16 +125,16 @@ const TodayEntryForm: React.FC = () => {
 				</div>
 
 				{/* Description */}
-					<div className="mb-6">
-						<label className="block text-gray-text font-medium mb-2">What happened?</label>
-						<textarea
-							value={description}
-							onChange={(e) => setDescription(e.target.value)}
-							rows={3}
-							className="w-full bg-gray border text-white border-border/20 focus:ring-0 outline-none rounded-lg p-3 resize-none"
-							placeholder="Describe your lucky or unlucky event..."
-						/>
-					</div>
+				<div className="mb-6">
+					<label className="block text-gray-text font-medium mb-2">What happened?</label>
+					<textarea
+						value={description}
+						onChange={(e) => setDescription(e.target.value)}
+						rows={3}
+						className="w-full bg-gray border text-white border-border/20 focus:ring-0 outline-none rounded-lg p-3 resize-none"
+						placeholder="Describe your lucky or unlucky event..."
+					/>
+				</div>
 
 				{/* Intensity */}
 				{type === 'lucky' || type === 'unlucky' ? (
