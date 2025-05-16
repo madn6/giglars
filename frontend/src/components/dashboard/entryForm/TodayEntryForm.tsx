@@ -68,14 +68,14 @@ const TodayEntryForm: React.FC = () => {
 	}, [success, error, dispatch]);
 
 	return (
-		<div className="bg-secondary font-inter backdrop-blur-md rounded-xl h-fit p-6 border border-border/20">
+		<div className="bg-secondary font-inter backdrop-blur-md rounded-xl h-fit md:p-6 p-3 border border-border/20">
 			<h2 className="text-xl font-semibold text-white text-center  mb-6">Today's Entry</h2>
 
 			<form onSubmit={handleSubmit}>
 				{/* Type Selector */}
 				<div className="mb-6">
 					<label className="block text-gray-text   font-medium mb-2">How was your day?</label>
-					<div className="flex space-x-4">
+					<div className="flex md:space-x-4 space-x-2 flex-wrap">
 						<button
 							type="button"
 							onClick={() => setType(type === 'lucky' ? null : 'lucky')}

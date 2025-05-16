@@ -63,7 +63,7 @@ export default function RecentEvents() {
 	};
 
 	return (
-		<div className="p-6 rounded-xl font-inter bg-secondary text-gray-text h-full border border-border/20">
+		<div className="md:p-6 p-3 rounded-xl font-inter bg-secondary text-gray-text h-full border border-border/20">
 			<div className="flex items-center mb-6 text-white gap-1 justify-center">
 				<Clock size={20} />
 				<h2 className="text-xl font-semibold ">Recent Events</h2>
