@@ -43,7 +43,7 @@ const TodayEntryForm: React.FC = () => {
 
 				const payload = {
 					type,
-					description: type === 'neutral' ? '' : description,
+					description,
 					intensity: type === 'neutral' ? 0 : intensity
 				};
 				await dispatch(submitTodayEntry(payload)).unwrap();
@@ -123,7 +123,6 @@ const TodayEntryForm: React.FC = () => {
 				</div>
 
 				{/* Description */}
-				{type !== 'neutral' && (
 					<div className="mb-6">
 						<label className="block text-gray-text font-medium mb-2">What happened?</label>
 						<textarea
@@ -134,7 +133,6 @@ const TodayEntryForm: React.FC = () => {
 							placeholder="Describe your lucky or unlucky event..."
 						/>
 					</div>
-				)}
 
 				{/* Intensity */}
 				{type === 'lucky' || type === 'unlucky' ? (

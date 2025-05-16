@@ -91,13 +91,11 @@ export default function RecentEvents() {
 
 						if (isDeleting) {
 							return (
-								<>
-									<IsDeleting
-										entry={entry}
-										setConfirmDeleteId={setConfirmDeleteId}
-										handleDelete={handleDelete}
-									/>
-								</>
+								<IsDeleting
+									entry={entry}
+									setConfirmDeleteId={setConfirmDeleteId}
+									handleDelete={handleDelete}
+								/>
 							);
 						}
 
@@ -165,13 +163,11 @@ export default function RecentEvents() {
 									</>
 								)}
 
-								{entry.type === 'lucky' || entry.type === 'unlucky' ? (
+								{(entry.type === 'lucky' || entry.type === 'unlucky') && (
 									<div className="flex items-center gap-3 text-sm text-gray-text">
 										<span>Intensity:</span>
 										<div className="flex items-center gap-2">{intensityBars}</div>
 									</div>
-								) : (
-									<div className="text-white">Neutral</div>
 								)}
 							</div>
 						);

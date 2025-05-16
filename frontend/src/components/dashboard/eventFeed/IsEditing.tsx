@@ -33,21 +33,19 @@ export default function IsEditing({
 
 	return (
 		<div className="mt-3 space-y-2">
-			{editedEntry.type !== 'neutral' && (
-				<div className="space-y-1">
-					<textarea
-						value={editedEntry.description ?? ''}
-						onChange={(e) =>
-							setEditedEntry((prev) => ({
-								...prev,
-								description: e.target.value
-							}))
-						}
-						className="bg-gray focus:outline-none focus:ring-0 border border-border/20 resize-none text-white p-3 rounded-md w-full"
-					/>
-					{error && <p className="text-red-500 text-sm">{error}</p>}
-				</div>
-			)}
+			<div className="space-y-1">
+				<textarea
+					value={editedEntry.description ?? ''}
+					onChange={(e) =>
+						setEditedEntry((prev) => ({
+							...prev,
+							description: e.target.value
+						}))
+					}
+					className="bg-gray focus:outline-none focus:ring-0 border border-border/20 resize-none text-white p-3 rounded-md w-full"
+				/>
+				{error && <p className="text-red-500 text-sm">{error}</p>}
+			</div>
 
 			<div className="flex gap-3 custom-select-wrapper items-center">
 				<select
@@ -61,10 +59,10 @@ export default function IsEditing({
 							intensity:
 								newType === 'neutral'
 									? 0
-									: prev.intensity && prev.intensity > 0
+									: typeof prev.intensity === 'number' && prev.intensity > 0
 									? prev.intensity
-									: 1, // default to 1 if not previously set
-							description: newType === 'neutral' ? '' : prev.description ?? ''
+									: 1,
+							description: prev.description
 						}));
 					}}
 					className="bg-gray-700 focus:outline-none focus:ring-0 text-white custom-select rounded px-2 py-1"
@@ -74,7 +72,7 @@ export default function IsEditing({
 					<option value="neutral">Neutral</option>
 				</select>
 
-				{editedEntry.type !== 'neutral' && (
+				{editedEntry.type !== 'neutral' && typeof editedEntry.intensity === 'number' && (
 					<div className="flex flex-col gap-1 w-full max-w-48">
 						<input
 							type="range"
