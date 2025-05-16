@@ -27,7 +27,7 @@ export default function MoodTypeCount({ barChartData }: MoodTypeCountProps) {
 			transition={{ duration: 0.6, ease: 'easeOut' }}
 			className="p-6 rounded-lg border border-border/20 bg-secondary"
 		>
-			<h3 className="text-sm sm:text-base h-full font-medium mb-4 text-center text-gray-text">
+			<h3 className="text-xl h-full font-medium mb-4 text-center text-white">
 				Mood Type Count
 			</h3>
 			<ResponsiveContainer width="100%" aspect={2}>

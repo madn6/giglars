@@ -73,7 +73,7 @@ export default function Dashboard() {
 					<EventGraph entries={entries} />
 				</div>
 				<div className="col-span-1 md:col-span-1 lg:col-span-2">
-					<EventChart />
+					<EventChart  entries={entries} />
 				</div>
 
 				{/* MoodTypeCount - New Component */}
