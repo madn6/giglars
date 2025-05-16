@@ -45,7 +45,7 @@ export default function Dashboard() {
 					md:grid-cols-2
 					lg:grid-cols-4
 					auto-rows-auto
-					gap-6
+					md:gap-3  gap-2
 				"
 			>
 				{/* WelcomeGreet - full width */}

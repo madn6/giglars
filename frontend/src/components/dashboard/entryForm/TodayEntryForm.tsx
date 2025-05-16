@@ -66,7 +66,7 @@ const TodayEntryForm: React.FC = () => {
 
 
 	return (
-		<div className="bg-secondary font-inter backdrop-blur-md rounded-xl p-6 border border-border/20">
+		<div className="bg-secondary font-inter backdrop-blur-md rounded-xl h-fit p-6 border border-border/20">
 			<h2 className="text-xl font-semibold text-white text-center  mb-6">Today's Entry</h2>
 
 			<form onSubmit={handleSubmit}>
@@ -77,7 +77,7 @@ const TodayEntryForm: React.FC = () => {
 						<button
 							type="button"
 							onClick={() => setType(type === 'lucky' ? null : 'lucky')}
-							className={`flex-1 md:py-3 md:px-4 py-2 px-2 rounded-lg flex items-center justify-center transition-all duration-200 ${
+							className={`flex-1 md:py-2 md:px-2  lg:py-3 lg:px-4     py-2 px-2 rounded-lg flex items-center justify-center transition-all duration-200 ${
 								type === 'lucky'
 									? 'bg-green-500/20 border border-green-500 text-green-200'
 									: 'bg-gray border border-border/20 text-gray-text '
@@ -89,7 +89,7 @@ const TodayEntryForm: React.FC = () => {
 						<button
 							type="button"
 							onClick={() => setType(type === 'unlucky' ? null : 'unlucky')}
-							className={`flex-1 md:py-3 md:px-4 py-2 px-2 rounded-lg flex items-center justify-center transition-all duration-200 ${
+							className={`flex-1 md:py-2 md:px-2  lg:py-3 lg:px-4     py-2 px-2 rounded-lg flex items-center justify-center transition-all duration-200 ${
 								type === 'unlucky'
 									? ' bg-orange-500/20 border border-orange-500 text-orange-200'
 									: 'bg-gray border border-border/20 text-gray-text '
@@ -110,7 +110,7 @@ const TodayEntryForm: React.FC = () => {
 						<button
 							type="button"
 							onClick={() => setType(type === 'neutral' ? null : 'neutral')}
-							className={`flex-1 md:py-3 md:px-4 py-2 px-2 rounded-lg flex items-center justify-center transition-all duration-200 ${
+							className={`flex-1  md:py-2 md:px-2  lg:py-3 lg:px-4     py-2 px-2 rounded-lg flex items-center justify-center transition-all duration-200 ${
 								type === 'neutral'
 									? 'bg-blue-500/20 border border-blue-500 text-blue-200'
 									: 'bg-gray border border-border/20 text-gray-text'

@@ -4,7 +4,7 @@ type Props = {};
 export default function WelcomeGreet({}: Props) {
 	return (
 		<>
-			<div className="p-12 rounded-md border-border flex flex-col gap-4 border">
+			<div className="p-12 rounded-xl border-border/20 bg-secondary flex flex-col h-full gap-4 border">
 				<div className="">this is welcom component</div>
 				<div
 					className="
