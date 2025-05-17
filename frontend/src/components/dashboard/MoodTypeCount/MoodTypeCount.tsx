@@ -1,4 +1,4 @@
-'use client';
+import { ChartColumn } from 'lucide-react';
 
 import {
 	BarChart,
@@ -27,9 +27,10 @@ export default function MoodTypeCount({ barChartData }: MoodTypeCountProps) {
 			transition={{ duration: 0.6, ease: 'easeOut' }}
 			className="p-6 rounded-lg border border-border/20 bg-secondary"
 		>
-			<h3 className="text-xl h-full font-medium mb-4 text-center text-white">
-				Mood Type Count
-			</h3>
+			<div className="flex items-center justify-center gap-1 mb-4">
+				<ChartColumn size={20} />
+				<h3 className="text-xl h-full font-medium text-white">Mood Type Count</h3>
+			</div>
 			<ResponsiveContainer width="100%" aspect={2}>
 				<BarChart data={barChartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
 					<CartesianGrid strokeDasharray="4 4" vertical={false} />

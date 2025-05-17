@@ -4,7 +4,7 @@ import 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
 Chart.register(ArcElement, Tooltip, Legend, ChartDataLabels);
-
+import { ChartPie } from 'lucide-react';
 
 type Props = {
 	entries: MoodEntry[];
@@ -50,9 +50,8 @@ export default function EventChart({ entries }: Props) {
 				color: '#fff',
 				font: {
 					weight: 'bold' as const,
-					size: 16,
-					family:'font-poppins'
-					
+					size: 14,
+					family: 'font-poppins'
 				},
 				formatter: (value: number) => {
 					const total = data.datasets[0].data.reduce((acc, val) => acc + val, 0);
@@ -66,7 +65,10 @@ export default function EventChart({ entries }: Props) {
 
 	return (
 		<div className="lg:p-6 p-4  rounded-xl bg-secondary h-full border border-border/20 text-white flex flex-col items-center justify-center">
-			<h2 className="text-xl font-semibold mb-4">Mood Distribution</h2>
+			<div className="flex items-center justify-center mb-4 gap-1">
+				<ChartPie size={20}/>
+				<h2 className="text-xl font-semibold ">Mood Distribution</h2>
+			</div>
 
 			<div className="flex flex-col md:flex-row items-center justify-center md:gap-6 gap-4 w-full">
 				{total === 0 ? (

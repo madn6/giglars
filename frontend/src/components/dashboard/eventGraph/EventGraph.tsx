@@ -10,6 +10,7 @@ import {
 
 import { motion } from 'framer-motion';
 import { MoodEntry } from '../../../redux/features/moodEntry/moodEntryTypes';
+import { ChartSpline } from 'lucide-react';
 
 type EventGraphProps = {
 	entries: MoodEntry[];
@@ -29,7 +30,10 @@ export default function EventGraph({ entries }: EventGraphProps) {
 
 	return (
 		<div className="p-4 sm:p-6 md:p-8 rounded-lg h-fit border font-inter border-border/20 bg-secondary text-white space-y-8">
-			<h2 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6 text-center">Mood Overview</h2>
+			<div className="flex items-center justify-center gap-1 mb-4 sm:mb-6 ">
+				<ChartSpline size={20} />
+				<h2 className="text-xl font-semibold text-center">Mood Overview</h2>
+			</div>
 
 			{/* Line Chart for Intensity Over Time */}
 			<motion.div

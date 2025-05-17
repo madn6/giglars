@@ -8,6 +8,7 @@ import {
 	resetTodayEventState
 } from '../../../redux/features/todayEntry/todayEntrySlice';
 import { toast } from 'react-toastify';
+import { CalendarCheck } from 'lucide-react';
 
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { fetchMoodEntries } from '../../../redux/features/moodEntry/moodEntrySlice';
@@ -69,7 +70,12 @@ const TodayEntryForm: React.FC = () => {
 
 	return (
 		<div className="bg-secondary font-inter backdrop-blur-md rounded-xl h-fit md:p-6 p-3 border border-border/20">
-			<h2 className="text-xl font-semibold text-white text-center  mb-6">Today's Entry</h2>
+			<div className="flex items-center justify-center mb-6 gap-1">
+				<div className="">
+					<CalendarCheck  size={20}/>
+				</div>
+				<h2 className="text-xl font-semibold text-white ">Today's Entry</h2>
+			</div>
 
 			<form onSubmit={handleSubmit}>
 				{/* Type Selector */}
