@@ -4,7 +4,7 @@ import cors from 'cors';
 import connectDB from './config/db';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
-import { authRoutes,dashboardRoutes,postRoutes,profileRoutes } from './routes';
+import { authRoutes,dashboardRoutes,postRoutes,profileRoutes ,quoteRoutes} from './routes';
 import { errorHandler } from './middleware/errrorHandler';
 
 const app = express();
@@ -35,14 +35,12 @@ app.get('/', (req, res) => {
 	res.send("api working")
 })
 
-
-
-
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/post', postRoutes);
 app.use('/api/profile', profileRoutes);
-app.use('/api/dashboard',dashboardRoutes)
+app.use('/api/dashboard', dashboardRoutes)
+app.use('/api/quotes',quoteRoutes)
 
 // Connect to database and start server
 const PORT: number = parseInt(process.env.PORT || '5000', 10);
