@@ -14,21 +14,20 @@ export default function Heatmap() {
 		dispatch(fetchMoodEntries());
 	}, [dispatch]);
 
-  const heatmapValues = entries.map((entry) => {
-    // convert to Indian time (IST: UTC+5:30)
-    const istDate = new Date(new Date(entry.createdAt).getTime() + 5.5 * 60 * 60 * 1000);
-    
-    // adjusted date to extract YYYY-MM-DD for the heatmap
-    const date = istDate.toISOString().split('T')[0];
-  
-    return {
-      date,
-      count: Math.max(1, Math.min(3, entry.intensity ?? 1)),
-      type: entry.type ?? 'neutral',
-      displayDate: istDate.toLocaleDateString('en-GB'), // for tooltips in dd/mm/yyyy
-    };
-  });
-  
+	const heatmapValues = entries.map((entry) => {
+		// convert to Indian time (IST: UTC+5:30)
+		const istDate = new Date(new Date(entry.createdAt).getTime() + 5.5 * 60 * 60 * 1000);
+
+		// adjusted date to extract YYYY-MM-DD for the heatmap
+		const date = istDate.toISOString().split('T')[0];
+
+		return {
+			date,
+			count: Math.max(1, Math.min(3, entry.intensity ?? 1)),
+			type: entry.type ?? 'neutral',
+			displayDate: istDate.toLocaleDateString('en-GB') // for tooltips in dd/mm/yyyy
+		};
+	});
 
 	const today = new Date();
 	const yearAgo = new Date();
@@ -37,59 +36,61 @@ export default function Heatmap() {
 	return (
 		<div className="w-full overflow-x-auto ">
 			<div className="min-w-[900px] p-4 border bg-secondary border-border/20 rounded-xl h-full  scrollbar-thin ">
-				<CalendarHeatmap
-					startDate={yearAgo}
-					endDate={today}
-					values={heatmapValues}
-					classForValue={(value: { date: string; count?: number; type?: string } | null) => {
-						if (!value) return 'color-empty';
+				<div className="">
+					<CalendarHeatmap
+						startDate={yearAgo}
+						endDate={today}
+						values={heatmapValues}
+						classForValue={(value: { date: string; count?: number; type?: string } | null) => {
+							if (!value) return 'color-empty';
 
-						const count = Math.max(1, Math.min(3, value.count ?? 1));
-						const type = value.type ?? 'neutral';
+							const count = Math.max(1, Math.min(3, value.count ?? 1));
+							const type = value.type ?? 'neutral';
 
-						const classMap: Record<string, string[]> = {
-							lucky: ['color-green1', 'color-green2', 'color-green3'],
-							unlucky: ['color-orange1', 'color-orange2', 'color-orange3'],
-							neutral: ['color-blue', 'color-blue', 'color-blue']
-						};
+							const classMap: Record<string, string[]> = {
+								lucky: ['color-green1', 'color-green2', 'color-green3'],
+								unlucky: ['color-orange1', 'color-orange2', 'color-orange3'],
+								neutral: ['color-blue', 'color-blue', 'color-blue']
+							};
 
-						return classMap[type]?.[count - 1] || 'color-empty';
-					}}
-					tooltipDataAttrs={(value) => {
-						if (!value?.date) return {};
+							return classMap[type]?.[count - 1] || 'color-empty';
+						}}
+						tooltipDataAttrs={(value) => {
+							if (!value?.date) return {};
 
-						const formattedDate = new Date(value.date).toLocaleDateString('en-GB');
+							const formattedDate = new Date(value.date).toLocaleDateString('en-GB');
 
-						const intensityMap: Record<number, string> = {
-							1: 'Normal',
-							2: 'Mid',
-							3: 'Super'
-						};
+							const intensityMap: Record<number, string> = {
+								1: 'Normal',
+								2: 'Mid',
+								3: 'Super'
+							};
 
-						const typeLabelMap: Record<string, string> = {
-							lucky: '🍀 Lucky',
-							unlucky: '😞 Unlucky',
-							neutral: '😐 Neutral'
-						};
+							const typeLabelMap: Record<string, string> = {
+								lucky: '🍀 Lucky',
+								unlucky: '😞 Unlucky',
+								neutral: '😐 Neutral'
+							};
 
-						const typedValue = value as { date: string; count: number; type: string };
+							const typedValue = value as { date: string; count: number; type: string };
 
-						const type = typedValue.type;
-						const count = typedValue.count;
+							const type = typedValue.type;
+							const count = typedValue.count;
 
-						const intensityLabel = intensityMap[count] || 'Unknown';
-						const typeLabel = typeLabelMap[type] ?? '😐 Neutral';
+							const intensityLabel = intensityMap[count] || 'Unknown';
+							const typeLabel = typeLabelMap[type] ?? '😐 Neutral';
 
-						return {
-							'data-tooltip-id': 'heatmap-tooltip',
-							'data-tooltip-content':
-								type === 'neutral'
-									? `${formattedDate} - ${typeLabel}`
-									: `${formattedDate} - ${typeLabel} (${intensityLabel})`
-						};
-					}}
-					showWeekdayLabels
-				/>
+							return {
+								'data-tooltip-id': 'heatmap-tooltip',
+								'data-tooltip-content':
+									type === 'neutral'
+										? `${formattedDate} - ${typeLabel}`
+										: `${formattedDate} - ${typeLabel} (${intensityLabel})`
+							};
+						}}
+						showWeekdayLabels
+					/>
+				</div>
 				<ReactTooltip id="heatmap-tooltip" />
 				<div className="flex items-center justify-between  text-sm text-gray-text">
 					{/* Lucky Intensity */}

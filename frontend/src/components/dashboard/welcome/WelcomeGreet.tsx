@@ -32,8 +32,8 @@ export default function WelcomeGreet() {
 
 	return (
 		<>
-			<div className="p-6 rounded-xl border-border/20 bg-secondary flex flex-col h-full gap-4 border">
-				<div className="flex items-center justify-center gap-2">
+			<div className="p-4 md:p-6 rounded-xl border-border/20 bg-secondary flex flex-col h-full gap-4 border">
+				<div className="flex items-center text-center justify-center gap-2">
 					<div className="">
 						<Sparkles className='text-amber-400' size={30}/>
 					</div>

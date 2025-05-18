@@ -69,7 +69,7 @@ const TodayEntryForm: React.FC = () => {
 	}, [success, error, dispatch]);
 
 	return (
-		<div className="bg-secondary font-inter backdrop-blur-md rounded-xl h-fit md:p-6 p-3 border border-border/20">
+		<div className="bg-secondary font-inter backdrop-blur-md rounded-xl h-fit md:p-6 p-4 border border-border/20">
 			<div className="flex items-center justify-center mb-6 gap-1">
 				<div className="">
 					<CalendarCheck  size={20}/>

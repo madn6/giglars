@@ -22,7 +22,7 @@ export default function EventChart({ entries }: Props) {
 	);
 
 	const total = entries.length;
-	const luckyPercentage = total === 0 ? 0 : Math.round((countByType.lucky / total) * 100);
+	// const luckyPercentage = total === 0 ? 0 : Math.round((countByType.lucky / total) * 100);
 
 	const data = {
 		labels: ['Lucky', 'Unlucky', 'Neutral'],
@@ -64,9 +64,9 @@ export default function EventChart({ entries }: Props) {
 	};
 
 	return (
-		<div className="lg:p-6 p-4  rounded-xl bg-secondary h-full border border-border/20 text-white flex flex-col items-center justify-center">
-			<div className="flex items-center justify-center mb-4 gap-1">
-				<ChartPie size={20}/>
+		<div className="md:p-6 p-4  rounded-xl bg-secondary h-full border border-border/20 text-white flex flex-col items-center justify-center">
+			<div className="flex items-center justify-center mb-6 gap-1">
+				<ChartPie size={20} />
 				<h2 className="text-xl font-semibold ">Mood Distribution</h2>
 			</div>
 
@@ -74,17 +74,17 @@ export default function EventChart({ entries }: Props) {
 				{total === 0 ? (
 					<p className="text-gray-400">No data yet</p>
 				) : (
-					<div className="w-[250px] h-[250px] sm:w-[240px] sm:h-[240px] md:w-[200px] md:h-[200px] lg:w-[280px] lg:h-[280px]">
+					<div className="w-full md:w-[300px] h-[250px]">
 						<Pie data={data} options={options} />
 					</div>
 				)}
 
-				<div className="text-center md:text-left">
+				{/* <div className="text-center md:text-left">
 					<div className="text-green-500 font-dm-sans">
 						<span className="text-5xl sm:text-6xl lg:text-8xl font-bold">{luckyPercentage}%</span>
 						<div className="text-xl sm:text-2xl font-poppins font-semibold">Lucky Percentage</div>
 					</div>
-				</div>
+				</div> */}
 			</div>
 		</div>
 	);
