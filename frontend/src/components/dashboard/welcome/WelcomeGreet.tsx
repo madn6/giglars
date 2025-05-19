@@ -5,38 +5,7 @@ import { useEffect, useMemo } from 'react';
 import { Sparkles } from 'lucide-react';
 import { MoodEntry } from '../../../redux/features/moodEntry/moodEntryTypes';
 import { fetchMoodEntries } from '../../../redux/features/moodEntry/moodEntrySlice';
-import { sevenDaysEntries } from '../../../redux/features/moodEntry/moodEntrySlice';
 
-//calculate avearage streak
-function calculateStreak(entries: MoodEntry[]) {
-	if (!entries.length) return 0;
-
-	const daysSet = new Set(entries.map((e) => new Date(e.createdAt).toDateString()));
-
-	let streak = 0;
-	const current = new Date();
-
-	while (daysSet.has(current.toDateString())) {
-		streak++;
-		current.setDate(current.getDate() - 1);
-	}
-
-	return streak;
-}
-
-//calculate average mood
-function calculateAverageMood(entries: MoodEntry[]): number {
-	if (!entries.length) return 0;
-
-	const validIntensities = entries
-		.filter((e) => typeof e.intensity === 'number')
-		.map((e) => e.intensity);
-
-	if (!validIntensities.length) return 0;
-
-	const sum = validIntensities.reduce((acc, curr) => acc + curr, 0);
-	return sum / validIntensities.length;
-}
 
 //quizz points
 function getQuizPoints(entries: MoodEntry[]): number {
@@ -75,31 +44,24 @@ export default function WelcomeGreet() {
 	const { text, author, loading } = useAppSelector((state) => state.quote);
 	const name = useAppSelector((state) => state.auth.name);
 	const { entries } = useAppSelector((state) => state.moodEntry);
-	const sevenDayEntries = useAppSelector((state) => state.moodEntry.sevenDayEntries);
-
-	console.log(sevenDayEntries)
 
 	useEffect(() => {
 		dispatch(fetchQuotes());
 		dispatch(fetchMoodEntries());
-		dispatch(sevenDaysEntries());
+		// dispatch(sevenDaysEntries());
 	}, [dispatch]);
 
 	const stats = useMemo(() => {
-		const streak = calculateStreak(entries);
-		const avgMood = calculateAverageMood(sevenDayEntries);
 		const quizPoints = getQuizPoints(entries);
 		const { correct, incorrect, streak: predictionStreak } = getPredictionStats(entries);
 
 		return {
-			streak,
-			avgMood,
 			quizPoints,
 			correctPredictions: correct,
 			incorrectPredictions: incorrect,
-			predictionStreak
+			predictionStreak,
 		};
-	}, [entries, sevenDayEntries]);
+	}, [entries]);
 
 	console.log('Stats:', stats);
 
@@ -136,8 +98,8 @@ export default function WelcomeGreet() {
 					{loading ? 'Loading quote...' : `"${text}" — ${author}`}
 				</p>
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-					<TrackingStreak streak={stats.streak} />
-					<MoodAverage moodScore={stats.avgMood} />
+					<TrackingStreak entries={entries} />
+					<MoodAverage entries={entries} />
 					<DailyQuiz points={stats.quizPoints} />
 					<PredictionTracker
 						correct={stats.correctPredictions}

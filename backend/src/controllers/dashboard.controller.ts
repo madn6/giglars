@@ -40,16 +40,6 @@ export const getMoodEntries = async (req: AuthRequest, res: Response) => {
 	res.status(200).json(entries);
 };
 
-export const getLastSevenDaysEntries = async (req: AuthRequest, res: Response) => {
-	const sevenDaysAgo = new Date();
-
-	sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-
-	const lastSevenDaysEntries = await MoodEntry.find({ createdAt: { $gte: sevenDaysAgo } });
-
-	res.status(200).json(lastSevenDaysEntries);
-};
-
 export const updateMoodEntry = async (req: AuthRequest, res: Response) => {
 	const userId = req.userId;
 	if (!userId) {

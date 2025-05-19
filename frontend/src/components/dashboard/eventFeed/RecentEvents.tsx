@@ -9,6 +9,7 @@ import {
 import { Clock, Pencil, Trash2 } from 'lucide-react';
 import IsEditing from './IsEditing';
 import IsDeleting from './isDeleting';
+import { History } from 'lucide-react';
 
 export default function RecentEvents() {
 	const dispatch = useAppDispatch();
@@ -52,11 +53,11 @@ export default function RecentEvents() {
 	const getCardStyle = (type: string) => {
 		switch (type) {
 			case 'lucky':
-				return 'bg-green-400/20 border border-green-400';
+				return 'bg-green-500/10 from-green-500/20 to-green-500/5 border-green-500/30 border';
 			case 'unlucky':
-				return 'bg-orange-400/20 border border-orange-400';
+				return 'bg-orange-500/10 from-orange-500/20 to-orange-500/5 border-orange-500/30 border';
 			case 'neutral':
-				return 'bg-blue-400/20 border border-blue-400';
+				return 'bg-blue-500/10 from-blue-500/20 to-blue-500/5 border border-blue-500/30';
 			default:
 				return '';
 		}
@@ -107,7 +108,7 @@ export default function RecentEvents() {
 											className={`w-4 h-2 rounded-full ${
 												i < (isEditing ? editedEntry.intensity ?? 0 : entry.intensity)
 													? getColor(entry.type, i)
-													: 'bg-gray'
+													: 'bg-gray-700'
 											}`}
 										></div>
 								  ))
@@ -119,8 +120,10 @@ export default function RecentEvents() {
 								className={`shadow-2xl p-4 rounded-xl ${getCardStyle(entry.type)}`}
 							>
 								<div className="flex justify-between items-center text-sm">
-									<div className="flex items-center text-xs md:text-sm gap-1 text-white">
-										<div className="w-2 h-2 bg-white rounded-full"></div>
+									<div className="flex items-center text-xs md:text-sm gap-1 text-gray-text">
+										<div className="">
+											<History size={18} />
+										</div>
 										<span>{date}</span>
 										<span>{time}</span>
 									</div>

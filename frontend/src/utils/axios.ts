@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 const baseURL = isMobile
-	? 'http://192.168.50.10:5000' 
+	? 'http://192.168.50.93:5000' 
 	: import.meta.env.VITE_API_BASE_URL;
 
 const API = axios.create({
