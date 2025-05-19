@@ -17,7 +17,7 @@ export const updateUser = createAsyncThunk(
 		{ rejectWithValue }
 	) => {
 		try {
-			const res = await API.put('/api/profile/profile-update', userData, { withCredentials: true });
+			const res = await API.patch('/api/profile/profile-update', userData, { withCredentials: true });
 			return res.data.user;
 		} catch (err) {
 			console.log(err);

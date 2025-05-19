@@ -15,7 +15,7 @@ const upload = multer({ storage: profileImageStorage });
 const profileRouter = express.Router();
 
 profileRouter.put('/profile-setup', verifyToken, asyncHandler(setupProfile));
-profileRouter.put('/profile-update', verifyToken, asyncHandler(updateProfile));
+profileRouter.patch('/profile-update', verifyToken, asyncHandler(updateProfile));
 profileRouter.delete('/delete-account', verifyToken, asyncHandler(deleteAccount));
 profileRouter.get('/get-profile-data', verifyToken, asyncHandler(getProfileData));
 profileRouter.post(

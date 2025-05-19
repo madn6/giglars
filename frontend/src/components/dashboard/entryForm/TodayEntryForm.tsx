@@ -131,7 +131,7 @@ const TodayEntryForm: React.FC = () => {
 				</div>
 
 				{/* Description */}
-				<div className="mb-6">
+				<div className="md:mb-6 mb-4">
 					<label className="block text-gray-text font-medium mb-2">What happened?</label>
 					<textarea
 						value={description}

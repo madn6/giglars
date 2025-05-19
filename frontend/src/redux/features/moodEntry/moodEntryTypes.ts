@@ -5,4 +5,7 @@ export interface MoodEntry {
 	intensity: number;
 	createdAt: string;
 	updatedAt: string;
+	quizPoints?: number;
+	prediction?: string;
+	predictionCorrect?: boolean;
 }
