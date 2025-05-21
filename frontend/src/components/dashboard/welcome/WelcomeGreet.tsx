@@ -1,11 +1,10 @@
-import { TrackingStreak, MoodAverage, DailyQuiz, PredictionTracker } from '../../index';
+import { TrackingStreak, MoodAverage, PredictionTracker } from '../../index';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { fetchQuotes } from '../../../redux/features/quote/QuoteSlice';
 import { useEffect, useMemo } from 'react';
 import { Sparkles } from 'lucide-react';
 import { MoodEntry } from '../../../redux/features/moodEntry/moodEntryTypes';
 import { fetchMoodEntries } from '../../../redux/features/moodEntry/moodEntrySlice';
-
 
 //quizz points
 function getQuizPoints(entries: MoodEntry[]): number {
@@ -59,7 +58,7 @@ export default function WelcomeGreet() {
 			quizPoints,
 			correctPredictions: correct,
 			incorrectPredictions: incorrect,
-			predictionStreak,
+			predictionStreak
 		};
 	}, [entries]);
 
@@ -97,10 +96,36 @@ export default function WelcomeGreet() {
 				<p className="italic text-gray-text md:text-xl text-md text-muted-foreground text-center font-light">
 					{loading ? 'Loading quote...' : `"${text}" — ${author}`}
 				</p>
-				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+				{/* Large screens: 3 in a row */}
+				<div className="hidden lg:grid grid-cols-3 gap-4">
 					<TrackingStreak entries={entries} />
 					<MoodAverage entries={entries} />
-					<DailyQuiz points={stats.quizPoints} />
+					<PredictionTracker
+						correct={stats.correctPredictions}
+						incorrect={stats.incorrectPredictions}
+						streak={stats.predictionStreak}
+					/>
+				</div>
+
+				{/* Medium screens: 2 + 1 centered below */}
+				<div className="hidden md:grid lg:hidden grid-cols-2 gap-4">
+					<TrackingStreak entries={entries} />
+					<MoodAverage entries={entries} />
+				</div>
+				<div className="hidden md:flex lg:hidden justify-center">
+					<div className="w-full md:w-1/2 mt-4">
+						<PredictionTracker
+							correct={stats.correctPredictions}
+							incorrect={stats.incorrectPredictions}
+							streak={stats.predictionStreak}
+						/>
+					</div>
+				</div>
+
+				{/* Small screens: stacked */}
+				<div className="md:hidden space-y-4">
+					<TrackingStreak entries={entries} />
+					<MoodAverage entries={entries} />
 					<PredictionTracker
 						correct={stats.correctPredictions}
 						incorrect={stats.incorrectPredictions}

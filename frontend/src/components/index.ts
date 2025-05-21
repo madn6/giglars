@@ -21,6 +21,5 @@ export { default as EventChart } from './dashboard/eventChart/EventChart';
 export { default as TodayEntryForm } from './dashboard/entryForm/TodayEntryForm';
 export { default as RecentEvents } from './dashboard/eventFeed/RecentEvents';
 export { default as MoodAverage } from './dashboard/welcome/MoodAverage';
-export { default as DailyQuiz } from './dashboard/welcome/DailyQuiz';
 export { default as TrackingStreak } from './dashboard/welcome/TrackingStreak';
 export { default as PredictionTracker } from './dashboard/welcome/PredictionTracker';
