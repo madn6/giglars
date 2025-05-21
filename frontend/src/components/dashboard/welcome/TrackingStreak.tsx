@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { MoodEntry } from '../../../redux/features/moodEntry/moodEntryTypes';
+// import { Flame } from 'lucide-react';
 import clsx from 'clsx';
 
 type Props = {
@@ -63,8 +64,8 @@ export default function TrackingStreak({ entries }: Props) {
 	const currentStreak = calculateCurrentStreak(entries);
 
 	return (
-		<div className="p-4 rounded-md font-inter border border-border text-white text-center">
-			<div className="flex justify-center gap-2">
+		<div className="p-4 rounded-md font-inter border bg-rose-500/20  border-rose-500 text-white text-center">
+			<div className="flex items-center justify-center gap-2">
 				<button
 					onClick={() => setSelectedView('longest')}
 					className={clsx(
@@ -90,12 +91,24 @@ export default function TrackingStreak({ entries }: Props) {
 			</div>
 
 			<div className="mt-6 flex flex-col gap-2">
-				<h3 className="md:text-3xl font-semibold">
-					🔥 {selectedView === 'longest' ? 'Longest Streak' : 'Current Streak'}
-				</h3>
-				<p className="text-5xl font-bold text-yellow-400">
-					{selectedView === 'longest' ? longestStreak : currentStreak} days
-				</p>
+				<div className="text-3xl mb-2 font-dm-sans font-semibold">
+					{selectedView === 'longest' ? (
+						<div className="">longest Streak</div>
+					) : (
+						<div className="">current Streak</div>
+					)}
+				</div>
+				<div className="flex flex-col items-center justify-center font-dm-sans">
+					<p className="flex items-center gap-1 justify-center">
+						{/* <Flame  className="!w-18 !h-18 text-rose-200 !m-0 !p-0" /> */}
+						{selectedView === 'longest' ? (
+							<span className="text-accent text-8xl font-bold">{longestStreak}</span>
+						) : (
+							<span className="text-accent text-8xl font-bold">{currentStreak}</span>
+						)}
+						<span className="text-rose-200 font-semibold text-3xl"> days</span>
+					</p>
+				</div>
 			</div>
 		</div>
 	);

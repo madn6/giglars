@@ -31,6 +31,10 @@ html {
 	background-color: #0f1014;
 }
 
+body{
+	font-family: 'Inter', sans-serif;
+}
+
 .font-romantic {
 	font-family: 'Romantic Party', sans-serif;
 }

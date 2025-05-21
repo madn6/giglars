@@ -1,4 +1,8 @@
 import { useMemo, useState } from 'react';
+import { Frown } from 'lucide-react';
+import { Meh } from 'lucide-react';
+import { Smile } from 'lucide-react';
+
 import clsx from 'clsx';
 
 // Define the structure of a mood entry
@@ -13,7 +17,11 @@ type Props = {
 };
 
 // Define the mood representations
-const moodMap = ['😞', '😐', '😁'];
+const moodMap = [
+	<Frown className="w-18 h-18 text-orange-200" key="frown" />,
+	<Meh className="w-18 h-18 text-blue-200" key="meh" />,
+	<Smile className="w-18 h-18 text-green-200" key="smile" />
+];
 
 // Define the available time ranges
 const ranges = [
@@ -50,15 +58,16 @@ export default function MoodAverage({ entries }: Props) {
 
 	// Define color variants for each mood
 	const moodStyles = {
-		lucky: 'bg-green-500/10 from-green-500/20 to-green-500/5 border-green-500/30',
-		neutral: 'bg-blue-500/10 from-blue-500/20 to-blue-500/5 border-blue-500/30',
-		unlucky: 'bg-orange-500/10 from-orange-500/20 to-orange-500/5 border-orange-500/30'
+		lucky: 'bg-green-500/20 border border-green-500',
+		neutral: 'bg-blue-500/20 border border-blue-500',
+		unlucky: 'bg-orange-500/20 border border-orange-500'
 	};
 	return (
 		<div
 			className={clsx(
 				'p-4 font-inter rounded-md border text-white text-center space-y-4',
-				moodStyles[moodLabels[rounded - 1] as keyof typeof moodStyles] || 'bg-gray-800 border-gray-600'
+				moodStyles[moodLabels[rounded - 1] as keyof typeof moodStyles] ||
+					'bg-gray-800 border-gray-600'
 			)}
 		>
 			{' '}
@@ -69,7 +78,7 @@ export default function MoodAverage({ entries }: Props) {
 						key={range.value}
 						onClick={() => setSelectedRange(range)}
 						className={clsx(
-							'px-3 py-1 rounded-md text-sm border border-border/20 transition',
+							'px-3 py-1 rounded-md text-sm border shadow-2xl border-border/20 transition',
 							selectedRange.value === range.value
 								? 'bg-accent text-black font-medium'
 								: 'bg-gray text-white hover:bg-border/20'
@@ -80,11 +89,9 @@ export default function MoodAverage({ entries }: Props) {
 				))}
 			</div>
 			{/* Average Mood Emoji */}
-			<div className="text-4xl">{emoji}</div>
+			<div className="flex justify-center items-center ">{emoji}</div>
 			{/* Mood Description */}
-			<p className="text-sm">
-				Average Mood: {rounded} – {moodLabels[rounded - 1] || 'Unknown'}
-			</p>
+			<p className="text-xl font-semibold font-dm-sans">Mood: {moodLabels[rounded - 1] || 'Unknown'}</p>
 		</div>
 	);
 }
