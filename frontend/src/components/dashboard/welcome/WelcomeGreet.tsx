@@ -1,42 +1,11 @@
-import { TrackingStreak, MoodAverage, PredictionTracker } from '../../index';
+import { TrackingStreak, MoodAverage, DailyTreeCheckin } from '../../index';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { fetchQuotes } from '../../../redux/features/quote/QuoteSlice';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { Sparkles } from 'lucide-react';
-import { MoodEntry } from '../../../redux/features/moodEntry/moodEntryTypes';
 import { fetchMoodEntries } from '../../../redux/features/moodEntry/moodEntrySlice';
 
-//quizz points
-function getQuizPoints(entries: MoodEntry[]): number {
-	return entries.reduce((total, e) => total + (e.quizPoints || 0), 0);
-}
 
-//prediction center
-function getPredictionStats(entries: MoodEntry[]) {
-	let correct = 0;
-	let incorrect = 0;
-	let streak = 0;
-
-	// Loop for streak and count corrects until first incorrect
-	for (let i = entries.length - 1; i >= 0; i--) {
-		const e = entries[i];
-		if (e.predictionCorrect === true) {
-			correct++;
-			streak++;
-		} else if (e.predictionCorrect === false) {
-			incorrect++;
-			break; // streak ends at first incorrect
-		}
-	}
-
-	// Count remaining incorrects
-	for (let j = entries.length - 1; j >= 0; j--) {
-		const e = entries[j];
-		if (e.predictionCorrect === false) incorrect++;
-	}
-
-	return { correct, incorrect, streak };
-}
 
 export default function WelcomeGreet() {
 	const dispatch = useAppDispatch();
@@ -50,19 +19,6 @@ export default function WelcomeGreet() {
 		// dispatch(sevenDaysEntries());
 	}, [dispatch]);
 
-	const stats = useMemo(() => {
-		const quizPoints = getQuizPoints(entries);
-		const { correct, incorrect, streak: predictionStreak } = getPredictionStats(entries);
-
-		return {
-			quizPoints,
-			correctPredictions: correct,
-			incorrectPredictions: incorrect,
-			predictionStreak
-		};
-	}, [entries]);
-
-	console.log('Stats:', stats);
 
 	const getGreetingParts = () => {
 		const hour = new Date().getHours();
@@ -100,10 +56,8 @@ export default function WelcomeGreet() {
 				<div className="hidden lg:grid grid-cols-3 gap-4">
 					<TrackingStreak entries={entries} />
 					<MoodAverage entries={entries} />
-					<PredictionTracker
-						correct={stats.correctPredictions}
-						incorrect={stats.incorrectPredictions}
-						streak={stats.predictionStreak}
+					<DailyTreeCheckin
+					entries={entries} 
 					/>
 				</div>
 
@@ -114,10 +68,8 @@ export default function WelcomeGreet() {
 				</div>
 				<div className="hidden md:flex lg:hidden justify-center">
 					<div className="w-full md:w-1/2 mt-4">
-						<PredictionTracker
-							correct={stats.correctPredictions}
-							incorrect={stats.incorrectPredictions}
-							streak={stats.predictionStreak}
+						<DailyTreeCheckin
+							entries={entries} 
 						/>
 					</div>
 				</div>
@@ -126,11 +78,7 @@ export default function WelcomeGreet() {
 				<div className="md:hidden space-y-4">
 					<TrackingStreak entries={entries} />
 					<MoodAverage entries={entries} />
-					<PredictionTracker
-						correct={stats.correctPredictions}
-						incorrect={stats.incorrectPredictions}
-						streak={stats.predictionStreak}
-					/>
+					<DailyTreeCheckin  entries={entries} />
 				</div>
 			</div>
 		</>
