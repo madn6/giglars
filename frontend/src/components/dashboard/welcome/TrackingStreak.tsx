@@ -64,7 +64,7 @@ export default function TrackingStreak({ entries }: Props) {
 	const currentStreak = calculateCurrentStreak(entries);
 
 	return (
-		<div className="p-4 rounded-md font-inter border bg-rose-500/20  border-rose-500 text-white text-center">
+		<div className="p-4 rounded-md font-inter  bg-rose-500/10 from-rose-500/20 to-rose-500/5 border-rose-500/30 border text-white text-center">
 			<div className="flex items-center justify-center gap-2">
 				<button
 					onClick={() => setSelectedView('longest')}

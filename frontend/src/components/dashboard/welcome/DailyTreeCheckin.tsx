@@ -1,7 +1,11 @@
 import { MoodEntry } from '../../../redux/features/moodEntry/moodEntryTypes';
 import { useMemo, useState } from 'react';
-import seedImage from '/images/dashboard-images/seeding.png';
-import sproutImage from '/images/dashboard-images/sprout.png';
+import seedImage from '/images/dashboard-images/seed.png';
+import partialYieldImage from '/images/dashboard-images/partial-yield.png';
+import saplingImage from '/images/dashboard-images/sapling.png';
+import halfTreeImage from '/images/dashboard-images/half-tree.png';
+import sproutImage from '/images/dashboard-images/sprout_2.png';
+import harvestedImage from '/images/dashboard-images/harvested.png';
 import { Snowflake, Flower, Sun, Leaf } from 'lucide-react';
 import { Info } from 'lucide-react';
 import { CircleCheckBig } from 'lucide-react';
@@ -56,31 +60,31 @@ const getTreeStage = (days: number) => {
 		};
 	if (days < 30)
 		return {
-			image: sproutImage,
+			image:sproutImage,
 			label: 'Sprout',
 			desc: 'Small growth.'
 		};
 	if (days < 45)
 		return {
-			image: '/tree-stages/sapling.png',
+			image: saplingImage,
 			label: 'Sapling',
 			desc: 'Halfway grown.'
 		};
 	if (days < 70)
 		return {
-			image: '/tree-stages/half-tree.png',
+			image: halfTreeImage,
 			label: 'Half-grown Tree',
 			desc: 'Almost ready.'
 		};
 	if (days < 90)
 		return {
-			image: '/tree-stages/fruit-tree.png',
+			image: partialYieldImage,
 			label: 'Tree with Fruit',
 			desc: 'Partial yield!'
 		};
 
 	return {
-		image: '/tree-stages/full-tree.png',
+		image:harvestedImage,
 		label: 'Full Harvest',
 		desc: 'Full yield! 🏆'
 	};
@@ -118,7 +122,7 @@ export default function DailyTreeCheckin({ entries }: Props) {
 	const daysUntilNextSeason = Math.max(0, 90 - seasonDay);
 
 	return (
-		<div className="p-4 bg-cyan-500/20 border border-cyan-500 rounded-md">
+		<div className="p-4 bg-cyan-500/10 from-cyan-500/20 to-cyan-500/5 border-cyan-500/30 border rounded-md">
 			<div className="flex flex-col items-center justify-between space-y-3">
 				{/* Header */}
 				<div className="w-full text-sm font-medium flex items-center justify-between">
@@ -128,7 +132,7 @@ export default function DailyTreeCheckin({ entries }: Props) {
 						{!showRules && (
 							<button
 								onClick={() => setShowRules(true)}
-								className="text-muted-foreground hover:text-black"
+								className="text-muted-foreground"
 							>
 								<Info size={16} />
 							</button>

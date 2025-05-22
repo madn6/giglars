@@ -58,9 +58,9 @@ export default function MoodAverage({ entries }: Props) {
 
 	// Define color variants for each mood
 	const moodStyles = {
-		lucky: 'bg-green-500/20 border border-green-500',
-		neutral: 'bg-blue-500/20 border border-blue-500',
-		unlucky: 'bg-orange-500/20 border border-orange-500'
+		lucky: 'bg-green-500/10 from-green-500/20 to-green-500/5 border-green-500/30 border',
+		neutral: 'bg-blue-500/10 from-blue-500/20 to-blue-500/5 border-blue-500/30 border',
+		unlucky: 'bg-orange-500/10 from-orange-500/20 to-orange-500/5 border-orange-500/30 border'
 	};
 	return (
 		<div
