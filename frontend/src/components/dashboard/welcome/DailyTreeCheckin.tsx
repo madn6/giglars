@@ -56,43 +56,48 @@ const getTreeStage = (days: number) => {
 		return {
 			image: seedImage,
 			label: 'Seed',
-			desc: 'Just planted.'
+			desc: 'Just planted.',
+			points: 10
 		};
 	if (days < 30)
 		return {
-			image:sproutImage,
+			image: sproutImage,
 			label: 'Sprout',
-			desc: 'Small growth.'
+			desc: 'Small growth.',
+			points: 20
 		};
 	if (days < 45)
 		return {
 			image: saplingImage,
 			label: 'Sapling',
-			desc: 'Halfway grown.'
+			desc: 'Halfway grown.',
+			points: 30
 		};
 	if (days < 70)
 		return {
 			image: halfTreeImage,
 			label: 'Half-grown Tree',
-			desc: 'Almost ready.'
+			desc: 'Almost ready.',
+			points: 50
 		};
 	if (days < 90)
 		return {
 			image: partialYieldImage,
 			label: 'Tree with Fruit',
-			desc: 'Partial yield!'
+			desc: 'Partial yield!',
+			points: 75
 		};
 
 	return {
-		image:harvestedImage,
+		image: harvestedImage,
 		label: 'Full Harvest',
-		desc: 'Full yield! 🏆'
+		desc: 'Full yield! 🏆',
+		points: 100
 	};
 };
 
 export default function DailyTreeCheckin({ entries }: Props) {
 	const [showRules, setShowRules] = useState(false);
-
 	const { name: seasonName, startDate, endDate, icon } = getCurrentSeason();
 
 	const checkInCount = useMemo(() => {
@@ -100,7 +105,7 @@ export default function DailyTreeCheckin({ entries }: Props) {
 			entries
 				.filter((e) => {
 					const day = new Date(e.createdAt);
-					return day >= startDate && day <= endDate; //returning a boolean (true or false) to .filter().
+					return day >= startDate && day <= endDate;
 				})
 				.map((e) => new Date(e.createdAt).toDateString())
 		);
@@ -117,9 +122,12 @@ export default function DailyTreeCheckin({ entries }: Props) {
 	const seasonDay = Math.floor((Date.now() - startDate.getTime()) / (1000 * 60 * 60 * 24));
 	const firstDay = firstEntryInSeason ? new Date(firstEntryInSeason).getTime() : null;
 
-	const treeStage = getTreeStage(checkInCount);
 	const canParticipate = !firstDay || seasonDay < 75;
 	const daysUntilNextSeason = Math.max(0, 90 - seasonDay);
+
+	const treeStage = getTreeStage(checkInCount);
+	const totalPoints = checkInCount * 2; // ✅ 2 XP per check-in
+	const isFullHarvest = checkInCount >= 90;
 
 	return (
 		<div className="p-4 bg-cyan-500/10 from-cyan-500/20 to-cyan-500/5 border-cyan-500/30 border rounded-md">
@@ -130,10 +138,7 @@ export default function DailyTreeCheckin({ entries }: Props) {
 						<span>{icon}</span>
 						{seasonName} Season Progress
 						{!showRules && (
-							<button
-								onClick={() => setShowRules(true)}
-								className="text-muted-foreground"
-							>
+							<button onClick={() => setShowRules(true)} className="text-muted-foreground">
 								<Info size={16} />
 							</button>
 						)}
@@ -146,27 +151,15 @@ export default function DailyTreeCheckin({ entries }: Props) {
 
 				{/* Rules View */}
 				{showRules ? (
-					<div className="overflow-y-auto max-h-42  px-1 text-sm text-muted-foreground flex flex-col gap-3">
+					<div className="overflow-y-auto max-h-42 px-1 text-sm text-muted-foreground flex flex-col gap-3">
 						<h3 className="text-center text-base font-semibold">🌳 Seasonal Tree Growth Rules</h3>
-						<ul className="list-disc pl-5 text-gray-textt-xs md:text-sm text-muted-foreground">
-							<li>
-								<strong>0–14 Days:</strong> Seed — Tree hasn’t sprouted yet.
-							</li>
-							<li>
-								<strong>15–29 Days:</strong> 🌿 Sprout — Early growth begins.
-							</li>
-							<li>
-								<strong>30–44 Days:</strong> 🌱 Sapling — Halfway grown.
-							</li>
-							<li>
-								<strong>45–69 Days:</strong> 🌳 Half-grown Tree — Full height, no fruit.
-							</li>
-							<li>
-								<strong>70–89 Days:</strong> 🌳🍎 Tree with Fruit — Some fruit appears.
-							</li>
-							<li>
-								<strong>90 Days:</strong> 🌳🍇 Full Harvest Tree — Full fruit yield! 🏆
-							</li>
+						<ul className="list-disc pl-5 text-sm text-muted-foreground">
+							<li><strong>0–14 Days:</strong> Seed — Tree hasn’t sprouted yet.</li>
+							<li><strong>15–29 Days:</strong> 🌿 Sprout — Early growth begins.</li>
+							<li><strong>30–44 Days:</strong> 🌱 Sapling — Halfway grown.</li>
+							<li><strong>45–69 Days:</strong> 🌳 Half-grown Tree — Full height, no fruit.</li>
+							<li><strong>70–89 Days:</strong> 🌳🍎 Tree with Fruit — Some fruit appears.</li>
+							<li><strong>90 Days:</strong> 🌳🍇 Full Harvest Tree — Full fruit yield! 🏆</li>
 							<li className="mt-1">You must start before day 75 of the season to participate.</li>
 						</ul>
 						<button
@@ -176,8 +169,7 @@ export default function DailyTreeCheckin({ entries }: Props) {
 							Close
 						</button>
 					</div>
-				) : // Main Tree View
-				canParticipate ? (
+				) : canParticipate ? (
 					<>
 						<div className="flex items-center font-dm-sans gap-2">
 							<img
@@ -188,8 +180,24 @@ export default function DailyTreeCheckin({ entries }: Props) {
 							<div className="text-center space-y-1">
 								<h3 className="text-lg md:text-xl font-semibold">{treeStage.label}</h3>
 								<p className="text-xs md:text-sm">{treeStage.desc}</p>
+								<p className="text-xs font-semibold">🎯 XP earned: {totalPoints}</p>
 							</div>
 						</div>
+						<p className="text-xs font-medium text-green-600">
+							{treeStage.label === 'Seed' && '🌱 Great start! Keep nurturing your tree.'}
+							{treeStage.label === 'Sprout' && '🌿 Your sprout is reaching for the sun!'}
+							{treeStage.label === 'Sapling' && '🌱 You’re halfway there—awesome!'}
+							{treeStage.label === 'Half-grown Tree' && '🌳 Almost there! Keep going.'}
+							{treeStage.label === 'Tree with Fruit' && '🍎 Your effort is paying off!'}
+							{treeStage.label === 'Full Harvest' && '🏆 Incredible! Full season success!'}
+						</p>
+
+						{/* ✅ Badge reward for full season */}
+						{isFullHarvest && (
+							<div className="mt-2 text-sm text-yellow-700 font-semibold">
+								🏅 Badge unlocked: <strong>Full Season Grower</strong>
+							</div>
+						)}
 					</>
 				) : (
 					<div className="text-center mt-4 space-y-2">
