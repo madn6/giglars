@@ -51,6 +51,14 @@ const getCurrentSeason = (date = new Date()) => {
 	return { name: seasons[index].name, startDate, endDate, icon: selected.icon };
 };
 
+const getSeasonKey = (date: Date) => {
+	const year = date.getFullYear();
+	const month = date.getMonth();
+	const seasonIndex = Math.floor(month / 3);
+	const seasonNames = ['Winter', 'Spring', 'Summer', 'Fall'];
+	return `${seasonNames[seasonIndex]}-${year}`;
+};
+
 const getTreeStage = (days: number) => {
 	if (days < 15)
 		return {
@@ -96,6 +104,28 @@ const getTreeStage = (days: number) => {
 	};
 };
 
+const countFullSeasons = (entries: MoodEntry[]) => {
+	const seasonMap: Record<string, Set<string>> = {};
+
+	for (const entry of entries) {
+		const date = new Date(entry.createdAt);
+		const seasonKey = getSeasonKey(date);
+		if (!seasonMap[seasonKey]) {
+			seasonMap[seasonKey] = new Set();
+		}
+		seasonMap[seasonKey].add(date.toDateString()); // one entry per day
+	}
+
+	// Count how many seasons have 90+ unique days
+	let fullSeasons = 0;
+	Object.values(seasonMap).forEach((daySet) => {
+		if (daySet.size >= 90) {
+			fullSeasons++;
+		}
+	});
+	return fullSeasons;
+};
+
 export default function DailyTreeCheckin({ entries }: Props) {
 	const [showRules, setShowRules] = useState(false);
 	const { name: seasonName, startDate, endDate, icon } = getCurrentSeason();
@@ -125,9 +155,14 @@ export default function DailyTreeCheckin({ entries }: Props) {
 	const canParticipate = !firstDay || seasonDay < 75;
 	const daysUntilNextSeason = Math.max(0, 90 - seasonDay);
 
+	const dailyPoints = checkInCount * 2;
 	const treeStage = getTreeStage(checkInCount);
-	const totalPoints = checkInCount * 2; // ✅ 2 XP per check-in
+	const milestonePoints = treeStage.points;
+
+	const totalXP = dailyPoints + milestonePoints;
+
 	const isFullHarvest = checkInCount >= 90;
+	const fullSeasonCount = useMemo(() => countFullSeasons(entries), [entries]);
 
 	return (
 		<div className="p-4 bg-cyan-500/10 from-cyan-500/20 to-cyan-500/5 border-cyan-500/30 border rounded-md">
@@ -154,12 +189,24 @@ export default function DailyTreeCheckin({ entries }: Props) {
 					<div className="overflow-y-auto max-h-42 px-1 text-sm text-muted-foreground flex flex-col gap-3">
 						<h3 className="text-center text-base font-semibold">🌳 Seasonal Tree Growth Rules</h3>
 						<ul className="list-disc pl-5 text-sm text-muted-foreground">
-							<li><strong>0–14 Days:</strong> Seed — Tree hasn’t sprouted yet.</li>
-							<li><strong>15–29 Days:</strong> 🌿 Sprout — Early growth begins.</li>
-							<li><strong>30–44 Days:</strong> 🌱 Sapling — Halfway grown.</li>
-							<li><strong>45–69 Days:</strong> 🌳 Half-grown Tree — Full height, no fruit.</li>
-							<li><strong>70–89 Days:</strong> 🌳🍎 Tree with Fruit — Some fruit appears.</li>
-							<li><strong>90 Days:</strong> 🌳🍇 Full Harvest Tree — Full fruit yield! 🏆</li>
+							<li>
+								<strong>0–14 Days:</strong> Seed — Tree hasn’t sprouted yet.
+							</li>
+							<li>
+								<strong>15–29 Days:</strong> 🌿 Sprout — Early growth begins.
+							</li>
+							<li>
+								<strong>30–44 Days:</strong> 🌱 Sapling — Halfway grown.
+							</li>
+							<li>
+								<strong>45–69 Days:</strong> 🌳 Half-grown Tree — Full height, no fruit.
+							</li>
+							<li>
+								<strong>70–89 Days:</strong> 🌳🍎 Tree with Fruit — Some fruit appears.
+							</li>
+							<li>
+								<strong>90 Days:</strong> 🌳🍇 Full Harvest Tree — Full fruit yield! 🏆
+							</li>
 							<li className="mt-1">You must start before day 75 of the season to participate.</li>
 						</ul>
 						<button
@@ -180,7 +227,23 @@ export default function DailyTreeCheckin({ entries }: Props) {
 							<div className="text-center space-y-1">
 								<h3 className="text-lg md:text-xl font-semibold">{treeStage.label}</h3>
 								<p className="text-xs md:text-sm">{treeStage.desc}</p>
-								<p className="text-xs font-semibold">🎯 XP earned: {totalPoints}</p>
+								<p className="text-xs font-semibold">
+										XP earned: {dailyPoints} + {milestonePoints} bonus = {totalXP}
+								</p>
+
+								{/* Badge for this season */}
+								{isFullHarvest && (
+									<div className="mt-2 text-sm font-semibold">
+										🏅 Badge unlocked: <strong>Full Season Grower</strong>
+									</div>
+								)}
+
+								{/* Count of past full seasons */}
+								{fullSeasonCount > 1 && (
+									<div className="text-xs font-medium mt-1">
+										🏆 {fullSeasonCount}× Full Season Grower
+									</div>
+								)}
 							</div>
 						</div>
 						<p className="text-xs font-medium text-green-600">
