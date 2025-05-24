@@ -19,8 +19,10 @@ export default function Dashboard() {
 	const { entries } = useAppSelector((state) => state.moodEntry);
 
 	useEffect(() => {
-		dispatch(fetchMoodEntries());
-	}, [dispatch]);
+		if (entries.length === 0) {
+			dispatch(fetchMoodEntries());
+		}
+	}, [dispatch, entries.length]);
 
 	const moodCounts = entries.reduce(
 		(acc, entry) => {
