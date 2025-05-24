@@ -30,8 +30,10 @@ export default function UpdateProfile() {
 	});
 
 	useEffect(() => {
-		dispatch(getProfileData());
-	}, [dispatch]);
+		if (!displayName || !email) {
+			dispatch(getProfileData());
+		}
+	}, [dispatch, displayName, email]);
 
 	useEffect(() => {
 		setFormData({
