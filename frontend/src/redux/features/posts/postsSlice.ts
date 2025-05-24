@@ -2,11 +2,12 @@ import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import API from '../../../utils/axios';
 import { Post } from './postTypes'; // Import the Post type
 
-const initialState: Post[] = []; // This is the initial state (an empty array of posts)
+// Initial state
+const initialState: Post[] = [];
 
 // Async thunk to create a post
 export const createPost = createAsyncThunk(
-	'posts/createPost', // The action type
+	'posts/createPost',
 	async (
 		{
 			content,
@@ -39,32 +40,59 @@ export const createPost = createAsyncThunk(
 				withCredentials: true
 			});
 
-			return res.data; // Return the response data for success
+			return res.data;
 		} catch (error) {
 			console.error('Failed to create post:', error);
-			return rejectWithValue('Failed to create post. Please try again.'); // Handle failure
+			return rejectWithValue('Failed to create post. Please try again.');
 		}
 	}
 );
+
+// Async thunk to fetch posts
+export const fetchPosts = createAsyncThunk<
+	Post[],
+	{ feeling?: 'lucky' | 'unlucky' | 'all' },
+	{ rejectValue: string }
+>('posts/fetchPosts', async ({ feeling }, { rejectWithValue }) => {
+	try {
+		const res = await API.get('/api/post/get-all-posts', {
+			params: { feeling: feeling === 'all' ? undefined : feeling }
+		});
+
+		const sanitizedPosts = res.data.posts.map((post: Post) => ({
+			...post,
+			stats: {
+				luck: post.stats?.luck ?? 0,
+				comments: post.stats?.comments ?? 0,
+				caps: post.stats?.caps ?? 0,
+				saves: post.stats?.saves ?? 0,
+				shares: post.stats?.shares ?? 0
+			}
+		}));
+
+		return sanitizedPosts;
+	} catch (error) {
+		console.error('Fetch posts failed:', error);
+		return rejectWithValue('Failed to fetch posts.');
+	}
+});
 
 const postsSlice = createSlice({
 	name: 'posts',
 	initialState,
 	reducers: {
-		// Action to set posts from the backend
-		setPosts: (_state, action: PayloadAction<Post[]>) => {
-			return action.payload;
-		},
-		// Action to remove a post by id
-		removePost: (state, action: PayloadAction<string>) => {
-			return state.filter((post) => post._id !== action.payload);
-		}
+		setPosts: (_state, action: PayloadAction<Post[]>) => action.payload,
+		removePost: (state, action: PayloadAction<string>) =>
+			state.filter((post) => post._id !== action.payload)
 	},
 	extraReducers: (builder) => {
-		builder.addCase(createPost.fulfilled, (state, action: PayloadAction<Post>) => {
-			// Adds a new post to the start of the posts array
-			state.unshift(action.payload);
-		});
+		builder
+			.addCase(fetchPosts.fulfilled, (_state, action: PayloadAction<Post[]>) => {
+				return action.payload;
+			})
+			.addCase(createPost.fulfilled, (state, action: PayloadAction<Post>) => {
+				state.unshift(action.payload);
+			});
 	}
 });
 

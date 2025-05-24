@@ -1,11 +1,8 @@
 import PostCard from '../components/PostCard';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../redux/store/store';
+import { RootState, AppDispatch } from '../redux/store/store';
 import { useEffect, useState } from 'react';
-import API from '../utils/axios';
-import { setPosts } from '../redux/features/posts/postsSlice';
-import { Post } from '../redux/features/posts/postTypes';
-
+import { fetchPosts } from '../redux/features/posts/postsSlice';
 import { HomeNavigations } from '../components';
 
 type HomeProps = {
@@ -17,41 +14,21 @@ const Home: React.FC<HomeProps> = ({ filter = 'all' }) => {
 	const [error, setError] = useState<string | null>(null);
 	const [feeling, setFeeling] = useState<'lucky' | 'unlucky' | 'all'>(filter);
 
-	const dispatch = useDispatch();
+	const dispatch = useDispatch<AppDispatch>();
 	const posts = useSelector((state: RootState) => state.posts);
 
 	console.log('posts', posts);
 
 	useEffect(() => {
-		const fetchPosts = async () => {
-			try {
-				const res = await API.get('/api/post/get-all-posts', {
-					params: { feeling: feeling === 'all' ? undefined : feeling }
-				});
-				console.log('PostCard received post:', res.data);
-				dispatch(
-					setPosts(
-						res.data.posts.map((post: Post) => ({
-							...post,
-							stats: {
-								luck: post.stats?.luck ?? 0,
-								comments: post.stats?.comments ?? 0,
-								caps: post.stats?.caps ?? 0,
-								saves: post.stats?.saves ?? 0,
-								shares: post.stats?.shares ?? 0
-							}
-						}))
-					)
-				);
-			} catch (error) {
-				console.error('Failed to fetch posts:', error);
-				setError('Failed to load posts.');
-			} finally {
-				setLoading(false);
-			}
-		};
+		setLoading(true);
+		setError(null);
 
-		fetchPosts();
+		dispatch(fetchPosts({ feeling }))
+			.unwrap()
+			.catch((err: string) => {
+				setError(err);
+			})
+			.finally(() => setLoading(false));
 	}, [dispatch, feeling]);
 
 	const handleFeelingFilter = (selectedFeeling: 'lucky' | 'unlucky' | 'all') => {
