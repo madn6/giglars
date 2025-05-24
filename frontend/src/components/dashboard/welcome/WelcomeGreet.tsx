@@ -49,7 +49,7 @@ export default function WelcomeGreet() {
 						<span className="text-accent">!</span> {message}
 					</div>
 				</div>
-				<p className="italic text-gray-text md:text-xl text-md text-muted-foreground text-center font-light">
+				<p className="italic text-gray-text md:text-xl text-md text-center font-light">
 					{loading ? 'Loading quote...' : `"${text}" — ${author}`}
 				</p>
 				{/* Large screens: 3 in a row */}

@@ -173,7 +173,7 @@ export default function DailyTreeCheckin({ entries }: Props) {
 						<span>{icon}</span>
 						{seasonName} Season Progress
 						{!showRules && (
-							<button onClick={() => setShowRules(true)} className="text-muted-foreground">
+							<button onClick={() => setShowRules(true)} className="">
 								<Info size={16} />
 							</button>
 						)}
@@ -186,9 +186,9 @@ export default function DailyTreeCheckin({ entries }: Props) {
 
 				{/* Rules View */}
 				{showRules ? (
-					<div className="overflow-y-auto max-h-42 px-1 text-sm text-muted-foreground flex flex-col gap-3">
+					<div className="overflow-y-auto max-h-46 px-1 text-sm flex flex-col gap-3">
 						<h3 className="text-center text-base font-semibold">🌳 Seasonal Tree Growth Rules</h3>
-						<ul className="list-disc pl-5 text-sm text-muted-foreground">
+						<ul className="list-disc pl-5 text-sm ">
 							<li>
 								<strong>0–14 Days:</strong> Seed — Tree hasn’t sprouted yet.
 							</li>
@@ -225,12 +225,13 @@ export default function DailyTreeCheckin({ entries }: Props) {
 								className="w-35 h-35 mt-4 object-contain"
 							/>
 							<div className="text-center space-y-1">
-								<h3 className="text-lg md:text-xl font-semibold">{treeStage.label}</h3>
+								<h3 className="text-lg md:text-xl font-semibold text-cyan-200">
+									{treeStage.label}
+								</h3>
 								<p className="text-xs md:text-sm">{treeStage.desc}</p>
 								<p className="text-xs font-semibold">
-										XP earned: {dailyPoints} + {milestonePoints} bonus = {totalXP}
+									XP : {dailyPoints} + {milestonePoints} bonus = {totalXP}
 								</p>
-
 								{/* Badge for this season */}
 								{isFullHarvest && (
 									<div className="mt-2 text-sm font-semibold">
@@ -241,7 +242,7 @@ export default function DailyTreeCheckin({ entries }: Props) {
 								{/* Count of past full seasons */}
 								{fullSeasonCount > 1 && (
 									<div className="text-xs font-medium mt-1">
-										🏆 {fullSeasonCount}× Full Season Grower
+										🏆 {fullSeasonCount}X Full Season Grower
 									</div>
 								)}
 							</div>
