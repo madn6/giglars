@@ -106,7 +106,9 @@ export default function TrackingStreak({ entries }: Props) {
 						) : (
 							<span className="text-accent text-8xl font-bold">{currentStreak}</span>
 						)}
-						<span className="text-rose-200 font-semibold text-3xl"> days</span>
+						<span className="text-rose-200 font-semibold text-3xl">
+							{(selectedView === 'longest' ? longestStreak : currentStreak) === 1 ? 'day' : 'days'}
+						</span>
 					</p>
 				</div>
 			</div>
