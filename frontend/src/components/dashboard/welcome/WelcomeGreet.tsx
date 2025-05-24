@@ -5,8 +5,6 @@ import { useEffect } from 'react';
 import { Sparkles } from 'lucide-react';
 import { fetchMoodEntries } from '../../../redux/features/moodEntry/moodEntrySlice';
 
-
-
 export default function WelcomeGreet() {
 	const dispatch = useAppDispatch();
 	const { text, author, loading } = useAppSelector((state) => state.quote);
@@ -14,11 +12,9 @@ export default function WelcomeGreet() {
 	const { entries } = useAppSelector((state) => state.moodEntry);
 
 	useEffect(() => {
-		dispatch(fetchQuotes());
-		dispatch(fetchMoodEntries());
-		// dispatch(sevenDaysEntries());
-	}, [dispatch]);
-
+		if (!text) dispatch(fetchQuotes());
+		if (entries.length === 0) dispatch(fetchMoodEntries());
+	}, [dispatch, text, entries.length]);
 
 	const getGreetingParts = () => {
 		const hour = new Date().getHours();
@@ -56,9 +52,7 @@ export default function WelcomeGreet() {
 				<div className="hidden lg:grid grid-cols-3 gap-4">
 					<TrackingStreak entries={entries} />
 					<MoodAverage entries={entries} />
-					<DailyTreeCheckin
-					entries={entries} 
-					/>
+					<DailyTreeCheckin entries={entries} />
 				</div>
 
 				{/* Medium screens: 2 + 1 centered below */}
@@ -68,9 +62,7 @@ export default function WelcomeGreet() {
 				</div>
 				<div className="hidden md:flex lg:hidden justify-center">
 					<div className="w-full md:w-1/2 mt-4">
-						<DailyTreeCheckin
-							entries={entries} 
-						/>
+						<DailyTreeCheckin entries={entries} />
 					</div>
 				</div>
 
@@ -78,7 +70,7 @@ export default function WelcomeGreet() {
 				<div className="md:hidden space-y-4">
 					<TrackingStreak entries={entries} />
 					<MoodAverage entries={entries} />
-					<DailyTreeCheckin  entries={entries} />
+					<DailyTreeCheckin entries={entries} />
 				</div>
 			</div>
 		</>

@@ -4,14 +4,12 @@ import { MoodEntry } from './moodEntryTypes';
 
 interface MoodEntryState {
 	entries: MoodEntry[];
-	sevenDayEntries: MoodEntry[];
 	loading: boolean;
 	error: string | null;
 }
 
 const initialState: MoodEntryState = {
 	entries: [],
-	sevenDayEntries: [],
 	loading: false,
 	error: null
 };

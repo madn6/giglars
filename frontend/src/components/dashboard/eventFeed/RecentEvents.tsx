@@ -93,6 +93,7 @@ export default function RecentEvents() {
 						if (isDeleting) {
 							return (
 								<IsDeleting
+									key={entry._id}
 									entry={entry}
 									setConfirmDeleteId={setConfirmDeleteId}
 									handleDelete={handleDelete}

@@ -16,10 +16,25 @@ import { fetchMoodEntries } from '../../../redux/features/moodEntry/moodEntrySli
 const TodayEntryForm: React.FC = () => {
 	const dispatch = useAppDispatch();
 	const { loading, error, success } = useAppSelector((state) => state.todayEntry);
+	const { entries } = useAppSelector((state) => state.moodEntry);
 
 	const [type, setType] = useState<'lucky' | 'unlucky' | 'neutral' | null>(null);
 	const [description, setDescription] = useState('');
 	const [intensity, setIntensity] = useState(2);
+
+	// Fetch entries only on first mount
+	useEffect(() => {
+		if (entries.length === 0) {
+			dispatch(fetchMoodEntries());
+		}
+	}, [dispatch, entries.length]);
+
+	// Check if last entry was today
+	const lastEntry = entries[0];
+	const today = new Date().toDateString();
+	const hasCheckedInToday = lastEntry
+		? new Date(lastEntry.createdAt).toDateString() === today
+		: false;
 
 	const resetForm = () => {
 		setType(null);
@@ -30,6 +45,11 @@ const TodayEntryForm: React.FC = () => {
 	const handleSubmit = useCallback(
 		async (e: React.FormEvent) => {
 			e.preventDefault();
+
+			if (hasCheckedInToday) {
+				toast.error("You've already submitted today's entry.");
+				return;
+			}
 
 			if (!type) {
 				toast.error('Please select whether your day was lucky, unlucky, or neutral');
@@ -49,7 +69,7 @@ const TodayEntryForm: React.FC = () => {
 				};
 				await dispatch(submitTodayEntry(payload)).unwrap();
 
-				// ✅ Refetch entries after successful submission
+				// Refetch entries after successful submission
 				dispatch(fetchMoodEntries());
 
 				toast.success("Today's entry saved!");
@@ -59,9 +79,10 @@ const TodayEntryForm: React.FC = () => {
 				toast.error('Something went wrong. Try again.');
 			}
 		},
-		[type, description, intensity, dispatch]
+		[type, description, intensity, dispatch, hasCheckedInToday]
 	);
 
+	// Reset local Redux state after feedback
 	useEffect(() => {
 		if (success || error) {
 			dispatch(resetTodayEventState());
@@ -72,7 +93,7 @@ const TodayEntryForm: React.FC = () => {
 		<div className="bg-secondary font-inter backdrop-blur-md rounded-xl h-fit md:p-6 p-4 border border-border/20">
 			<div className="flex items-center justify-center mb-6 gap-1">
 				<div className="">
-					<CalendarCheck  size={20}/>
+					<CalendarCheck size={20} />
 				</div>
 				<h2 className="text-xl font-semibold text-white ">Today's Entry</h2>
 			</div>
