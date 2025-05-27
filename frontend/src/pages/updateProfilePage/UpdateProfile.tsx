@@ -6,12 +6,12 @@ import {
 	clearUser,
 	getProfileData,
 	updateUserProfileImage
-} from '../redux/features/users/userSlice';
-import { logout } from '../redux/features/auth/authSlice';
+} from '../../redux/features/users/userSlice';
+import { logout } from '../../redux/features/auth/authSlice';
 import { useEffect, useState } from 'react';
-import API from '../utils/axios';
+import API from '../../utils/axios';
 import { useNavigate } from 'react-router-dom';
-import type { AppDispatch, RootState } from '../redux/store/store';
+import type { AppDispatch, RootState } from '../../redux/store/store';
 
 export default function UpdateProfile() {
 	const displayName = useSelector((state: RootState) => state.users.displayName);

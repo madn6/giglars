@@ -1,9 +1,9 @@
-import PostImageUpload from '../components/post/PostImageUpload';
+import PostImageUpload from '../../components/createPost/PostImageUpload';
 import { motion } from 'framer-motion';
 import { useDispatch } from 'react-redux';
-import { createPost } from '../redux/features/posts/postsSlice';
-import { CreatePostPayload } from '../redux/features/posts/postTypes';
-import type { AppDispatch } from '../redux/store/store';
+import { createPost } from '../../redux/features/posts/postsSlice';
+import { CreatePostPayload } from '../../redux/features/posts/postTypes';
+import type { AppDispatch } from '../../redux/store/store';
 
 import {
 	PostTextArea,
@@ -12,7 +12,7 @@ import {
 	PostVisibilitySelector,
 	PostGifSelector,
 	PostSubmitButton
-} from '../components';
+} from '../../components'
 
 import { Editor } from '@tiptap/react';
 import { useRef, useState } from 'react';

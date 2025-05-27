@@ -4,7 +4,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { AxiosError } from 'axios';
 import { useDispatch } from 'react-redux';
-import { login } from '../redux/features/auth/authSlice';
+import { login } from '../../redux/features/auth/authSlice';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Eye, EyeOff } from 'lucide-react';
@@ -12,7 +12,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-import API from '../utils/axios';
+import API from '../../utils/axios';
 
 const signInSchema = yup.object().shape({
 	email: yup.string().email('Invalid email').required('Email is required'),

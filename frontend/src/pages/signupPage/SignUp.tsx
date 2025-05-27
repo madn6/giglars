@@ -7,9 +7,9 @@ import { toast } from 'react-toastify';
 import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import { useDispatch } from 'react-redux';
-import { login } from '../redux/features/auth/authSlice';
+import { login } from '../../redux/features/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
-import API from '../utils/axios';
+import API from '../../utils/axios';
 const signupSchema = yup.object().shape({
 	username: yup
 		.string()

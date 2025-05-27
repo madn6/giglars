@@ -1,9 +1,9 @@
-import PostCard from '../components/PostCard';
+import PostCard from '../../components/home/PostCard';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState, AppDispatch } from '../redux/store/store';
+import { RootState, AppDispatch } from '../../redux/store/store';
 import { useEffect, useState } from 'react';
-import { fetchPosts } from '../redux/features/posts/postsSlice';
-import { HomeNavigations } from '../components';
+import { fetchPosts } from '../../redux/features/posts/postsSlice';
+import { HomeNavigations } from '../../components';
 
 type HomeProps = {
 	filter?: 'lucky' | 'unlucky' | 'all';

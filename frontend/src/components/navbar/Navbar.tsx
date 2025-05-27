@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { RootState } from '../redux/store/store';
-import UserMenu from './UserMenu';
+import { RootState } from '../../redux/store/store';
+import UserMenu from './userMenu/UserMenu';
 
 export interface UserMenuProps {
 	isLoggedIn: boolean;
@@ -12,10 +12,7 @@ export interface UserMenuProps {
 	};
 }
 const Navbar: React.FC = () => {
-	const profileImage = useSelector((state: RootState) => state.auth.profileImage);
-	const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
-	const email = useSelector((state: RootState) => state.auth.email);
-	const name = useSelector((state: RootState) => state.auth.name);
+	const { profileImage, isLoggedIn, email, name } = useSelector((state: RootState) => state.auth);
 	console.log(profileImage);
 
 	return (
@@ -23,7 +20,9 @@ const Navbar: React.FC = () => {
 			<nav className="fixed border-b border-border/20 bg-[#0f1014]  top-0 left-0 w-full z-50 font-poppins text-white shadow-2xl  ">
 				<ul className="flex items-center justify-between px-5 py-4">
 					<li className="font-rangile text-2xl ">
-						<Link to="/" className='text-accent'>Giglars</Link>
+						<Link to="/" className="text-accent">
+							Giglars
+						</Link>
 					</li>
 
 					<div className="">
@@ -35,7 +34,7 @@ const Navbar: React.FC = () => {
 					<UserMenu
 						isLoggedIn={isLoggedIn}
 						user={{
-							image: profileImage || '',       
+							image: profileImage || '',
 							email: email || '',
 							name: name || ''
 						}}

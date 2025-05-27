@@ -3,10 +3,10 @@ import { Splide, SplideSlide } from '@splidejs/react-splide';
 import { PiCloverFill } from 'react-icons/pi';
 import { GiBilledCap } from 'react-icons/gi';
 import { FaRegComment, FaRegBookmark, FaRegShareSquare } from 'react-icons/fa';
-import { Post } from '../redux/features/posts/postTypes';
+import { Post } from '../../redux/features/posts/postTypes';
 import { EllipsisVertical } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
-import ReadMoreText from './post/ReadMoreText';
+import ReadMoreText from '../createPost/ReadMoreText';
 
 type PostCardProps = {
 	post: Post;
@@ -37,7 +37,7 @@ export default function PostCard({ post, userData }: PostCardProps) {
 			<div className="top__container flex items-center justify-between gap-4 border border-border/20 p-2 rounded-xl  ">
 				<div className="rounded-full flex items-center justify-center border-2  border-white/70">
 					<img
-						className="w-8 h-8 rounded-full object-cover " 
+						className="w-8 h-8 rounded-full object-cover "
 						src={userData.profileImage}
 						alt="User profile"
 					/>
@@ -52,8 +52,8 @@ export default function PostCard({ post, userData }: PostCardProps) {
 					<div
 						className={`text-xs focus:ring-0 outline-none border font-poppins p-1 px-3 rounded-lg ${
 							post.feeling === 'lucky'
-								? 'bg-green-500/20 border border-green-500 text-green-200'
-								: 'bg-orange-500/20 border border-orange-500 text-orange-200'
+								? 'bg-green-500/10 from-green-500/20 to-green-500/5 border-green-500/30 border text-green-200'
+								: 'bg-orange-500/10 from-orange-500/20 to-orange-500/5 border-orange-500/30 border text-orange-200'
 						}`}
 					>
 						{post.feeling === 'lucky' ? 'Lucky' : 'Unlucky'}

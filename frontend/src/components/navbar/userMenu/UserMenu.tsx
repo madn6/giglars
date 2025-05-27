@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { UserMenuProps } from './Navbar';
+import { UserMenuProps } from '../Navbar';
 import { useDispatch } from 'react-redux';
-import { logout } from '../redux/features/auth/authSlice';
-import API from '../utils/axios';
+import { logout } from '../../../redux/features/auth/authSlice';
+import API from '../../../utils/axios';
 import { toast } from 'react-toastify';
 import { GoDotFill } from 'react-icons/go';
 import { CgProfile } from 'react-icons/cg';
@@ -70,7 +70,7 @@ const UserMenu = ({ isLoggedIn, user }: UserMenuProps) => {
 							<GoDotFill size={20} className="stroke-1 stroke-black/50" />
 						</span>
 					</div>
-					<div className="cursor-pointer" onClick={() => setOpen((prev) => !prev)}>	
+					<div className="cursor-pointer" onClick={() => setOpen((prev) => !prev)}>
 						<motion.div
 							initial={false}
 							animate={{ rotate: open ? 180 : 0 }}

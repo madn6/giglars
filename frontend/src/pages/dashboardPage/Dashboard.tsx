@@ -7,12 +7,12 @@ import {
 	RecentEvents,
 	TodayEntryForm,
 	WelcomeGreet
-} from '../components';
-import MoodTypeCount from '../components/dashboard/MoodTypeCount/MoodTypeCount';
+} from '../../components';
+import MoodTypeCount from '../../components/dashboard/MoodTypeCount/MoodTypeCount';
 
 import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { fetchMoodEntries } from '../redux/features/moodEntry/moodEntrySlice';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { fetchMoodEntries } from '../../redux/features/moodEntry/moodEntrySlice';
 
 export default function Dashboard() {
 	const dispatch = useAppDispatch();
