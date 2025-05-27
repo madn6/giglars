@@ -77,6 +77,24 @@ export const fetchPosts = createAsyncThunk<
 	}
 });
 
+//like toggle functionality
+export const toggleLuckPost = createAsyncThunk(
+	'posts/toggleLuckPost',
+	async (postId: string, { rejectWithValue }) => {
+		try {
+			const res = await API.post(
+				`/api/post/toggle-luck-post/${postId}`,
+				{},
+				{ withCredentials: true }
+			);
+			return res.data;
+		} catch (err) {
+			console.error('Failed to toggle luck on post:', err);
+			return rejectWithValue('Failed to toggle luck on post.');
+		}
+	}
+);
+
 const postsSlice = createSlice({
 	name: 'posts',
 	initialState,
@@ -92,7 +110,16 @@ const postsSlice = createSlice({
 			})
 			.addCase(createPost.fulfilled, (state, action: PayloadAction<Post>) => {
 				state.unshift(action.payload);
-			});
+			})
+			.addCase(
+				toggleLuckPost.fulfilled,
+				(state, action: PayloadAction<{ postId: string; luck: number }>) => {
+					const post = state.find((p) => p._id === action.payload.postId);
+					if (post) {
+						post.stats!.luck = action.payload.luck;
+					}
+				}
+			);
 	}
 });
 

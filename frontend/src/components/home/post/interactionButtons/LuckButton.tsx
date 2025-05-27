@@ -1,14 +1,21 @@
 import { PiCloverFill } from 'react-icons/pi';
+import { useAppDispatch } from '../../../../redux/hooks';
+import { toggleLuckPost } from '../../../../redux/features/posts/postsSlice';
 
 type LuckButtonProps = {
-    count: number;
-  postId: string;
-  onClick?: () => void;
+	count: number;
+	postId: string;
 };
 
-export default function LuckButton({count, postId, onClick}: LuckButtonProps) {
+export default function LuckButton({ count, postId, }: LuckButtonProps) {
+	const dispatch = useAppDispatch();
+
+	const handleClick = () => {
+		dispatch(toggleLuckPost(postId));
+	};
+
 	return (
-		<div className="flex items-center gap-2 cursor-pointer hover:opacity-75" onClick={onClick}>
+		<div className="flex items-center gap-2 cursor-pointer hover:opacity-75" onClick={handleClick}>
 			<PiCloverFill />
 			<p>{count}</p>
 		</div>

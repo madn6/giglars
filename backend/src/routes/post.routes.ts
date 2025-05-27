@@ -11,7 +11,10 @@ const upload = multer({ storage: postImageStorage });
 
 postRouter.post('/create-post', upload.array('files'), verifyToken, asyncHandler(createPost));
 postRouter.get('/get-all-posts', asyncHandler(getAllPosts));
-
+postRouter.patch('/toggle-luck-post/:id', verifyToken, asyncHandler(toggleLuckPost));
+postRouter.patch('/toggle-save-post/:id', verifyToken, asyncHandler(toggleSavePost));
+postRouter.patch('/add-comment-post/:id', verifyToken, asyncHandler(addCommentToPost));
+postRouter.patch('/share-post/:id', verifyToken, asyncHandler(incrementShareCount));
 export default postRouter;
 
 
