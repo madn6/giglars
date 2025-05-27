@@ -13,7 +13,7 @@ export { default as StepOneFields } from './extraProfileDetails/StepOneFields';
 export { default as StepTwoFields } from './extraProfileDetails/StepTwoFields';
 export { default as ProfileLocation } from './extraProfileDetails/ProfileLocation';
 export { default as ReadMoreText } from './home/post/ReadMoreText';
-export { default as HomeNavigations } from './home/HomeNavigations';
+export { default as HomeNavigations } from './home/homeNavigations/HomeNavigations';
 export { default as WelcomeGreet } from './dashboard/welcome/WelcomeGreet';
 export { default as EventGrid } from './dashboard/trackerGrid/EventGrid';
 export { default as EventGraph } from './dashboard/eventGraph/EventGraph';
