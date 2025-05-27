@@ -6,7 +6,7 @@ import { FaRegComment, FaRegBookmark, FaRegShareSquare } from 'react-icons/fa';
 import { Post } from '../../../redux/features/posts/postTypes';
 import { EllipsisVertical } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
-import ReadMoreText from '../../createPost/ReadMoreText';
+import ReadMoreText from './ReadMoreText';
 
 type PostCardProps = {
 	post: Post;
