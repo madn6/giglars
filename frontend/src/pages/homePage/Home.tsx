@@ -1,4 +1,4 @@
-import PostCard from '../../components/home/PostCard';
+import PostCard from '../../components/home/post/PostCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../../redux/store/store';
 import { useEffect, useState } from 'react';

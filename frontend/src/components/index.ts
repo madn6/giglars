@@ -1,5 +1,5 @@
 export { default as Navbar } from './navbar/Navbar';
-export { default as PostCard } from './home/PostCard';
+export { default as PostCard } from './home/post/PostCard';
 export { default as PostTextArea } from './createPost/PostTextArea';
 export { default as PostFeelingSelector } from './createPost/PostFeelingSelector';
 export { default as PostImageUpload } from './createPost/PostImageUpload';
