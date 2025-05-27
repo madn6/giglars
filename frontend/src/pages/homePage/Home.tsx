@@ -1,6 +1,5 @@
 import PostCard from '../../components/home/post/PostCard';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState, AppDispatch } from '../../redux/store/store';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { useEffect, useState } from 'react';
 import { fetchPosts } from '../../redux/features/posts/postsSlice';
 import { HomeNavigations } from '../../components';
@@ -13,11 +12,10 @@ const Home: React.FC<HomeProps> = ({ filter = 'all' }) => {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 	const [feeling, setFeeling] = useState<'lucky' | 'unlucky' | 'all'>(filter);
+	const dispatch = useAppDispatch();
+	const { postItems } = useAppSelector((state) => state.posts);
 
-	const dispatch = useDispatch<AppDispatch>();
-	const posts = useSelector((state: RootState) => state.posts);
-
-	console.log('posts', posts);
+	console.log('posts', postItems);
 
 	useEffect(() => {
 		setLoading(true);
@@ -47,7 +45,7 @@ const Home: React.FC<HomeProps> = ({ filter = 'all' }) => {
 						) : error ? (
 							<p className="text-center text-red-500">{error}</p>
 						) : (
-							posts.map((post) => (
+							postItems.map((post) => (
 								<PostCard
 									key={post._id}
 									post={post}

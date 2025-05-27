@@ -1,45 +1,33 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import API from '../../../utils/axios';
-import { Post } from './postTypes'; // Import the Post type
+import { Post, CreatePostPayload } from './postTypes';
 
-// Initial state
-const initialState: Post[] = [];
+interface PostsState {
+	postItems: Post[];
+	loading: boolean;
+	error: string | null;
+}
 
-// Async thunk to create a post
-export const createPost = createAsyncThunk(
+const initialState: PostsState = {
+	postItems: [],
+	loading: false,
+	error: null
+};
+
+// Async: Create Post
+export const createPost = createAsyncThunk<Post, CreatePostPayload, { rejectValue: string }>(
 	'posts/createPost',
-	async (
-		{
-			content,
-			feeling,
-			files,
-			tags,
-			visibility,
-			postGif
-		}: {
-			content: string;
-			feeling: string;
-			files: File[];
-			tags: string[];
-			visibility: string;
-			postGif: string[];
-		},
-		{ rejectWithValue }
-	) => {
+	async (payload, { rejectWithValue }) => {
 		try {
 			const formData = new FormData();
-			formData.append('content', content);
-			formData.append('feeling', feeling);
+			formData.append('content', payload.content);
+			formData.append('feeling', payload.feeling);
+			payload.files.forEach((file) => formData.append('files', file));
+			formData.append('tags', JSON.stringify(payload.tags));
+			formData.append('visibility', payload.visibility);
+			formData.append('gifs', JSON.stringify(payload.postGif));
 
-			files.forEach((file) => formData.append('files', file));
-			formData.append('tags', JSON.stringify(tags));
-			formData.append('visibility', visibility);
-			formData.append('gifs', JSON.stringify(postGif));
-
-			const res = await API.post('/api/post/create-post', formData, {
-				withCredentials: true
-			});
-
+			const res = await API.post('/api/post/create-post', formData, { withCredentials: true });
 			return res.data;
 		} catch (error) {
 			console.error('Failed to create post:', error);
@@ -48,7 +36,7 @@ export const createPost = createAsyncThunk(
 	}
 );
 
-// Async thunk to fetch posts
+// Async: Fetch Posts
 export const fetchPosts = createAsyncThunk<
 	Post[],
 	{ feeling?: 'lucky' | 'unlucky' | 'all' },
@@ -59,7 +47,7 @@ export const fetchPosts = createAsyncThunk<
 			params: { feeling: feeling === 'all' ? undefined : feeling }
 		});
 
-		const sanitizedPosts = res.data.posts.map((post: Post) => ({
+		const sanitized = res.data.posts.map((post: Post) => ({
 			...post,
 			stats: {
 				luck: post.stats?.luck ?? 0,
@@ -70,56 +58,64 @@ export const fetchPosts = createAsyncThunk<
 			}
 		}));
 
-		return sanitizedPosts;
+		return sanitized;
 	} catch (error) {
-		console.error('Fetch posts failed:', error);
+		console.error('Failed to fetch posts:', error);
 		return rejectWithValue('Failed to fetch posts.');
 	}
 });
 
-//like toggle functionality
-export const toggleLuckPost = createAsyncThunk(
-	'posts/toggleLuckPost',
-	async (postId: string, { rejectWithValue }) => {
-		try {
-			const res = await API.post(
-				`/api/post/toggle-luck-post/${postId}`,
-				{},
-				{ withCredentials: true }
-			);
-			return res.data;
-		} catch (err) {
-			console.error('Failed to toggle luck on post:', err);
-			return rejectWithValue('Failed to toggle luck on post.');
-		}
+// Async: Toggle Luck
+export const toggleLuckPost = createAsyncThunk<
+	{ postId: string; updatedLuckCount: number },
+	string,
+	{ rejectValue: string }
+>('posts/toggleLuckPost', async (postId, { rejectWithValue }) => {
+	try {
+		const res = await API.patch(`/api/post/toggle-luck-post/${postId}`, {}, { withCredentials: true });
+		return { postId, updatedLuckCount: res.data.luck };
+	} catch (err) {
+		console.error('Failed to toggle luck:', err);
+		return rejectWithValue('Failed to toggle luck on post.');
 	}
-);
+});
 
 const postsSlice = createSlice({
 	name: 'posts',
 	initialState,
 	reducers: {
-		setPosts: (_state, action: PayloadAction<Post[]>) => action.payload,
-		removePost: (state, action: PayloadAction<string>) =>
-			state.filter((post) => post._id !== action.payload)
+		setPosts: (state, action: PayloadAction<Post[]>) => {
+			state.postItems = action.payload;
+		},
+		removePost: (state, action: PayloadAction<string>) => {
+			state.postItems = state.postItems.filter((post) => post._id !== action.payload);
+		}
 	},
 	extraReducers: (builder) => {
 		builder
-			.addCase(fetchPosts.fulfilled, (_state, action: PayloadAction<Post[]>) => {
-				return action.payload;
+			.addCase(fetchPosts.pending, (state) => {
+				state.loading = true;
+				state.error = null;
 			})
-			.addCase(createPost.fulfilled, (state, action: PayloadAction<Post>) => {
-				state.unshift(action.payload);
+			.addCase(fetchPosts.fulfilled, (state, action) => {
+				state.loading = false;
+				state.postItems = action.payload;
 			})
-			.addCase(
-				toggleLuckPost.fulfilled,
-				(state, action: PayloadAction<{ postId: string; luck: number }>) => {
-					const post = state.find((p) => p._id === action.payload.postId);
-					if (post) {
-						post.stats!.luck = action.payload.luck;
-					}
+			.addCase(fetchPosts.rejected, (state, action) => {
+				state.loading = false;
+				state.error = action.payload ?? 'Unknown error';
+			})
+
+			.addCase(createPost.fulfilled, (state, action) => {
+				state.postItems.unshift(action.payload);
+			})
+
+			.addCase(toggleLuckPost.fulfilled, (state, action) => {
+				const post = state.postItems.find((p) => p._id === action.payload.postId);
+				if (post && post.stats) {
+					post.stats.luck = action.payload.updatedLuckCount;
 				}
-			);
+			});
 	}
 });
 
