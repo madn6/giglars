@@ -1,12 +1,14 @@
 import '@splidejs/react-splide/css';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
-import { PiCloverFill } from 'react-icons/pi';
-import { GiBilledCap } from 'react-icons/gi';
-import { FaRegComment, FaRegBookmark, FaRegShareSquare } from 'react-icons/fa';
 import { Post } from '../../../redux/features/posts/postTypes';
 import { EllipsisVertical } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import ReadMoreText from './ReadMoreText';
+import LuckButton from './interactionButtons/LuckButton';
+import CommentsButton from './interactionButtons/CommentsButton';
+import CapsButton from './interactionButtons/CapsButton';
+import SaveButton from './interactionButtons/SaveButton';
+import ShareButton from './interactionButtons/ShareButton';
 
 type PostCardProps = {
 	post: Post;
@@ -137,26 +139,11 @@ export default function PostCard({ post, userData }: PostCardProps) {
 			</div>
 
 			<div className="image__bottom flex justify-between items-center mt-4 text-sm">
-				<div className="flex items-center gap-2">
-					<PiCloverFill />
-					<p>{post.stats?.luck}</p>
-				</div>
-				<div className="flex items-center gap-2">
-					<FaRegComment />
-					<p>{post.stats?.comments}</p>
-				</div>
-				<div className="flex items-center gap-2">
-					<GiBilledCap />
-					<p>{post.stats?.caps}</p>
-				</div>
-				<div className="flex items-center gap-2">
-					<FaRegBookmark />
-					<p>{post.stats?.saves}</p>
-				</div>
-				<div className="flex items-center gap-2">
-					<FaRegShareSquare />
-					<p>{post.stats?.shares}</p>
-				</div>
+				<LuckButton count={post.stats?.luck ?? 0} postId={post._id!} />
+				<CommentsButton count={post.stats?.comments ?? 0} postId={post._id!} />
+				<CapsButton count={post.stats?.caps ?? 0} postId={post._id!} />
+				<SaveButton count={post.stats?.saves ?? 0} postId={post._id!} />
+				<ShareButton count={post.stats?.shares ?? 0} postId={post._id!} />
 			</div>
 		</div>
 	);
