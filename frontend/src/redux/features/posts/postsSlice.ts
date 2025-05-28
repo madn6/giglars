@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import API from '../../../utils/axios';
 import { Post, CreatePostPayload } from './postTypes';
+import { toggleLuckPost } from '../postInteractions/interactionThunks';
 
 interface PostsState {
 	postItems: Post[];
@@ -65,21 +66,6 @@ export const fetchPosts = createAsyncThunk<
 	}
 });
 
-// Async: Toggle Luck
-export const toggleLuckPost = createAsyncThunk<
-	{ postId: string; updatedLuckCount: number },
-	string,
-	{ rejectValue: string }
->('posts/toggleLuckPost', async (postId, { rejectWithValue }) => {
-	try {
-		const res = await API.patch(`/api/luck/toggle-luck-post/${postId}`, {}, { withCredentials: true });
-		return { postId, updatedLuckCount: res.data.luck };
-	} catch (err) {
-		console.error('Failed to toggle luck:', err);
-		return rejectWithValue('Failed to toggle luck on post.');
-	}
-});
-
 const postsSlice = createSlice({
 	name: 'posts',
 	initialState,
@@ -109,11 +95,11 @@ const postsSlice = createSlice({
 			.addCase(createPost.fulfilled, (state, action) => {
 				state.postItems.unshift(action.payload);
 			})
-
 			.addCase(toggleLuckPost.fulfilled, (state, action) => {
-				const post = state.postItems.find((p) => p._id === action.payload.postId);
+				const { postId, updatedLuckCount } = action.payload;
+				const post = state.postItems.find((p) => p._id === postId);
 				if (post && post.stats) {
-					post.stats.luck = action.payload.updatedLuckCount;
+					post.stats.luck = updatedLuckCount;
 				}
 			});
 	}

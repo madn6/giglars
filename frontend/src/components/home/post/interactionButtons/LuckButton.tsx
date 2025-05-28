@@ -1,6 +1,6 @@
 import { PiCloverFill } from 'react-icons/pi';
 import { useAppDispatch } from '../../../../redux/hooks';
-import { toggleLuckPost } from '../../../../redux/features/posts/postsSlice';
+import { toggleLuckPost } from '../../../../redux/features/postInteractions/interactionThunks';
 
 type LuckButtonProps = {
 	count: number;

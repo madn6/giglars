@@ -13,7 +13,7 @@ const store = configureStore({
 		users: userReducer,
 		todayEntry: todayEntryReducer,
 		moodEntry: moodEntryReducer,
-		quote:fetchQuoteReducer
+		quote: fetchQuoteReducer,
 	},
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware({
@@ -25,3 +25,4 @@ export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
 export default store;
+                    
