@@ -1,0 +1,5 @@
+export { default as luckRoutes } from './luck.routes'
+export { default as commentRoutes } from './comment.routes'
+export { default as capRoutes } from './cap.routes'
+export { default as saveRoutes } from './save.routes'
+export { default as shareRoutes } from './share.routes'

@@ -72,7 +72,7 @@ export const toggleLuckPost = createAsyncThunk<
 	{ rejectValue: string }
 >('posts/toggleLuckPost', async (postId, { rejectWithValue }) => {
 	try {
-		const res = await API.patch(`/api/post/toggle-luck-post/${postId}`, {}, { withCredentials: true });
+		const res = await API.patch(`/api/luck/toggle-luck-post/${postId}`, {}, { withCredentials: true });
 		return { postId, updatedLuckCount: res.data.luck };
 	} catch (err) {
 		console.error('Failed to toggle luck:', err);
