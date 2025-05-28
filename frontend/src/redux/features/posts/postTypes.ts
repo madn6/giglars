@@ -13,6 +13,7 @@ export interface Post {
 	visibility: string;
 	createdAt?: string;
 	updatedAt?: string;
+	luckBy: string[];
 
 	stats?: {
 		luck: number;

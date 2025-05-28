@@ -14,20 +14,22 @@ const Home: React.FC<HomeProps> = ({ filter = 'all' }) => {
 	const [feeling, setFeeling] = useState<'lucky' | 'unlucky' | 'all'>(filter);
 	const dispatch = useAppDispatch();
 	const { postItems } = useAppSelector((state) => state.posts);
+	const userId = useAppSelector((state) => state.auth.userId);
 
 	console.log('posts', postItems);
 
 	useEffect(() => {
+		if (!userId) return;
 		setLoading(true);
 		setError(null);
 
-		dispatch(fetchPosts({ feeling }))
+		dispatch(fetchPosts({ feeling, userId }))
 			.unwrap()
 			.catch((err: string) => {
 				setError(err);
 			})
 			.finally(() => setLoading(false));
-	}, [dispatch, feeling]);
+	}, [dispatch, feeling, userId]);
 
 	const handleFeelingFilter = (selectedFeeling: 'lucky' | 'unlucky' | 'all') => {
 		setFeeling(selectedFeeling);

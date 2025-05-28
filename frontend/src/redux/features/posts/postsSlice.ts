@@ -42,24 +42,28 @@ export const createPost = createAsyncThunk<Post, CreatePostPayload, { rejectValu
 // Async: Fetch Posts
 export const fetchPosts = createAsyncThunk<
 	Post[],
-	{ feeling?: 'lucky' | 'unlucky' | 'all' },
+	{ feeling?: 'lucky' | 'unlucky' | 'all'; userId: string },
 	{ rejectValue: string }
->('posts/fetchPosts', async ({ feeling }, { rejectWithValue }) => {
+>('posts/fetchPosts', async ({ feeling, userId }, { rejectWithValue }) => {
 	try {
 		const res = await API.get('/api/post/get-all-posts', {
 			params: { feeling: feeling === 'all' ? undefined : feeling }
 		});
 
-		const sanitized = res.data.posts.map((post: Post) => ({
-			...post,
-			stats: {
-				luck: post.stats?.luck ?? 0,
-				comments: post.stats?.comments ?? 0,
-				caps: post.stats?.caps ?? 0,
-				saves: post.stats?.saves ?? 0,
-				shares: post.stats?.shares ?? 0
-			}
-		}));
+		const sanitized = res.data.posts.map((post: Post) => {
+			const userHasLiked = post.luckBy.includes(userId);
+			return {
+				...post,
+				stats: {
+					luck: post.stats?.luck ?? 0,
+					comments: post.stats?.comments ?? 0,
+					caps: post.stats?.caps ?? 0,
+					saves: post.stats?.saves ?? 0,
+					shares: post.stats?.shares ?? 0,
+					userHasLiked
+				}
+			};
+		});
 
 		return sanitized;
 	} catch (error) {
@@ -88,12 +92,16 @@ const postsSlice = createSlice({
 			.addCase(fetchPosts.fulfilled, (state, action) => {
 				state.loading = false;
 				state.postItems = action.payload;
+				action.payload.forEach((post) => {
+					if (post._id) {
+						state.hasLikedByPost[post._id] = post.stats?.userHasLiked ?? false;
+					}
+				});
 			})
 			.addCase(fetchPosts.rejected, (state, action) => {
 				state.loading = false;
 				state.error = action.payload ?? 'Unknown error';
 			})
-
 			.addCase(createPost.fulfilled, (state, action) => {
 				state.postItems.unshift(action.payload);
 			})
