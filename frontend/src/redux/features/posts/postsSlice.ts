@@ -65,6 +65,9 @@ export const fetchPosts = createAsyncThunk<
 			};
 		});
 
+		//fetchPosts.fulfilled: Initializes the correct userHasLiked state when the app loads or posts are refreshed.
+		//toggleLuckPost.fulfilled: Keeps the like state in sync after user interaction.
+
 		return sanitized;
 	} catch (error) {
 		console.error('Failed to fetch posts:', error);
