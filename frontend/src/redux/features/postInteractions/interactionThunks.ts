@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import API from '../../../utils/axios';
 
 export const toggleLuckPost = createAsyncThunk<
-	{ postId: string; updatedLuckCount: number },
+	{ postId: string; updatedLuckCount: number; userHasLiked: boolean },
 	string,
 	{ rejectValue: string }
 >('interactions/toggleLuckPost', async (postId, { rejectWithValue }) => {
@@ -12,7 +12,7 @@ export const toggleLuckPost = createAsyncThunk<
 			{},
 			{ withCredentials: true }
 		);
-		return { postId, updatedLuckCount: res.data.luck };
+		return { postId, updatedLuckCount: res.data.luck, userHasLiked: res.data.userHasLiked };
 	} catch (err) {
 		console.error('Failed to toggle luck:', err);
 		return rejectWithValue('Failed to toggle luck on post.');

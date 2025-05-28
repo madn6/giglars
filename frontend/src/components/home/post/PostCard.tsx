@@ -139,11 +139,11 @@ export default function PostCard({ post, userData }: PostCardProps) {
 			</div>
 
 			<div className="image__bottom flex justify-between items-center mt-4 text-sm">
-				<LuckButton count={post.stats?.luck ?? 0} postId={post._id!} />
-				<CommentsButton count={post.stats?.comments ?? 0} postId={post._id!} />
-				<CapsButton count={post.stats?.caps ?? 0} postId={post._id!} />
-				<SaveButton count={post.stats?.saves ?? 0} postId={post._id!} />
-				<ShareButton count={post.stats?.shares ?? 0} postId={post._id!} />
+				<LuckButton postId={post._id!} />
+				<CommentsButton  postId={post._id!} />
+				<CapsButton  postId={post._id!} />
+				<SaveButton  postId={post._id!} />
+				<ShareButton postId={post._id!} />
 			</div>
 		</div>
 	);

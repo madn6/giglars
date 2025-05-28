@@ -7,12 +7,14 @@ interface PostsState {
 	postItems: Post[];
 	loading: boolean;
 	error: string | null;
+	hasLikedByPost: Record<string, boolean>;
 }
 
 const initialState: PostsState = {
 	postItems: [],
 	loading: false,
-	error: null
+	error: null,
+	hasLikedByPost: {}
 };
 
 // Async: Create Post
@@ -96,11 +98,13 @@ const postsSlice = createSlice({
 				state.postItems.unshift(action.payload);
 			})
 			.addCase(toggleLuckPost.fulfilled, (state, action) => {
-				const { postId, updatedLuckCount } = action.payload;
+				const { postId, updatedLuckCount, userHasLiked } = action.payload;
 				const post = state.postItems.find((p) => p._id === postId);
 				if (post && post.stats) {
 					post.stats.luck = updatedLuckCount;
+					post.stats.userHasLiked = userHasLiked;
 				}
+				state.hasLikedByPost[postId] = userHasLiked;
 			});
 	}
 });

@@ -32,5 +32,9 @@ export const toggleLuckPost = async (req: AuthRequest, res: Response) => {
 	post.stats.luck = post.luckBy.length;
 	await post.save();
 
-	res.status(200).json({ postId: post._id, luck: post.stats.luck });
+	res.status(200).json({
+		postId: post._id,
+		luck: post.stats.luck,
+		userHasLiked: !hasLiked 
+	});
 };

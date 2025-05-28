@@ -20,6 +20,7 @@ export interface Post {
 		caps: number;
 		saves: number;
 		shares: number;
+		userHasLiked: boolean;
 	};
 
 	userId: {
