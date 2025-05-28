@@ -54,7 +54,14 @@ export default function MoodAverage({ entries }: Props) {
 
 	const rounded = Math.round(moodScore);
 	const moodLabels = ['unlucky', 'neutral', 'lucky'];
-	const emoji = moodMap[rounded - 1] || '❓';
+	const emoji = moodScore === 0 ? moodMap[1] : moodMap[rounded - 1] || '❓';
+	const moodLabel = moodScore === 0 ? 'neutral' : moodLabels[rounded - 1] || 'Unknown';
+
+	const firstEntryDate = entries.length ? new Date(entries[0].createdAt) : null;
+	const now = new Date();
+	const daysSinceFirstEntry = firstEntryDate
+		? Math.floor((now.getTime() - firstEntryDate.getTime()) / (1000 * 60 * 60 * 24))
+		: 0;
 
 	// Define color variants for each mood
 	const moodStyles = {
@@ -65,7 +72,7 @@ export default function MoodAverage({ entries }: Props) {
 	return (
 		<div
 			className={clsx(
-				'p-4 font-inter rounded-md border text-white text-center space-y-4',
+				'p-4 font-inter flex flex-col items-center justify-center rounded-md border text-white text-center space-y-4',
 				moodStyles[moodLabels[rounded - 1] as keyof typeof moodStyles] ||
 					'bg-gray-800 border-gray-600'
 			)}
@@ -73,25 +80,27 @@ export default function MoodAverage({ entries }: Props) {
 			{' '}
 			{/* Segmented Time Range Buttons */}
 			<div className="flex justify-center flex-wrap gap-2">
-				{ranges.map((range) => (
-					<button
-						key={range.value}
-						onClick={() => setSelectedRange(range)}
-						className={clsx(
-							'px-3 py-1 rounded-md text-sm border shadow-2xl border-border/20 transition',
-							selectedRange.value === range.value
-								? 'bg-accent text-black font-medium'
-								: 'bg-gray text-white hover:bg-border/20'
-						)}
-					>
-						{range.label}
-					</button>
-				))}
+				{ranges
+					.filter((range) => range.value === 7 || daysSinceFirstEntry >= range.value)
+					.map((range) => (
+						<button
+							key={range.value}
+							onClick={() => setSelectedRange(range)}
+							className={clsx(
+								'px-3 py-1 rounded-md text-sm border shadow-2xl border-border/20 transition',
+								selectedRange.value === range.value
+									? 'bg-accent text-black font-medium'
+									: 'bg-gray text-white hover:bg-border/20'
+							)}
+						>
+							{range.label}
+						</button>
+					))}
 			</div>
 			{/* Average Mood Emoji */}
 			<div className="flex justify-center items-center ">{emoji}</div>
 			{/* Mood Description */}
-			<p className="text-xl font-semibold font-dm-sans">Mood: {moodLabels[rounded - 1] || 'Unknown'}</p>
+			<p className="text-xl font-semibold font-dm-sans">Mood: {moodLabel}</p>
 		</div>
 	);
 }
