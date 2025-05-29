@@ -1,7 +1,13 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import API from '../../../utils/axios';
 import { Post, CreatePostPayload } from './postTypes';
-import { toggleLuckPost } from '../postInteractions/interactionThunks';
+import {
+	createComment,
+	deleteComment,
+	getComments,
+	toggleLuckPost,
+	updateComment
+} from '../postInteractions/interactionThunks';
 
 interface PostsState {
 	postItems: Post[];
@@ -116,6 +122,42 @@ const postsSlice = createSlice({
 					post.stats.userHasLiked = userHasLiked;
 				}
 				state.hasLikedByPost[postId] = userHasLiked;
+			})
+
+			// Create Comment
+			.addCase(createComment.fulfilled, (state, action) => {
+				const post = state.postItems.find((p) => p._id === action.payload.postId);
+				if (post) {
+					post.comments = [...(post.comments || []), action.payload.comment];
+					post.stats.comments += 1;
+				}
+			})
+
+			.addCase(getComments.fulfilled, (state, action) => {
+				const post = state.postItems.find((p) => p._id === action.payload.postId);
+				if (post) {
+					post.comments = action.payload.comments;
+				}
+			})
+
+			// Update Comment
+			.addCase(updateComment.fulfilled, (state, action) => {
+				const post = state.postItems.find((p) => p._id === action.payload.postId);
+				if (post?.comments) {
+					const idx = post.comments.findIndex((c) => c._id === action.payload.comment._id);
+					if (idx !== -1) {
+						post.comments[idx] = action.payload.comment;
+					}
+				}
+			})
+
+			// Delete Comment
+			.addCase(deleteComment.fulfilled, (state, action) => {
+				const post = state.postItems.find((p) => p._id === action.payload.postId);
+				if (post?.comments) {
+					post.comments = post.comments.filter((c) => c._id !== action.payload.commentId);
+					post.stats.comments = Math.max(0, post.stats.comments - 1);
+				}
 			});
 	}
 });

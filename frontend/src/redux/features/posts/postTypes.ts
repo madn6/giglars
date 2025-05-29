@@ -29,6 +29,22 @@ export interface Post {
 		uniqueUsername: string;
 		displayName: string;
 	};
+
+	// NEW: comment support
+	comments?: Comment[]; // for storing fetched comments
+}
+
+export interface Comment {
+	_id: string;
+	content: string;
+	createdAt: string;
+	updatedAt: string;
+	user: {
+		_id: string;
+		email: string;
+		displayName: string;
+		profileImage: string;
+	};
 }
 
 export interface CreatePostPayload {

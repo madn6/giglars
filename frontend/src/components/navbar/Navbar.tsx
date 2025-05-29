@@ -13,7 +13,6 @@ export interface UserMenuProps {
 }
 const Navbar: React.FC = () => {
 	const { profileImage, isLoggedIn, email, name } = useSelector((state: RootState) => state.auth);
-	console.log(profileImage);
 
 	return (
 		<div className="">

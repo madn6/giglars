@@ -20,8 +20,8 @@ export default function LuckButton({postId }: LuckButtonProps) {
 	};
 
 	return (
-		<div className="flex items-center gap-2 cursor-pointer hover:opacity-75" onClick={handleClick}>
-			{hasLiked ? <TbCloverFilled size={ 18} /> : <TbClover size={18} />}
+		<div className="flex items-center gap-1 cursor-pointer hover:opacity-75" onClick={handleClick}>
+			{hasLiked ? <TbCloverFilled size={ 18} className='text-accent' /> : <TbClover size={18} />}
 			<p>{likeCount}</p>
 		</div>
 	);
