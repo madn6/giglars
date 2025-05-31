@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import API from '../../../utils/axios';
+import { Comment } from '../posts/postTypes';
 
 //toggle like
 export const toggleLuckPost = createAsyncThunk<
@@ -27,7 +28,11 @@ export const createComment = createAsyncThunk<
 	{ rejectValue: string }
 >('interactions/createComment', async ({ postId, content }, { rejectWithValue }) => {
 	try {
-		const res = await API.post(`/api/comment/${postId}`, { content }, { withCredentials: true });
+		const res = await API.post(
+			`/api/comment/post-comment/${postId}`,
+			{ content },
+			{ withCredentials: true }
+		);
 		return { postId, comment: res.data };
 	} catch (err) {
 		console.error('Create comment failed:', err);
@@ -38,11 +43,11 @@ export const createComment = createAsyncThunk<
 // Get Comments
 export const getComments = createAsyncThunk<
 	{ postId: string; comments: Comment[] },
-	string, // postId
+	string,
 	{ rejectValue: string }
 >('interactions/getComments', async (postId, { rejectWithValue }) => {
 	try {
-		const res = await API.get(`/api/comment/${postId}`, { withCredentials: true });
+		const res = await API.get(`/api/comment/get-comments/${postId}`, { withCredentials: true });
 		return { postId, comments: res.data.comments };
 	} catch (err) {
 		console.error('Failed to fetch comments:', err);
@@ -58,7 +63,7 @@ export const updateComment = createAsyncThunk<
 >('interactions/updateComment', async ({ postId, commentId, content }, { rejectWithValue }) => {
 	try {
 		const res = await API.patch(
-			`/api/comment/${postId}/${commentId}`,
+			`/api/comment/update-comment/${postId}/${commentId}`,
 			{ content },
 			{ withCredentials: true }
 		);
@@ -76,7 +81,9 @@ export const deleteComment = createAsyncThunk<
 	{ rejectValue: string }
 >('interactions/deleteComment', async ({ postId, commentId }, { rejectWithValue }) => {
 	try {
-		await API.delete(`/api/comment/${postId}/${commentId}`, { withCredentials: true });
+		await API.delete(`/api/comment/delete-comment/${postId}/${commentId}`, {
+			withCredentials: true
+		});
 		return { postId, commentId };
 	} catch (err) {
 		console.error('Delete comment failed:', err);

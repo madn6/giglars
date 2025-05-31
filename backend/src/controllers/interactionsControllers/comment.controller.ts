@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import Comment from '../../models/comment.model';
 import Post from '../../models/Post.model';
 import { AuthRequest } from '../../middleware/verifyToken';
@@ -25,7 +25,6 @@ export const createComment = async (req: AuthRequest, res: Response) => {
 	await newComment.populate('userId', 'displayName profileImage');
 
 	res.status(201).json(newComment);
-	res.status(500).json({ error: 'Failed to create comment.' });
 };
 
 // Get comments for a post
@@ -37,7 +36,6 @@ export const getComments = async (req: AuthRequest, res: Response) => {
 		.populate('userId', 'displayName profileImage');
 
 	res.status(200).json({ comments });
-	res.status(500).json({ error: 'Failed to fetch comments.' });
 };
 
 // Update a comment
@@ -57,7 +55,6 @@ export const updateComment = async (req: AuthRequest, res: Response) => {
 	}
 
 	res.status(200).json(comment);
-	res.status(500).json({ error: 'Failed to update comment.' });
 };
 
 // Delete a comment
@@ -66,6 +63,7 @@ export const deleteComment = async (req: AuthRequest, res: Response) => {
 	const userId = req.userId;
 
 	const deleted = await Comment.findOneAndDelete({ _id: commentId, postId, userId });
+
 	if (!deleted) {
 		throw new AppError('Comment not found or unauthorized.', 404);
 	}
@@ -76,5 +74,4 @@ export const deleteComment = async (req: AuthRequest, res: Response) => {
 	});
 
 	res.status(200).json({ message: 'Comment deleted.', commentId });
-	res.status(500).json({ error: 'Failed to delete comment.' });
 };

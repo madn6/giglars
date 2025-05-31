@@ -129,7 +129,9 @@ const postsSlice = createSlice({
 				const post = state.postItems.find((p) => p._id === action.payload.postId);
 				if (post) {
 					post.comments = [...(post.comments || []), action.payload.comment];
-					post.stats.comments += 1;
+					if (post.stats) {
+						post.stats.comments += 1;
+					}
 				}
 			})
 
@@ -154,9 +156,11 @@ const postsSlice = createSlice({
 			// Delete Comment
 			.addCase(deleteComment.fulfilled, (state, action) => {
 				const post = state.postItems.find((p) => p._id === action.payload.postId);
-				if (post?.comments) {
-					post.comments = post.comments.filter((c) => c._id !== action.payload.commentId);
-					post.stats.comments = Math.max(0, post.stats.comments - 1);
+				if (post) {
+					post.comments = post.comments?.filter((c) => c._id !== action.payload.commentId) || [];
+					if (post.stats) {
+						post.stats.comments = Math.max(0, post.stats.comments - 1);
+					}
 				}
 			});
 	}
