@@ -60,6 +60,7 @@ export default function CommentSection({ currentUser, postId, postAuthorId }: Co
 		const res = await dispatch(createComment({ postId, content: commentText }));
 		if (createComment.fulfilled.match(res)) {
 			setCommentText('');
+			dispatch(getComments(postId)); // Refresh comments after posting
 		}
 	};
 
