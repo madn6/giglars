@@ -42,7 +42,11 @@ export default function CommentPage() {
 						/>
 					</div>
 					<div className="mt-4 max-h-[500px] overflow-y-auto custom-scrollbar">
-						<CommentSection postId={postId!} currentUser={currentUser} />
+						<CommentSection
+							postId={postId!}
+							currentUser={currentUser}
+							postAuthorId={post.userId?._id ?? ''}
+						/>
 					</div>
 				</div>
 			</div>

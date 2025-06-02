@@ -25,6 +25,7 @@ export interface Post {
 	};
 
 	userId: {
+		_id: string;
 		profileImage: string;
 		uniqueUsername: string;
 		displayName: string;

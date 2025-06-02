@@ -22,6 +22,7 @@ type Comment = {
 
 type CommentSectionProps = {
 	postId: string;
+	postAuthorId: string;
 	currentUser: {
 		userId: string;
 		email: string;
@@ -31,7 +32,7 @@ type CommentSectionProps = {
 	};
 };
 
-export default function CommentSection({ currentUser, postId }: CommentSectionProps) {
+export default function CommentSection({ currentUser, postId,postAuthorId }: CommentSectionProps) {
 	const dispatch = useAppDispatch();
 	const { userId } = useAppSelector((state) => state.auth);
 
@@ -46,6 +47,7 @@ export default function CommentSection({ currentUser, postId }: CommentSectionPr
 		const post = state.posts.postItems.find((p) => p._id === postId);
 		return post?.comments || [];
 	});
+	console.log('comments', comments);
 
 	useEffect(() => {
 		dispatch(getComments(postId));
@@ -75,6 +77,15 @@ export default function CommentSection({ currentUser, postId }: CommentSectionPr
 
 	const handleDelete = async (commentId: string) => {
 		await dispatch(deleteComment({ postId, commentId }));
+	};
+
+	const handleReport = (commentId: string) => {
+		console.log(`Reporting comment with ID: ${commentId}`);
+	};
+
+	const handleHide = (commentId: string) => {
+		// Implement hide functionality here
+		console.log(`Hiding comment with ID: ${commentId}`);
 	};
 	return (
 		<div className=" px-2 shadow-sm">
@@ -123,66 +134,117 @@ export default function CommentSection({ currentUser, postId }: CommentSectionPr
 							<div className="flex-1">
 								<div className="flex justify-between items-center">
 									<p className="text-sm font-medium text-gray-text">{comment.userId.displayName}</p>
-									{comment.userId._id === userId && (
-										<div className="relative">
-											{/* Ellipsis button */}
-											<button
-												onClick={() =>
-													setOpenMenuId((prev) => (prev === comment._id ? null : comment._id))
-												}
-												className="text-gray-text text-xl"
-											>
-												⋯
-											</button>
+									<div className="relative">
+										{/* Ellipsis button */}
+										<button
+											onClick={() =>
+												setOpenMenuId((prev) => (prev === comment._id ? null : comment._id))
+											}
+											className="text-gray-text text-xl"
+										>
+											⋯
+										</button>
 
-											{/* Dropdown menu */}
-											{openMenuId === comment._id && (
-												<div className="absolute right-0 mt-1 w-24 bg-secondary border border-border/20 rounded shadow text-xs z-20">
-													{editingCommentId === comment._id ? (
-														<>
-															<button
-																onClick={() => handleEditSubmit(comment._id)}
-																className="block w-full px-2 py-1 text-left text-green-600 hover:bg-gray-100"
-															>
-																Save
-															</button>
-															<button
-																onClick={() => {
-																	setEditingCommentId(null);
-																	setEditedContent('');
-																	setOpenMenuId(null);
-																}}
-																className="block w-full px-2 py-1 text-left text-gray-500 hover:bg-gray-100"
-															>
-																Cancel
-															</button>
-														</>
-													) : (
-														<>
-															<button
-																onClick={() => {
-																	handleEditClick(comment);
-																	setOpenMenuId(null);
-																}}
-																className="block w-full px-2 py-1 text-left text-blue-600 hover:bg-gray-100"
-															>
-																Edit
-															</button>
-															<button
-																onClick={() => {
-																	handleDelete(comment._id);
-																	setOpenMenuId(null);
-																}}
-																className="block w-full px-2 py-1 text-left text-red-600 hover:bg-gray-100"
-															>
-																Delete
-															</button>
-														</>
-													)}
-												</div>
-											)}
-										</div>
-									)}
+										{/* Dropdown menu */}
+										{openMenuId === comment._id && (
+											<div className="absolute right-0 mt-1 w-32 bg-secondary border border-border/20 rounded shadow text-xs z-20">
+												{editingCommentId === comment._id ? (
+													<>
+														<button
+															onClick={() => handleEditSubmit(comment._id)}
+															className="block w-full px-2 py-1 text-left text-green-600 hover:bg-gray-100"
+														>
+															Save
+														</button>
+														<button
+															onClick={() => {
+																setEditingCommentId(null);
+																setEditedContent('');
+																setOpenMenuId(null);
+															}}
+															className="block w-full px-2 py-1 text-left text-gray-500 hover:bg-gray-100"
+														>
+															Cancel
+														</button>
+													</>
+												) : (
+													<>
+														{/* Author of comment */}
+														{comment.userId._id === userId && (
+															<>
+																<button
+																	onClick={() => {
+																		handleEditClick(comment);
+																		setOpenMenuId(null);
+																	}}
+																	className="block w-full px-2 py-1 text-left text-blue-600 hover:bg-gray-100"
+																>
+																	Edit
+																</button>
+																<button
+																	onClick={() => {
+																		handleDelete(comment._id);
+																		setOpenMenuId(null);
+																	}}
+																	className="block w-full px-2 py-1 text-left text-red-600 hover:bg-gray-100"
+																>
+																	Delete
+																</button>
+															</>
+														)}
+
+														{/* Post author moderating others' comments */}
+														{comment.userId._id !== userId &&
+															currentUser.userId === postAuthorId && (
+																<>
+																	<button
+																		onClick={() => {
+																			handleHide(comment._id);
+																			setOpenMenuId(null);
+																		}}
+																		className="block w-full px-2 py-1 text-left text-yellow-600 hover:bg-gray-100"
+																	>
+																		Hide
+																	</button>
+																	<button
+																		onClick={() => {
+																			handleDelete(comment._id);
+																			setOpenMenuId(null);
+																		}}
+																		className="block w-full px-2 py-1 text-left text-red-600 hover:bg-gray-100"
+																	>
+																		Delete
+																	</button>
+																	<button
+																		onClick={() => {
+																			handleReport(comment._id);
+																			setOpenMenuId(null);
+																		}}
+																		className="block w-full px-2 py-1 text-left text-gray-700 hover:bg-gray-100"
+																	>
+																		Report
+																	</button>
+																</>
+															)}
+
+														{/* Normal user reporting someone else */}
+														{comment.userId._id !== userId &&
+															currentUser.userId !== postAuthorId && (
+																<button
+																	onClick={() => {
+																		handleReport(comment._id);
+																		setOpenMenuId(null);
+																	}}
+																	className="block w-full px-2 py-1 text-left text-gray-700 hover:bg-gray-100"
+																>
+																	Report
+																</button>
+															)}
+													</>
+												)}
+											</div>
+										)}
+									</div>
 								</div>
 
 								{editingCommentId === comment._id ? (
