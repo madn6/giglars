@@ -7,12 +7,12 @@ export const errorHandler = (err: any, req: Request, res: Response, next: NextFu
 	if (err instanceof AppError) {
 		res.status(err.statusCode).json({
 			success: false,
-			message: err.message
+			error: err.message, 
 		});
 	} else {
 		res.status(500).json({
 			success: false,
-			message: 'Internal Server Error'
+			error: 'Internal Server Error', 
 		});
 	}
-}	
+};

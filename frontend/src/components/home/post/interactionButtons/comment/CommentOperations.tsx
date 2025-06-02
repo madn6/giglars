@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 type CommentOperationProps = {
 	comment: {
 		_id: string;
@@ -24,11 +26,11 @@ type CommentOperationProps = {
 	onEditClick: (comment: CommentOperationProps['comment']) => void;
 	onEditSubmit: (commentId: string) => void;
 	onDelete: (commentId: string) => void;
-	onHide: (commentId: string) => void;
-	onReport: (commentId: string) => void;
+	// onHide: (commentId: string) => void;
+	onReport: (commentId: string, reason?: string) => void;
 	setOpenMenuId: React.Dispatch<React.SetStateAction<string | null>>;
 	setEditingCommentId?: React.Dispatch<React.SetStateAction<string | null>>;
-    setEditedContent?: React.Dispatch<React.SetStateAction<string>>;
+	setEditedContent?: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export default function CommentOperations({
@@ -39,14 +41,16 @@ export default function CommentOperations({
 	onDelete,
 	onEditClick,
 	onEditSubmit,
-	onHide,
+	// onHide,
 	onReport,
 	comment,
 	setOpenMenuId,
-    openMenuId,
-    setEditingCommentId,
-    setEditedContent
+	openMenuId,
+	setEditingCommentId,
+	setEditedContent
 }: CommentOperationProps) {
+	const [reportingCommentId, setReportingCommentId] = useState<string | null>(null);
+
 	return (
 		<div className="relative">
 			{/* Ellipsis button */}
@@ -70,8 +74,8 @@ export default function CommentOperations({
 							</button>
 							<button
 								onClick={() => {
-                                    setEditingCommentId?.(null);
-									setEditedContent?.(''); 
+									setEditingCommentId?.(null);
+									setEditedContent?.('');
 									setOpenMenuId(null);
 								}}
 								className="block w-full px-2 py-1 text-left text-gray-500 hover:bg-gray-100"
@@ -108,7 +112,7 @@ export default function CommentOperations({
 							{/* Post author moderating others' comments */}
 							{comment.userId._id !== userId && currentUser.userId === postAuthorId && (
 								<>
-									<button
+									{/* <button
 										onClick={() => {
 											onHide(comment._id);
 											setOpenMenuId(null);
@@ -116,7 +120,7 @@ export default function CommentOperations({
 										className="block w-full px-2 py-1 text-left text-yellow-600 hover:bg-gray-100"
 									>
 										Hide
-									</button>
+									</button> */}
 									<button
 										onClick={() => {
 											onDelete(comment._id);
@@ -126,29 +130,37 @@ export default function CommentOperations({
 									>
 										Delete
 									</button>
-									<button
-										onClick={() => {
-											onReport(comment._id);
-											setOpenMenuId(null);
-										}}
-										className="block w-full px-2 py-1 text-left text-gray-700 hover:bg-gray-100"
-									>
-										Report
-									</button>
+									{/* Anyone except comment author can report */}
 								</>
 							)}
 
-							{/* Normal user reporting someone else */}
-							{comment.userId._id !== userId && currentUser.userId !== postAuthorId && (
-								<button
-									onClick={() => {
-										onReport(comment._id);
-										setOpenMenuId(null);
-									}}
-									className="block w-full px-2 py-1 text-left text-gray-700 hover:bg-gray-100"
-								>
-									Report
-								</button>
+							{comment.userId._id !== userId && (
+								<>
+									{reportingCommentId === comment._id ? (
+										<div className="ml-4 mt-1 space-y-1 bg-secondary border-border/20 text-white border rounded shadow p-2">
+											{['spam', 'abuse', 'other'].map((reason) => (
+												<button
+													key={reason}
+													onClick={() => {
+														onReport(comment._id, reason);
+														setReportingCommentId(null);
+														setOpenMenuId(null);
+													}}
+													className="block w-full text-left px-2 py-1 text-sm hover:bg-gray rounded-md"
+												>
+													{reason.charAt(0).toUpperCase() + reason.slice(1)}
+												</button>
+											))}
+										</div>
+									) : (
+										<button
+											onClick={() => setReportingCommentId(comment._id)}
+											className="block w-full px-2 py-1 hover:bg-gray text-left"
+										>
+											Report
+										</button>
+									)}
+								</>
 							)}
 						</>
 					)}

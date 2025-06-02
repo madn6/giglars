@@ -5,9 +5,11 @@ import {
 	createComment,
 	deleteComment,
 	getComments,
+	reportComment,
 	updateComment
 } from '../../../../../redux/features/postInteractions/interactionThunks';
 import CommentOperations from './CommentOperations';
+import { toast } from 'react-toastify';
 
 type Comment = {
 	_id: string;
@@ -81,14 +83,26 @@ export default function CommentSection({ currentUser, postId, postAuthorId }: Co
 		await dispatch(deleteComment({ postId, commentId }));
 	};
 
-	const handleReport = (commentId: string) => {
-		console.log(`Reporting comment with ID: ${commentId}`);
+	const handleReport = (commentId: string, reason?: string) => {
+		if (!reason) {
+			toast.error('Please provide a reason for reporting.');
+			return;
+		}
+		dispatch(reportComment({ commentId, reason }))
+			.unwrap()
+			.then((res) => {
+				toast.success(res.message || 'Reported successfully');
+			})
+			.catch((err) => {
+				toast.error(typeof err === 'string' ? err : 'Failed to report comment');
+			});
 	};
 
-	const handleHide = (commentId: string) => {
-		// Implement hide functionality here
-		console.log(`Hiding comment with ID: ${commentId}`);
-	};
+	// const handleHide = (commentId: string) => {
+	// 	// Implement hide functionality here
+	// 	console.log(`Hiding comment with ID: ${commentId}`);
+	// };
+
 	return (
 		<div className=" px-2 shadow-sm">
 			<div className="sticky top-0 z-10 bg-primary  p-2">
@@ -148,7 +162,7 @@ export default function CommentSection({ currentUser, postId, postAuthorId }: Co
 										onEditSubmit={handleEditSubmit}
 										onDelete={handleDelete}
 										onReport={handleReport}
-										onHide={handleHide}
+										// onHide={handleHide}
 										setOpenMenuId={setOpenMenuId}
 									/>
 								</div>

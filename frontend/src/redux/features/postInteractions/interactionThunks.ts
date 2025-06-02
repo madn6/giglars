@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import API from '../../../utils/axios';
 import { Comment } from '../posts/postTypes';
+import { AxiosError } from 'axios';
 
 //toggle like
 export const toggleLuckPost = createAsyncThunk<
@@ -90,3 +91,17 @@ export const deleteComment = createAsyncThunk<
 		return rejectWithValue('Failed to delete comment.');
 	}
 });
+
+// interactionThunks.ts
+export const reportComment = createAsyncThunk(
+	'comments/reportComment',
+	async ({ commentId, reason }: { commentId: string; reason: string }, thunkAPI) => {
+		try {
+			const response = await API.post(`/api/comment/report-comment/${commentId}`, { reason });
+			return response.data; 
+		} catch (err) {
+			const error = err as AxiosError<{ error: string }>;
+			return thunkAPI.rejectWithValue(error.response?.data?.error || 'Unknown error occurred');
+		}
+	}
+);
