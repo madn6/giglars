@@ -27,12 +27,10 @@ button {
 	outline: none;
 }
 
-html {
-	background-color: #0f1014;
-}
-
-body{
+body {
 	font-family: 'Inter', sans-serif;
+	color: white;
+	background-color: #0f1014;
 }
 
 .font-romantic {
@@ -195,8 +193,22 @@ body{
 	fill: rgb(59 130 246);
 }
 
-@layer utilities {
-	.scrollbar-thin::-webkit-scrollbar {
-		height: 6px;
-	}
+/* Custom scrollbar */
+.custom-scrollbar {
+	scrollbar-width:thin; /* For Firefox */
+	scrollbar-color: #ffffff99 #15181f; /* thumb and track colors (Firefox) */
+}
+
+/* WebKit (Chrome, Edge, Safari) */
+.custom-scrollbar::-webkit-scrollbar {
+	width: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+	background: #15181f; /* gray-800 */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+	background-color:#ffd700 ; /* gray-400 */
+	border-radius: 9999px;
 }

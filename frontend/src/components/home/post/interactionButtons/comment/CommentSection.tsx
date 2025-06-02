@@ -75,47 +75,52 @@ export default function CommentSection({ currentUser, postId }: CommentSectionPr
 		await dispatch(deleteComment({ postId, commentId }));
 	};
 	return (
-		<div className="mt-3 rounded-xl border bg-gray border-border/20 p-4 shadow-sm">
-			<div className="flex items-center mb-3 gap-2">
-				<span className="text-sm">Signed in as:</span>
-				<img
-					src={currentUser.profileImage}
-					className="rounded-full object-cover w-8 h-8"
-					alt={currentUser.name}
-				/>
-				<div className="text-xs text-gray-600">{currentUser.email}</div>
-			</div>
+		<div className=" px-2 shadow-sm">
+			<div className="sticky top-0 z-10 bg-primary  p-2">
+				<div className="flex items-center mb-3 gap-2">
+					<span className="text-sm">Signed in as:</span>
+					<div className="rounded-full flex items-center justify-center">
+						<img
+							className="w-8 h-8 rounded-full object-cover "
+							src={currentUser.profileImage}
+							alt={currentUser.name || 'User profile'}
+						/>
+					</div>
+					<div className="text-xs">{currentUser.email}</div>
+				</div>
 
-			<div className="flex gap-2">
-				<input
-					type="text"
-					className="flex-1 rounded-full border text-gray-text border-gray-300 px-4 py-2 text-sm outline-none"
-					placeholder="Write a comment..."
-					value={commentText}
-					onChange={(e) => setCommentText(e.target.value)}
-				/>
-				<button
-					onClick={handleSubmit}
-					className="rounded-full bg-blue-500 px-4 py-2 text-sm text-white hover:bg-blue-600"
-				>
-					Post
-				</button>
+				<div className="flex gap-2">
+					<input
+						type="text"
+						className="flex-1 rounded-full  border-border/20 border px-4 py-2 text-sm outline-none"
+						placeholder="Write a comment..."
+						value={commentText}
+						onChange={(e) => setCommentText(e.target.value)}
+					/>
+					<button
+						onClick={handleSubmit}
+						className="rounded-full bg-accent/90 px-4 py-2  font-medium text-black transition-colors duration-100 hover:bg-accent"
+					>
+						Post
+					</button>
+				</div>
 			</div>
-
-			<div className="mt-4 space-y-4 max-h-[250px] overflow-y-auto">
+			<div className="mt-4 space-y-4 ">
 				{comments.length === 0 ? (
 					<p className="text-gray-400 text-sm">No comments yet.</p>
 				) : (
 					comments.map((comment) => (
 						<div key={comment._id} className="flex items-start gap-3">
-							<img
-								src={comment.userId.profileImage}
-								alt="avatar"
-								className="h-8 w-8 rounded-full"
-							/>
+							<div className="rounded-full flex items-center  justify-center ">
+								<img
+									className="w-8 h-8 rounded-full object-cover "
+									src={comment.userId.profileImage}
+									alt="User profile"
+								/>
+							</div>
 							<div className="flex-1">
 								<div className="flex justify-between items-center">
-									<p className="text-sm font-medium">{comment.userId.displayName}</p>
+									<p className="text-sm font-medium text-gray-text">{comment.userId.displayName}</p>
 									{comment.userId._id === userId && (
 										<div className="flex gap-2 text-xs">
 											{editingCommentId === comment._id ? (
@@ -164,13 +169,8 @@ export default function CommentSection({ currentUser, postId }: CommentSectionPr
 										className="mt-1 w-full border px-2 py-1 text-sm rounded"
 									/>
 								) : (
-									<p className="text-sm text-gray-text">{comment.content}</p>
+									<p className="text-sm ">{comment.content}</p>
 								)}
-
-								{/* Uncomment to show comment timestamp */}
-								{/* <p className="text-xs text-gray-400">
-                {new Date(comment.createdAt).toLocaleString()}
-              </p> */}
 							</div>
 						</div>
 					))

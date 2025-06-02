@@ -39,7 +39,7 @@ const Home: React.FC<HomeProps> = ({ filter = 'all' }) => {
 		<div className="flex flex-col  font-inter min-h-screen">
 			<HomeNavigations feelingFilter={handleFeelingFilter} />
 			{/* Main Content - Fully Centered and Scrollable */}
-			<div className="flex-1 h-full pt-20 pb-22 md:pl-[140px] px-2 md:px-6 mx-auto w-full max-w-3xl overflow-y-auto">
+			<div className="flex-1 h-full pt-20 pb-22 md:pl-[140px] px-2 md:px-6 mx-auto w-full max-w-3xl custom-scrollbar">
 				<div className="max-w-2xl w-full">
 					<div className="grid grid-cols-1 gap-4">
 						{loading ? (

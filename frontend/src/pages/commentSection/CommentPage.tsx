@@ -29,10 +29,8 @@ export default function CommentPage() {
 
 	return (
 		<div className="flex flex-col font-inter text-white min-h-screen">
-			<div className="flex-1 pt-20 pb-24 md:pl-[140px] px-2 md:px-6 mx-auto w-full max-w-3xl">
+			<div className="flex-1 pt-20 pb-14 px-2 md:px-6 mx-auto w-full max-w-3xl">
 				<div className="max-w-2xl w-full ">
-                    <h1 className="my-6 text-center text-xl">{currentUser.name}'s post</h1>
-
 					<div className=" shadow-lg ">
 						<PostCard
 							post={post}
@@ -43,8 +41,9 @@ export default function CommentPage() {
 							}}
 						/>
 					</div>
-
-					<CommentSection postId={postId!} currentUser={currentUser} />
+					<div className="mt-4 max-h-[500px] overflow-y-auto custom-scrollbar">
+						<CommentSection postId={postId!} currentUser={currentUser} />
+					</div>
 				</div>
 			</div>
 		</div>
