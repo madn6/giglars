@@ -38,6 +38,8 @@ export default function CommentSection({ currentUser, postId }: CommentSectionPr
 	const [commentText, setCommentText] = useState('');
 	const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
 	const [editedContent, setEditedContent] = useState('');
+	const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+
 	// const [loading, setLoading] = useState(true);
 
 	const comments = useAppSelector((state) => {
@@ -122,40 +124,62 @@ export default function CommentSection({ currentUser, postId }: CommentSectionPr
 								<div className="flex justify-between items-center">
 									<p className="text-sm font-medium text-gray-text">{comment.userId.displayName}</p>
 									{comment.userId._id === userId && (
-										<div className="flex gap-2 text-xs">
-											{editingCommentId === comment._id ? (
-												<>
-													<button
-														onClick={() => handleEditSubmit(comment._id)}
-														className="text-green-500 hover:underline"
-													>
-														Save
-													</button>
-													<button
-														onClick={() => {
-															setEditingCommentId(null);
-															setEditedContent('');
-														}}
-														className="text-gray-500 hover:underline"
-													>
-														Cancel
-													</button>
-												</>
-											) : (
-												<>
-													<button
-														onClick={() => handleEditClick(comment)}
-														className="text-blue-500 hover:underline"
-													>
-														Edit
-													</button>
-													<button
-														onClick={() => handleDelete(comment._id)}
-														className="text-red-500 hover:underline"
-													>
-														Delete
-													</button>
-												</>
+										<div className="relative">
+											{/* Ellipsis button */}
+											<button
+												onClick={() =>
+													setOpenMenuId((prev) => (prev === comment._id ? null : comment._id))
+												}
+												className="text-gray-text text-xl"
+											>
+												⋯
+											</button>
+
+											{/* Dropdown menu */}
+											{openMenuId === comment._id && (
+												<div className="absolute right-0 mt-1 w-24 bg-secondary border border-border/20 rounded shadow text-xs z-20">
+													{editingCommentId === comment._id ? (
+														<>
+															<button
+																onClick={() => handleEditSubmit(comment._id)}
+																className="block w-full px-2 py-1 text-left text-green-600 hover:bg-gray-100"
+															>
+																Save
+															</button>
+															<button
+																onClick={() => {
+																	setEditingCommentId(null);
+																	setEditedContent('');
+																	setOpenMenuId(null);
+																}}
+																className="block w-full px-2 py-1 text-left text-gray-500 hover:bg-gray-100"
+															>
+																Cancel
+															</button>
+														</>
+													) : (
+														<>
+															<button
+																onClick={() => {
+																	handleEditClick(comment);
+																	setOpenMenuId(null);
+																}}
+																className="block w-full px-2 py-1 text-left text-blue-600 hover:bg-gray-100"
+															>
+																Edit
+															</button>
+															<button
+																onClick={() => {
+																	handleDelete(comment._id);
+																	setOpenMenuId(null);
+																}}
+																className="block w-full px-2 py-1 text-left text-red-600 hover:bg-gray-100"
+															>
+																Delete
+															</button>
+														</>
+													)}
+												</div>
 											)}
 										</div>
 									)}
