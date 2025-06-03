@@ -31,7 +31,7 @@ export const createComment = async (req: AuthRequest, res: Response) => {
 export const getComments = async (req: AuthRequest, res: Response) => {
 	const { postId } = req.params;
 
-	const comments = await Comment.find({ postId })
+	const comments = await Comment.find({ postId, isHidden: false })
 		.sort({ createdAt: -1 })
 		.populate('userId', 'displayName profileImage');
 
@@ -95,17 +95,26 @@ export const reportComment = async (req: AuthRequest, res: Response) => {
 	}
 
 	const comment = await Comment.findById(commentId);
-	if (!comment) {
-		throw new AppError('Comment not found', 404);
-	}
+	if (!comment) throw new AppError('Comment not found', 404);
 
 	const alreadyReported = comment.reports.find((r) => r.reportedBy?.toString() === userId);
-
-	if (alreadyReported) {
-		throw new AppError('Already reported.', 409);
-	}
+	if (alreadyReported) throw new AppError('Already reported.', 409);
 
 	comment.reports.push({ reportedBy: userId, reason });
+	comment.markModified('reports');
+
+	const REPORT_THRESHOLD = 10;
+
+	const totalReports = comment.reports.length;
+
+	if (totalReports >= REPORT_THRESHOLD) {
+		comment.isHidden = true;
+		comment.markModified('isHidden');
+		console.log('Marked as hidden');
+	} else {
+		console.log('❌ Not hidden. Total reports:', comment.reports.length);
+	}
+
 	await comment.save();
 
 	res.status(200).json({ message: 'Comment reported successfully.' });
