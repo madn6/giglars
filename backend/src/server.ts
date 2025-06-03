@@ -4,7 +4,14 @@ import cors from 'cors';
 import connectDB from './config/db';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
-import { authRoutes, dashboardRoutes, postRoutes, profileRoutes, quoteRoutes,commentRoutes } from './routes';
+import {
+	authRoutes,
+	dashboardRoutes,
+	postRoutes,
+	profileRoutes,
+	quoteRoutes,
+	commentRoutes
+} from './routes';
 import { luckRoutes } from './routes/interactionsRoutes';
 import { errorHandler } from './middleware/errrorHandler';
 
@@ -14,18 +21,27 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(helmet());
-app.use(errorHandler)
 
 app.use(
 	cors({
-		origin: ['http://localhost:5173','http://192.168.204.78:5173'], // Allow frontend origin
+		origin: ['http://localhost:5173', 'http://192.168.204.78:5173'], // Allow frontend origin
 		credentials: true // Allow cookies & authentication headers
 	})
 );
 
-app.get("/api/test", (_req,res) => {
-	res.send("i can see from my mobile...")
-})
+
+// Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/post', postRoutes);
+app.use('/api/profile', profileRoutes);
+app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/quotes', quoteRoutes);
+app.use('/api/luck', luckRoutes);
+app.use('/api/comment', commentRoutes);
+
+app.get('/api/test', (_req, res) => {
+	res.send('i can see from my mobile...');
+});
 
 app.get('/api/debug-cookies', (req, res) => {
 	console.log('Cookies from client:', req.cookies);
@@ -33,17 +49,11 @@ app.get('/api/debug-cookies', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-	res.send("api working")
-})
+	res.send('api working');
+});
 
-// Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/post', postRoutes);
-app.use('/api/profile', profileRoutes);
-app.use('/api/dashboard', dashboardRoutes)
-app.use('/api/quotes', quoteRoutes)
-app.use('/api/luck', luckRoutes)
-app.use('/api/comment',commentRoutes)
+
+app.use(errorHandler);
 
 // Connect to database and start server
 const PORT: number = parseInt(process.env.PORT || '5000', 10);

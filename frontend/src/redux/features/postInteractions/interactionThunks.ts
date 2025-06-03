@@ -98,10 +98,12 @@ export const reportComment = createAsyncThunk(
 	async ({ commentId, reason }: { commentId: string; reason: string }, thunkAPI) => {
 		try {
 			const response = await API.post(`/api/comment/report-comment/${commentId}`, { reason });
-			return response.data; 
+			return response.data;
 		} catch (err) {
-			const error = err as AxiosError<{ error: string }>;
-			return thunkAPI.rejectWithValue(error.response?.data?.error || 'Unknown error occurred');
+			const error = err as AxiosError;
+			return thunkAPI.rejectWithValue(
+				(error.response?.data as { error?: string })?.error || 'Unknown error occurred'
+			);
 		}
 	}
 );

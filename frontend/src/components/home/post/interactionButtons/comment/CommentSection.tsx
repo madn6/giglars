@@ -94,7 +94,9 @@ export default function CommentSection({ currentUser, postId, postAuthorId }: Co
 				toast.success(res.message || 'Reported successfully');
 			})
 			.catch((err) => {
-				toast.error(typeof err === 'string' ? err : 'Failed to report comment');
+				const errorMessage =
+					typeof err === 'string' ? err : err?.error || 'Failed to report comment';
+				toast.error(errorMessage);
 			});
 	};
 
