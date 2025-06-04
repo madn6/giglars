@@ -58,9 +58,12 @@ export default function CommentSection({ currentUser, postId, postAuthorId }: Co
 	}, [dispatch, postId]);
 
 	const handleSubmit = async () => {
-		if (!commentText.trim()) return;
+		if (!commentText.trim()) {
+			toast.error('comment should be filled');
+		}
 		const res = await dispatch(createComment({ postId, content: commentText }));
 		if (createComment.fulfilled.match(res)) {
+			toast.success('comment posted');
 			setCommentText('');
 			dispatch(getComments(postId)); // Refresh comments after posting
 		}
@@ -130,7 +133,12 @@ export default function CommentSection({ currentUser, postId, postAuthorId }: Co
 					/>
 					<button
 						onClick={handleSubmit}
-						className="rounded bg-accent/90 px-4 py-2  font-medium text-black transition-colors duration-100 hover:bg-accent"
+						disabled={commentText.trim() === ''}
+						className={`rounded px-4 py-2 font-medium text-black transition-colors duration-100 ${
+							commentText.trim() === ''
+								? 'bg-accent/50 cursor-not-allowed opacity-60'
+								: 'bg-accent/90 hover:bg-accent'
+						}`}
 					>
 						Post
 					</button>
