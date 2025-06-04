@@ -106,7 +106,7 @@ export default function CommentSection({ currentUser, postId, postAuthorId }: Co
 	// };
 
 	return (
-		<div className=" px-2 shadow-sm">
+		<div className=" px-6 shadow-sm">
 			<div className="sticky top-0 z-10 bg-primary  p-2">
 				<div className="flex items-center mb-3 gap-2">
 					<span className="text-sm">Signed in as:</span>
@@ -123,14 +123,14 @@ export default function CommentSection({ currentUser, postId, postAuthorId }: Co
 				<div className="flex gap-2">
 					<input
 						type="text"
-						className="flex-1 rounded-full  border-border/20 border px-4 py-2 text-sm outline-none"
+						className="flex-1 rounded  border-border border px-4 py-2 text-sm outline-none"
 						placeholder="Write a comment..."
 						value={commentText}
 						onChange={(e) => setCommentText(e.target.value)}
 					/>
 					<button
 						onClick={handleSubmit}
-						className="rounded-full bg-accent/90 px-4 py-2  font-medium text-black transition-colors duration-100 hover:bg-accent"
+						className="rounded bg-accent/90 px-4 py-2  font-medium text-black transition-colors duration-100 hover:bg-accent"
 					>
 						Post
 					</button>
@@ -169,14 +169,35 @@ export default function CommentSection({ currentUser, postId, postAuthorId }: Co
 									/>
 								</div>
 								{editingCommentId === comment._id ? (
-									<input
-										type="text"
-										value={editedContent}
-										onChange={(e) => setEditedContent(e.target.value)}
-										className="mt-1 w-full border px-2 py-1 text-sm rounded"
-									/>
+									<>
+										<input
+											type="text"
+											value={editedContent}
+											onChange={(e) => setEditedContent(e.target.value)}
+											className="mt-1 w-full border border-border focus:outline-none focus:ring-0 focus:border-transparent px-2 py-2 text-sm rounded"
+										/>
+
+										{/* Save & Cancel Buttons Below Input */}
+										<div className="mt-2 flex gap-2">
+											<button
+												onClick={() => handleEditSubmit(comment._id)}
+												className="px-3 py-1 bg-green-600 hover:bg-green-700 text-white text-sm rounded transition-colors duration-200"
+											>
+												Save
+											</button>
+											<button
+												onClick={() => {
+													setEditingCommentId(null);
+													setEditedContent('');
+												}}
+												className="px-3 py-1 bg-gray-700 hover:bg-gray-800 text-white text-sm rounded transition-colors duration-200"
+											>
+												Cancel
+											</button>
+										</div>
+									</>
 								) : (
-									<p className="text-sm ">{comment.content}</p>
+									<p className="text-sm">{comment.content}</p>
 								)}
 							</div>
 						</div>
