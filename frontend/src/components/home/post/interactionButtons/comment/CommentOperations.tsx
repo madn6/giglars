@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { X } from 'lucide-react';
 
 type CommentOperationProps = {
 	comment: {
@@ -50,9 +51,26 @@ export default function CommentOperations({
 	setEditedContent
 }: CommentOperationProps) {
 	const [reportingCommentId, setReportingCommentId] = useState<string | null>(null);
+	const menuRef = useRef<HTMLDivElement>(null);
+	const [selectedReason, setSelectedReason] = useState<string | null>(null);
+
+	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			if (
+				openMenuId === comment._id &&
+				menuRef.current &&
+				!menuRef.current.contains(event.target as Node)
+			) {
+				setOpenMenuId(null);
+			}
+		};
+
+		document.addEventListener('mousedown', handleClickOutside);
+		return () => document.removeEventListener('mousedown', handleClickOutside);
+	}, [openMenuId, comment._id, setOpenMenuId]);
 
 	return (
-		<div className="relative">
+		<div className="relative" ref={menuRef}>
 			{/* Ellipsis button */}
 			<button
 				onClick={() => setOpenMenuId((prev) => (prev === comment._id ? null : comment._id))}
@@ -63,7 +81,7 @@ export default function CommentOperations({
 
 			{/* Dropdown menu */}
 			{openMenuId === comment._id && (
-				<div className="absolute right-0 mt-1 w-32 bg-secondary border border-border/20 rounded shadow text-xs z-20">
+				<div className="absolute right-0 mt-1 p-1 w-32 bg-secondary border border-border/20 rounded shadow text-xs z-20">
 					{editingCommentId === comment._id ? (
 						<>
 							<button
@@ -137,20 +155,54 @@ export default function CommentOperations({
 							{comment.userId._id !== userId && (
 								<>
 									{reportingCommentId === comment._id ? (
-										<div className="ml-4 mt-1 space-y-1 bg-secondary border-border/20 text-white border rounded shadow p-2">
-											{['spam', 'abuse', 'other'].map((reason) => (
+										<div className="relative bg-secondary border border-border/20 text-white rounded shadow p-3 space-y-2">
+											{/* Close Button */}
+
+											<button
+												onClick={() => {
+													setReportingCommentId(null);
+													setSelectedReason(null);
+												}}
+												className="absolute top-1 right-1 z-20  text-red-500 hover:text-red-700 transition-colors duration-200"
+											>
+												<X size={20} />
+											</button>
+											<p className="text-sm font-medium text-white mb-1">Reason:</p>
+
+											<div className="space-y-1">
+												{['spam', 'abuse', 'other'].map((reason) => (
+													<label
+														key={reason}
+														className="flex items-center space-x-2 cursor-pointer text-sm"
+													>
+														<input
+															type="radio"
+															name={`report-${comment._id}`}
+															value={reason}
+															checked={selectedReason === reason}
+															onChange={() => setSelectedReason(reason)}
+															className="accent-red-500"
+														/>
+														<span>{reason.charAt(0).toUpperCase() + reason.slice(1)}</span>
+													</label>
+												))}
+											</div>
+												<div className="flex items-center justify-center">
 												<button
-													key={reason}
+													disabled={!selectedReason}
 													onClick={() => {
-														onReport(comment._id, reason);
-														setReportingCommentId(null);
-														setOpenMenuId(null);
+														if (selectedReason) {
+															onReport(comment._id, selectedReason);
+															setReportingCommentId(null);
+															setSelectedReason(null);
+															setOpenMenuId(null);
+														}
 													}}
-													className="block w-full text-left px-2 py-1 text-sm hover:bg-gray rounded-md"
+													className=" mt-2 w-full bg-red-600 px-2 py-1 hover:bg-red-700 transition-colors duration-200 text-white rounded  text-sm disabled:opacity-50"
 												>
-													{reason.charAt(0).toUpperCase() + reason.slice(1)}
+													Report
 												</button>
-											))}
+											</div>
 										</div>
 									) : (
 										<button

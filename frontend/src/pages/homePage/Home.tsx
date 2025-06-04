@@ -19,11 +19,11 @@ const Home: React.FC<HomeProps> = ({ filter = 'all' }) => {
 	console.log('posts', postItems);
 
 	useEffect(() => {
-		if (!userId) return;
+		// if (!userId) return;
 		setLoading(true);
 		setError(null);
 
-		dispatch(fetchPosts({ feeling, userId }))
+		dispatch(fetchPosts({ feeling, userId: userId ?? '' }))
 			.unwrap()
 			.catch((err: string) => {
 				setError(err);
