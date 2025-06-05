@@ -69,6 +69,7 @@
     "recharts": "^2.15.3",
     "swiper": "^11.2.6",
     "tailwind-scrollbar": "^4.0.2",
+    "tailwind-scrollbar-hide": "^4.0.0",
     "world-countries-capitals": "^3.4.0",
     "yup": "^1.6.1"
   },

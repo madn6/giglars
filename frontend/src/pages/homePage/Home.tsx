@@ -42,15 +42,12 @@ const Home = ({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' | 'all' }) => {
 		}
 	}, [scrollToIndex, navigate, location.pathname]);
 
-	{
-		console.log('postItems.length:', postItems.length);
-	}
-
 	return (
-		<div className="flex flex-col font-inter min-h-screen">
+		<div className="flex flex-col font-inter h-screen ">
 			<HomeNavigations feelingFilter={handleFeelingFilter} />
-			<div className="flex-1 h-full pt-20 pb-22 md:pl-[140px] px-2 md:px-6 mx-auto w-full max-w-3xl">
-				<div className="max-w-2xl w-full h-[calc(100vh-80px)] ">
+
+			<div className="flex-1 pt-20 pb-22 md:pb-4 md:pl-[140px] px-2 md:px-6 mx-auto w-full max-w-3xl ">
+				<div className="max-w-2xl w-full h-full ">
 					{loading ? (
 						<p className="text-center text-white">Loading posts...</p>
 					) : error ? (
@@ -60,13 +57,12 @@ const Home = ({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' | 'all' }) => {
 					) : (
 						<Virtuoso
 							style={{ height: '100%' }}
+							className="no-scrollbar"
 							totalCount={postItems.length}
-							initialTopMostItemIndex={
-								scrollToIndex !== undefined && scrollToIndex >= 0 ? scrollToIndex : 0
-							}
+							initialTopMostItemIndex={scrollToIndex ?? 0}
 							itemContent={(index) => {
 								const post = postItems[index];
-								if (!post) return null; // <== Defensive check
+								if (!post) return null;
 								return (
 									<div id={`post-${post._id}`} className="mb-4">
 										<PostCard
