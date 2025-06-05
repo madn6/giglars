@@ -1,9 +1,10 @@
-import {useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { fetchPosts } from '../../redux/features/posts/postsSlice';
 import { PostCard } from '../../components';
 import CommentSection from '../../components/home/post/interactionButtons/comment/CommentSection';
+import { motion } from 'framer-motion'
 
 export default function CommentPage() {
 	const { postId } = useParams<{ postId: string }>();
@@ -17,7 +18,6 @@ export default function CommentPage() {
 		}
 	}, [dispatch, post, postId, auth.userId]);
 
-
 	if (!post) return <p className="p-4 text-white">Loading post...</p>;
 
 	const currentUser = {
@@ -29,9 +29,12 @@ export default function CommentPage() {
 	};
 
 	return (
-		<div className=' flex items-center justify-center'>
-
-
+		<motion.div
+			initial={{ opacity: 0, y: 50 }}
+			animate={{ opacity: 1, y: 0 }}
+			transition={{ duration: 0.5, ease: 'easeOut' }}
+			className=" flex items-center justify-center"
+		>
 			<div className="flex flex-col font-inter text-white min-h-screen">
 				<div className="flex-1 pt-20 pb-14 px-2 md:px-6 mx-auto w-full max-w-3xl">
 					<div className="max-w-2xl w-full ">
@@ -55,6 +58,6 @@ export default function CommentPage() {
 					</div>
 				</div>
 			</div>
-		</div>
+		</motion.div>
 	);
 }

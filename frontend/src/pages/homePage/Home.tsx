@@ -5,6 +5,7 @@ import { HomeNavigations } from '../../components';
 import PostCard from '../../components/home/post/PostCard';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Virtuoso } from 'react-virtuoso';
+import { motion } from 'framer-motion';
 
 const Home = ({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' | 'all' }) => {
 	const [loading, setLoading] = useState(true);
@@ -30,26 +31,33 @@ const Home = ({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' | 'all' }) => {
 		setFeeling(selectedFeeling);
 	};
 
+	const [mediaReady, setMediaReady] = useState(false);
+
 	const scrollToIndex = location.state?.scrollToPostId
 		? postItems.findIndex((p) => p._id === location.state.scrollToPostId)
 		: undefined;
 
 	useEffect(() => {
-		if (scrollToIndex !== undefined && scrollToIndex >= 0) {
-			setTimeout(() => {
-				navigate(location.pathname, { replace: true, state: {} });
-			}, 500); // Give time for Virtuoso to scroll first
+		if (scrollToIndex !== undefined && scrollToIndex >= 0 && mediaReady) {
+			navigate(location.pathname, { replace: true, state: {} });
 		}
-	}, [scrollToIndex, navigate, location.pathname]);
+	}, [scrollToIndex, mediaReady, navigate, location.pathname]);
 
 	return (
-		<div className="flex flex-col font-inter h-screen ">
+		<div className="flex flex-col font-inter h-screen">
+			{' '}
 			<HomeNavigations feelingFilter={handleFeelingFilter} />
-
-			<div className="flex-1 pt-20 pb-22 md:pb-4 md:pl-[140px] px-2 md:px-6 mx-auto w-full max-w-3xl ">
+			<motion.div
+				initial={{ opacity: 0, y: 50 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ duration: 0.5, ease: 'easeOut' }}
+				className="flex-1 pt-20 pb-26  md:pl-[140px] px-2 md:px-6 mx-auto w-full max-w-3xl "
+			>
 				<div className="max-w-2xl w-full h-full ">
 					{loading ? (
-						<p className="text-center text-white">Loading posts...</p>
+						<p className="flex items-center justify-center h-screen text-white">
+							<img src="../../../public/svg/tube-spinner.svg" alt="spinner" className=" w-10" />
+						</p>
 					) : error ? (
 						<p className="text-center text-red-500">{error}</p>
 					) : postItems.length === 0 ? (
@@ -62,6 +70,7 @@ const Home = ({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' | 'all' }) => {
 							itemContent={(index) => {
 								const post = postItems[index];
 								if (!post) return null;
+								const isTargetPost = scrollToIndex !== undefined && index === scrollToIndex;
 								return (
 									<div id={`post-${post._id}`} className="mb-4">
 										<PostCard
@@ -71,6 +80,8 @@ const Home = ({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' | 'all' }) => {
 												uniqueUsername: post.userId?.uniqueUsername || 'Unknown',
 												displayName: post.userId?.displayName || 'Anonymous'
 											}}
+											allMedia={post.allMedia || []}
+											onMediaLoad={isTargetPost ? () => setMediaReady(true) : undefined}
 										/>
 									</div>
 								);
@@ -78,7 +89,7 @@ const Home = ({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' | 'all' }) => {
 						/>
 					)}
 				</div>
-			</div>
+			</motion.div>
 		</div>
 	);
 };
