@@ -56,8 +56,7 @@ const Home = ({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' | 'all' }) => {
 						<p className="text-center text-white">No posts available.</p>
 					) : (
 						<Virtuoso
-							style={{ height: '100%' }}
-							className="no-scrollbar"
+							useWindowScroll
 							totalCount={postItems.length}
 							initialTopMostItemIndex={scrollToIndex ?? 0}
 							itemContent={(index) => {

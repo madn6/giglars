@@ -35,7 +35,7 @@ export default function PostCard({ post, userData }: PostCardProps) {
 	];;
 
 	return (
-		<div  id={`post-${post._id}`} className="container font-inter bg-secondary shadow-2xl text-white border  border-border/20 p-3 rounded-xl backdrop-blur-2xl">
+		<div className="container font-inter bg-secondary shadow-2xl text-white border  border-border/20 p-3 rounded-xl backdrop-blur-2xl">
 			<div className="top__container flex items-center justify-between gap-4 border border-border/20 p-2 rounded-xl  ">
 				<div className="rounded-full flex items-center justify-center border-2  border-white/70">
 					<img
