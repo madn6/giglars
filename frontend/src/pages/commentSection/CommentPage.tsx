@@ -1,10 +1,9 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import {useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { fetchPosts } from '../../redux/features/posts/postsSlice';
 import { PostCard } from '../../components';
 import CommentSection from '../../components/home/post/interactionButtons/comment/CommentSection';
-import { MoveLeft } from 'lucide-react';
 
 export default function CommentPage() {
 	const { postId } = useParams<{ postId: string }>();
@@ -18,7 +17,6 @@ export default function CommentPage() {
 		}
 	}, [dispatch, post, postId, auth.userId]);
 
-	const navigate = useNavigate();
 
 	if (!post) return <p className="p-4 text-white">Loading post...</p>;
 
@@ -32,13 +30,7 @@ export default function CommentPage() {
 
 	return (
 		<div className=' flex items-center justify-center'>
-			<button
-				onClick={() => navigate('/', { state: { scrollToPostId: postId } })}
-				className="flex items-center justify-center gap-2 cursor-pointer"
-			>
-				<MoveLeft size={30} className="text-black bg-accent px-2 py-1 rounded" />
-				<span>Back</span>
-			</button>
+
 
 			<div className="flex flex-col font-inter text-white min-h-screen">
 				<div className="flex-1 pt-20 pb-14 px-2 md:px-6 mx-auto w-full max-w-3xl">

@@ -10,6 +10,8 @@ import {
 } from '../../../../../redux/features/postInteractions/interactionThunks';
 import CommentOperations from './CommentOperations';
 import { toast } from 'react-toastify';
+import { Link, useNavigate } from 'react-router-dom';
+import { MoveLeft } from 'lucide-react';
 // import { Link } from 'react-router-dom';
 
 type Comment = {
@@ -44,6 +46,8 @@ export default function CommentSection({ currentUser, postId, postAuthorId }: Co
 	const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
 	const [editedContent, setEditedContent] = useState('');
 	const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+
+	const navigate = useNavigate();
 
 	// const [loading, setLoading] = useState(true);
 
@@ -109,12 +113,17 @@ export default function CommentSection({ currentUser, postId, postAuthorId }: Co
 	// 	console.log(`Hiding comment with ID: ${commentId}`);
 	// };
 
-
-
 	return (
 		<div className=" px-6 shadow-sm">
 			<div className="sticky top-0 z-10 bg-primary  p-2">
-				{/* <div className="flex items-center justify-between md:gap-8 gap-2  mb-3">
+				<div className="flex items-center justify-between md:gap-8 gap-2  mb-3">
+					<button
+						onClick={() => navigate('/', { state: { scrollToPostId: postId } })}
+						className="flex items-center justify-center gap-2 cursor-pointer"
+					>
+						<MoveLeft size={30} className="text-black bg-accent px-2 py-1 rounded" />
+						<span>Back</span>
+					</button>
 					<div className="flex items-center text-sm gap-2">
 						{currentUser.isLoggedIn ? (
 							<>
@@ -142,7 +151,7 @@ export default function CommentSection({ currentUser, postId, postAuthorId }: Co
 							</>
 						)}
 					</div>
-				</div> */}
+				</div>
 
 				<div className="flex gap-2">
 					<input
