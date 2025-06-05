@@ -31,17 +31,18 @@ const Home = ({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' | 'all' }) => {
 		setFeeling(selectedFeeling);
 	};
 
-	const [mediaReady, setMediaReady] = useState(false);
 
 	const scrollToIndex = location.state?.scrollToPostId
 		? postItems.findIndex((p) => p._id === location.state.scrollToPostId)
 		: undefined;
 
-	useEffect(() => {
-		if (scrollToIndex !== undefined && scrollToIndex >= 0 && mediaReady) {
-			navigate(location.pathname, { replace: true, state: {} });
+		useEffect(() => {
+		if (scrollToIndex !== undefined && scrollToIndex >= 0) {
+			setTimeout(() => {
+				navigate(location.pathname, { replace: true, state: {} });
+			}, 500); // Give time for Virtuoso to scroll first
 		}
-	}, [scrollToIndex, mediaReady, navigate, location.pathname]);
+	}, [scrollToIndex, navigate, location.pathname]);
 
 	return (
 		<div className="flex flex-col font-inter h-screen">
@@ -70,7 +71,6 @@ const Home = ({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' | 'all' }) => {
 							itemContent={(index) => {
 								const post = postItems[index];
 								if (!post) return null;
-								const isTargetPost = scrollToIndex !== undefined && index === scrollToIndex;
 								return (
 									<div id={`post-${post._id}`} className="mb-4">
 										<PostCard
@@ -80,8 +80,6 @@ const Home = ({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' | 'all' }) => {
 												uniqueUsername: post.userId?.uniqueUsername || 'Unknown',
 												displayName: post.userId?.displayName || 'Anonymous'
 											}}
-											allMedia={post.allMedia || []}
-											onMediaLoad={isTargetPost ? () => setMediaReady(true) : undefined}
 										/>
 									</div>
 								);
