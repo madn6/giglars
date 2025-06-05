@@ -40,7 +40,7 @@ const Home = ({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' | 'all' }) => {
 		if (scrollToIndex !== undefined && scrollToIndex >= 0) {
 			setTimeout(() => {
 				navigate(location.pathname, { replace: true, state: {} });
-			}, 500); // Give time for Virtuoso to scroll first
+			}, 200); // Give time for Virtuoso to scroll first
 		}
 	}, [scrollToIndex, navigate, location.pathname]);
 
@@ -57,7 +57,7 @@ const Home = ({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' | 'all' }) => {
 				<div className="max-w-2xl w-full h-full ">
 					{loading ? (
 						<p className="flex items-center justify-center h-screen text-white">
-							<img src="../../../public/svg/tube-spinner.svg" alt="spinner" className=" w-10" />
+							<img src="/svg/tube-spinner.svg" alt="spinner" className=" w-10" />
 						</p>
 					) : error ? (
 						<p className="text-center text-red-500">{error}</p>
