@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { fetchPosts } from '../../redux/features/posts/postsSlice';
 import { HomeNavigations } from '../../components';
 
+import { useLocation, useNavigate } from 'react-router-dom';
+
 type HomeProps = {
 	filter?: 'lucky' | 'unlucky' | 'all';
 };
@@ -34,6 +36,28 @@ const Home: React.FC<HomeProps> = ({ filter = 'all' }) => {
 	const handleFeelingFilter = (selectedFeeling: 'lucky' | 'unlucky' | 'all') => {
 		setFeeling(selectedFeeling);
 	};
+
+
+const location = useLocation();
+const navigate = useNavigate();
+
+useEffect(() => {
+	if (!postItems.length) return;
+
+	const postId = location.state?.scrollToPostId;
+
+	if (postId) {
+		const el = document.getElementById(`post-${postId}`);
+		if (el) {
+			setTimeout(() => {
+				el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			}, 150); // slight delay to allow layout paint
+		}
+
+		// Clean up state to prevent re-scrolling on refresh
+		navigate(location.pathname, { replace: true, state: {} });
+	}
+}, [location.state?.scrollToPostId, postItems, navigate, location.pathname]);
 
 	return (
 		<div className="flex flex-col  font-inter min-h-screen">

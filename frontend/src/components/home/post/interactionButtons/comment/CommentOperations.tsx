@@ -79,7 +79,7 @@ export default function CommentOperations({
 
 			{/* Dropdown menu */}
 			{openMenuId === comment._id && (
-				<div className="absolute right-0 mt-1 p-1 w-32 bg-secondary border border-border/20 rounded shadow text-sm z-20">
+				<div className="absolute right-0 mt-1 p-1 w-32 bg-secondary border text-gray-text border-border/20 rounded shadow text-sm z-20">
 					<>
 						{/* Author of comment */}
 						{comment.userId._id === userId && (
@@ -153,13 +153,13 @@ export default function CommentOperations({
 										>
 											<X size={18} />
 										</button>
-										<p className=" font-medium text-white mb-1">Reason:</p>
+										<p className=" font-medium mb-1 text-gray-text">Reason:</p>
 
 										<div className="space-y-1">
 											{['spam', 'abuse', 'other'].map((reason) => (
 												<label
 													key={reason}
-													className="flex items-center space-x-2 cursor-pointer "
+													className="flex items-center text-gray-text space-x-2 cursor-pointer "
 												>
 													<input
 														type="radio"
@@ -184,7 +184,7 @@ export default function CommentOperations({
 														setOpenMenuId(null);
 													}
 												}}
-												className=" mt-2 w-full bg-orange-600 px-2 py-1 hover:bg-orange-700 transition-colors duration-200 text-white rounded   disabled:opacity-50"
+												className=" mt-2 w-full bg-orange-500 px-2 py-1 hover:bg-orange-600 transition-colors duration-200 text-white rounded   disabled:opacity-50"
 											>
 												Report
 											</button>

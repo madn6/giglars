@@ -32,10 +32,10 @@ export default function PostCard({ post, userData }: PostCardProps) {
 		...(post.gifs?.map((gif: { url: string } | string) =>
 			typeof gif === 'string' ? gif : gif.url
 		) || [])
-	];
+	];;
 
 	return (
-		<div className="container font-inter bg-secondary shadow-2xl text-white border  border-border/20 p-3 rounded-xl backdrop-blur-2xl">
+		<div  id={`post-${post._id}`} className="container font-inter bg-secondary shadow-2xl text-white border  border-border/20 p-3 rounded-xl backdrop-blur-2xl">
 			<div className="top__container flex items-center justify-between gap-4 border border-border/20 p-2 rounded-xl  ">
 				<div className="rounded-full flex items-center justify-center border-2  border-white/70">
 					<img
@@ -140,9 +140,9 @@ export default function PostCard({ post, userData }: PostCardProps) {
 
 			<div className="image__bottom flex justify-between items-center mt-4 text-sm">
 				<LuckButton postId={post._id!} />
-				<CommentsButton  postId={post._id!} />
-				<CapsButton  postId={post._id!} />
-				<SaveButton  postId={post._id!} />
+				<CommentsButton postId={post._id!} />
+				<CapsButton postId={post._id!} />
+				<SaveButton postId={post._id!} />
 				<ShareButton postId={post._id!} />
 			</div>
 		</div>
