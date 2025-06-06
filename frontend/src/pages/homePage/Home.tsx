@@ -1,9 +1,9 @@
-import { useEffect,useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { fetchPosts } from '../../redux/features/posts/postsSlice';
 import { HomeNavigations } from '../../components';
 import PostCard from '../../components/home/post/PostCard';
-import {useWindowVirtualizer } from '@tanstack/react-virtual';
+import { useWindowVirtualizer } from '@tanstack/react-virtual';
 import { motion } from 'framer-motion';
 
 const Home = ({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' | 'all' }) => {
@@ -49,7 +49,7 @@ const Home = ({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' | 'all' }) => {
 				initial={{ opacity: 0, y: 50 }}
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ duration: 0.5, ease: 'easeOut' }}
-				className="flex-1 py-20 px-2 md:px-6 mx-auto w-full max-w-3xl"
+				className="flex-1 pt-20 md:pb-0 pb-18  md:pl-[140px] px-2 md:px-6 mx-auto w-full max-w-3xl "
 			>
 				<div className="max-w-2xl w-full h-full">
 					{loading ? (
@@ -62,9 +62,7 @@ const Home = ({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' | 'all' }) => {
 						<p className="text-center text-gray-400 mt-10">No posts found.</p>
 					) : (
 						// Make scroll container scrollable
-						<div
-							className="relative "
-						>
+						<div className="relative ">
 							<div
 								style={{
 									height: `${rowVirtualizer.getTotalSize()}px`,
