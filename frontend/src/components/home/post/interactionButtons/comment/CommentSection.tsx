@@ -113,8 +113,8 @@ export default function CommentSection({ currentUser, postId, postAuthorId, onBa
 	// };
 
 	return (
-		<div className=" px-6 shadow-sm">
-			<div className="sticky top-0 z-10 bg-primary  p-2">
+		<div className=" px-3 ">
+			<div className="sticky top-0 z-10 bg-secondary  py-4">
 				<div className="flex items-center justify-between md:gap-8 gap-2  mb-3">
 					<button
 						onClick={onBack}
@@ -155,7 +155,7 @@ export default function CommentSection({ currentUser, postId, postAuthorId, onBa
 				<div className="flex gap-2">
 					<input
 						type="text"
-						className="flex-1 rounded  border-border border px-4 py-2 text-sm outline-none"
+						className="flex-1 rounded-md  border-border border px-4 py-2 text-sm outline-none"
 						placeholder="Write a comment..."
 						value={commentText}
 						onChange={(e) => setCommentText(e.target.value)}
@@ -173,12 +173,12 @@ export default function CommentSection({ currentUser, postId, postAuthorId, onBa
 					</button>
 				</div>
 			</div>
-			<div className="mt-4 space-y-4 ">
+			<div className="space-y-4   pb-4">
 				{comments.length === 0 ? (
 					<p className="text-gray-400 text-sm">No comments yet.</p>
 				) : (
 					comments.map((comment) => (
-						<div key={comment._id} className="flex items-start gap-3">
+						<div key={comment._id} className="flex border p-2 rounded-lg bg-gray border-border/20 items-start gap-3">
 							<div className="rounded-full flex items-center  justify-center ">
 								<img
 									className="w-8 h-8 rounded-full object-cover "

@@ -23,11 +23,11 @@ export default function CommentDrawer({
 }: CommentDrawerProps) {
 	return (
 		<motion.div
-			initial={{ x: '100%' }}
-			animate={{ x: 0 }}
-			exit={{ x: '100%' }}
-			transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-			className="fixed top-0 left-0 w-full h-full z-[100] bg-secondary dark:bg-background shadow-lg overflow-y-auto"
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			exit={{ opacity: 0 }}
+			transition={{ duration: 0.2, ease: 'easeOut' }}
+			className="fixed top-0 left-0 w-full h-full z-[100] bg-secondary dark:bg-background shadow-lg overflow-y-auto rounded-xl custom-scrollbar "
 		>
 			<CommentSection
 				postId={postId}
