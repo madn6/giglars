@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect,useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { fetchPosts } from '../../redux/features/posts/postsSlice';
 import { HomeNavigations } from '../../components';
 import PostCard from '../../components/home/post/PostCard';
-import { useVirtualizer } from '@tanstack/react-virtual';
+import {useWindowVirtualizer } from '@tanstack/react-virtual';
 import { motion } from 'framer-motion';
 
 const Home = ({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' | 'all' }) => {
@@ -33,13 +33,11 @@ const Home = ({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' | 'all' }) => {
 		setFeeling(selectedFeeling);
 	};
 
-	const scrollParentRef = useRef<HTMLDivElement | null>(null);
-
-	const rowVirtualizer = useVirtualizer({
+	const rowVirtualizer = useWindowVirtualizer({
 		count: postItems.length,
-		getScrollElement: () => scrollParentRef.current,
-		estimateSize: () => 600,
-		overscan: 5
+		estimateSize: () => 657,
+		overscan: 5,
+		measureElement: (el) => el.getBoundingClientRect().height
 	});
 
 	return (
@@ -65,8 +63,7 @@ const Home = ({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' | 'all' }) => {
 					) : (
 						// Make scroll container scrollable
 						<div
-							ref={scrollParentRef}
-							className="relative overflow-auto"
+							className="relative "
 						>
 							<div
 								style={{
