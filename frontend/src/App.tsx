@@ -6,7 +6,6 @@ import { CreatePost, Dashboard, Home, ProfileSetup, SignIn, SignUp, UpdateProfil
 import Navbar from './components/navbar/Navbar';
 import { checkAuth } from './api/axiosInstance';
 import 'react-toastify/dist/ReactToastify.css';
-import CommentPage from './pages/commentSection/CommentPage';
 
 const AppContent: React.FC = () => {
 	const dispatch = useDispatch();
@@ -28,7 +27,6 @@ const AppContent: React.FC = () => {
 				<Route path="/profile-setup" element={<ProfileSetup />} />
 				<Route path="/update-profile" element={<UpdateProfile />} />
 				<Route path="/dashboard" element={<Dashboard />} />
-				<Route path="/post/:postId/comments" element={<CommentPage />} />
 			</Routes>
 		</>
 	);

@@ -10,7 +10,7 @@ import {
 } from '../../../../../redux/features/postInteractions/interactionThunks';
 import CommentOperations from './CommentOperations';
 import { toast } from 'react-toastify';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { MoveLeft } from 'lucide-react';
 // import { Link } from 'react-router-dom';
 
@@ -36,9 +36,10 @@ type CommentSectionProps = {
 		profileImage: string;
 		isLoggedIn: boolean;
 	};
+	onBack?: () => void;
 };
 
-export default function CommentSection({ currentUser, postId, postAuthorId }: CommentSectionProps) {
+export default function CommentSection({ currentUser, postId, postAuthorId, onBack }: CommentSectionProps) {
 	const dispatch = useAppDispatch();
 	const { userId } = useAppSelector((state) => state.auth);
 
@@ -46,8 +47,6 @@ export default function CommentSection({ currentUser, postId, postAuthorId }: Co
 	const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
 	const [editedContent, setEditedContent] = useState('');
 	const [openMenuId, setOpenMenuId] = useState<string | null>(null);
-
-	const navigate = useNavigate();
 
 	// const [loading, setLoading] = useState(true);
 
@@ -118,7 +117,7 @@ export default function CommentSection({ currentUser, postId, postAuthorId }: Co
 			<div className="sticky top-0 z-10 bg-primary  p-2">
 				<div className="flex items-center justify-between md:gap-8 gap-2  mb-3">
 					<button
-						onClick={() => navigate('/', { state: { scrollToPostId: postId } })}
+						onClick={onBack}
 						className="flex items-center justify-center gap-2 cursor-pointer"
 					>
 						<MoveLeft size={30} className="text-black bg-accent px-2 py-1 rounded" />
@@ -214,7 +213,6 @@ export default function CommentSection({ currentUser, postId, postAuthorId }: Co
 											onChange={(e) => setEditedContent(e.target.value)}
 											className="mt-1 w-full border border-border focus:outline-none focus:ring-0 focus:border-transparent px-2 py-2 text-sm rounded"
 										/>
-
 										{/* Save & Cancel Buttons Below Input */}
 										<div className="mt-2 flex gap-2">
 											<button

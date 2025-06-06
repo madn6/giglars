@@ -13,9 +13,16 @@ import ShareButton from './interactionButtons/ShareButton';
 type PostCardProps = {
 	post: Post;
 	userData: { profileImage: string; uniqueUsername: string; displayName: string };
+	currentUser: {
+		userId: string;
+		email: string;
+		name: string;
+		profileImage: string;
+		isLoggedIn: boolean;
+	};
 };
 
-export default function PostCard({ post, userData }: PostCardProps) {
+export default function PostCard({ post, userData, currentUser }: PostCardProps) {
 	const removeImagesFromHtml = (html: string) => {
 		return html.replace(/<img[^>]*>/g, '');
 	};
@@ -32,7 +39,7 @@ export default function PostCard({ post, userData }: PostCardProps) {
 		...(post.gifs?.map((gif: { url: string } | string) =>
 			typeof gif === 'string' ? gif : gif.url
 		) || [])
-	];;
+	];
 
 	return (
 		<div className="container font-inter bg-secondary shadow-2xl text-white border  border-border/20 p-3 rounded-xl backdrop-blur-2xl">
@@ -140,7 +147,11 @@ export default function PostCard({ post, userData }: PostCardProps) {
 
 			<div className="image__bottom flex justify-between items-center mt-4 text-sm">
 				<LuckButton postId={post._id!} />
-				<CommentsButton postId={post._id!} />
+				<CommentsButton
+					postId={post._id!}
+					postAuthorId={post.userId._id}
+					currentUser={currentUser}
+				/>
 				<CapsButton postId={post._id!} />
 				<SaveButton postId={post._id!} />
 				<ShareButton postId={post._id!} />

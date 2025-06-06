@@ -13,7 +13,8 @@ const Home = ({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' | 'all' }) => {
 	const [feeling, setFeeling] = useState<'lucky' | 'unlucky' | 'all'>(filter);
 	const dispatch = useAppDispatch();
 	const { postItems } = useAppSelector((state) => state.posts);
-	const userId = useAppSelector((state) => state.auth.userId);
+	const auth = useAppSelector((state) => state.auth);
+	const userId = auth.userId;
 
 	const location = useLocation();
 	const navigate = useNavigate();
@@ -31,12 +32,11 @@ const Home = ({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' | 'all' }) => {
 		setFeeling(selectedFeeling);
 	};
 
-
 	const scrollToIndex = location.state?.scrollToPostId
 		? postItems.findIndex((p) => p._id === location.state.scrollToPostId)
 		: undefined;
 
-		useEffect(() => {
+	useEffect(() => {
 		if (scrollToIndex !== undefined && scrollToIndex >= 0) {
 			setTimeout(() => {
 				navigate(location.pathname, { replace: true, state: {} });
@@ -79,6 +79,13 @@ const Home = ({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' | 'all' }) => {
 												profileImage: post.userId?.profileImage || '',
 												uniqueUsername: post.userId?.uniqueUsername || 'Unknown',
 												displayName: post.userId?.displayName || 'Anonymous'
+											}}
+											currentUser={{
+												userId: auth.userId!,
+												email: auth.email!,
+												name: auth.name!,
+												profileImage: auth.profileImage!,
+												isLoggedIn: auth.isLoggedIn
 											}}
 										/>
 									</div>
