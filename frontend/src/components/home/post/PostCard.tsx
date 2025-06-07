@@ -118,15 +118,17 @@ export default function PostCard({ post, userData, currentUser }: PostCardProps)
 							>
 								{allMedia.map((src, index) => (
 									<SplideSlide key={index}>
-										<img
-											src={src}
-											alt={`Post media ${index + 1}`}
-											onError={(e) => {
-												e.currentTarget.src =
-													'https://salonlfc.com/wp-content/uploads/2018/01/image-not-found-scaled.png';
-											}}
-											className="w-full h-full   object-contain rounded-md"
-										/>
+										{typeof src === 'string' && src && (
+											<img
+												src={src}
+												alt={`Post media ${index + 1}`}
+												onError={(e) => {
+													e.currentTarget.src =
+														'https://salonlfc.com/wp-content/uploads/2018/01/image-not-found-scaled.png';
+												}}
+												className="w-full h-full   object-contain rounded-md"
+											/>
+										)}
 									</SplideSlide>
 								))}
 							</Splide>
@@ -148,13 +150,13 @@ export default function PostCard({ post, userData, currentUser }: PostCardProps)
 			<div className="image__bottom flex justify-between items-center mt-4 text-sm">
 				<LuckButton postId={post._id!} />
 				<CommentsButton
-					postId={post._id!}
-					postAuthorId={post.userId._id}
+					postId={post._id ?? ''}
+					postAuthorId={(typeof post.userId === 'object' && post.userId?._id) || ''}
 					currentUser={currentUser}
 				/>
-				<CapsButton postId={post._id!} />
-				<SaveButton postId={post._id!} />
-				<ShareButton postId={post._id!} />
+				<CapsButton postId={post._id ?? ''} />
+				<SaveButton postId={post._id ?? ''} />
+				<ShareButton postId={post._id ?? ''} />
 			</div>
 		</div>
 	);

@@ -49,7 +49,7 @@ const Home = ({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' | 'all' }) => {
 				initial={{ opacity: 0, y: 50 }}
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ duration: 0.5, ease: 'easeOut' }}
-				className="flex-1 pt-20 md:pb-0 pb-18  md:pl-[140px] px-2 md:px-6 mx-auto w-full max-w-3xl "
+				className="flex-1 pt-20 md:pb-0 pb-18 lg:pl-0  md:pl-[140px] px-2 md:px-6 mx-auto w-full max-w-3xl "
 			>
 				<div className="max-w-2xl w-full h-full">
 					{loading ? (
@@ -71,6 +71,7 @@ const Home = ({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' | 'all' }) => {
 							>
 								{rowVirtualizer.getVirtualItems().map((virtualRow) => {
 									const post = postItems[virtualRow.index];
+									if (!post) return null;
 									return (
 										<div
 											key={post._id}
@@ -95,11 +96,11 @@ const Home = ({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' | 'all' }) => {
 													displayName: post.userId?.displayName || 'Anonymous'
 												}}
 												currentUser={{
-													userId: auth.userId!,
-													email: auth.email!,
-													name: auth.name!,
-													profileImage: auth.profileImage!,
-													isLoggedIn: auth.isLoggedIn
+													userId: auth.userId ?? '',
+													email: auth.email ?? '',
+													name: auth.name ?? '',
+													profileImage: auth.profileImage ?? '',
+													isLoggedIn: auth.isLoggedIn ?? false
 												}}
 											/>
 										</div>

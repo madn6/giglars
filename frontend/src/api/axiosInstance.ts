@@ -14,7 +14,6 @@ export const checkAuth = async (
 	dispatch: AppDispatch,
 	// navigate: NavigateFunction
 ): Promise<void> => {
-	console.log('this is api', API);
 	try {
 		const res = await API.get<UserData>('/api/auth/check-auth', { withCredentials: true });
 
