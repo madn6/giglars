@@ -21,6 +21,7 @@ export default function CommentDrawer({
 	currentUser,
 	onClose
 }: CommentDrawerProps) {
+	
 	return (
 		<motion.div
 			initial={{ opacity: 0 }}
