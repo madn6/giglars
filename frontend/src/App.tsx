@@ -6,9 +6,10 @@ import { CreatePost, Dashboard, Home, ProfileSetup, SignIn, SignUp, UpdateProfil
 import Navbar from './components/navbar/Navbar';
 import { checkAuth } from './api/axiosInstance';
 import 'react-toastify/dist/ReactToastify.css';
+import { AppDispatch } from './redux/store/store';
 
 const AppContent: React.FC = () => {
-	const dispatch = useDispatch();
+	const dispatch = useDispatch<AppDispatch>();
 
 	useEffect(() => {
 		checkAuth(dispatch);
@@ -20,7 +21,7 @@ const AppContent: React.FC = () => {
 			<Routes>
 				<Route path="/" element={<Home filter="all" />} />
 				<Route path="/lucky" element={<Home filter="lucky" />} />
-				<Route path="/unlucky" element={<Home filter="unlucky" />} />{' '}
+				<Route path="/unlucky" element={<Home filter="unlucky" />} />
 				<Route path="/sign-in" element={<SignIn />} />
 				<Route path="/sign-up" element={<SignUp />} />
 				<Route path="/create-post" element={<CreatePost />} />

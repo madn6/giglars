@@ -1,15 +1,15 @@
-import { FaRegShareSquare } from 'react-icons/fa';
+import { GiBilledCap } from 'react-icons/gi';
 
-type ShareButtonProps = {
-  postId: string;
-  onClick?: () => void;
-};
+// type CapsButtonProps = {
+// 	postId: string;
+// 	onClick?: () => void;
+// };
 
-export default function ShareButton({postId, onClick}: ShareButtonProps) {
+export default function ShareButton() {
   return (
-    <div className="flex items-center gap-2 cursor-pointer hover:opacity-75" onClick={onClick}>
-      <FaRegShareSquare />
-      <p>{}</p>
+    <div className="flex items-center gap-2 cursor-pointer hover:opacity-75" >
+      <GiBilledCap />
+      <p className="">{}</p>
     </div>
   );
 }

@@ -1,12 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { fetchPosts } from '../../redux/features/posts/postsSlice';
-import { HomeNavigations } from '../../components';
-import PostCard from '../../components/home/post/PostCard';
+import { HomeNavigations, PostCard } from '../../components';
 import { useWindowVirtualizer } from '@tanstack/react-virtual';
 import { motion } from 'framer-motion';
 
-const Home = ({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' | 'all' }) => {
+export default function Home({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' | 'all' }) {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 	const [feeling, setFeeling] = useState<'lucky' | 'unlucky' | 'all'>(filter);
@@ -40,6 +39,14 @@ const Home = ({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' | 'all' }) => {
 		measureElement: (el) => el.getBoundingClientRect().height
 	});
 
+	// 🔽 Place this RIGHT BELOW the rowVirtualizer definition
+	const measureRef = useCallback(
+		(el: HTMLDivElement | null) => {
+			if (el) rowVirtualizer.measureElement(el);
+		},
+		[rowVirtualizer]
+	);
+
 	return (
 		<div className="flex flex-col font-inter h-screen">
 			<HomeNavigations feelingFilter={handleFeelingFilter} />
@@ -70,15 +77,16 @@ const Home = ({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' | 'all' }) => {
 								}}
 							>
 								{rowVirtualizer.getVirtualItems().map((virtualRow) => {
+									const index = virtualRow.index;
+									if (index >= postItems.length || index < 0) return null;
+
 									const post = postItems[virtualRow.index];
 									if (!post) return null;
 									return (
 										<div
 											key={post._id}
 											id={`post-${post._id}`}
-											ref={(el) => {
-												if (el) rowVirtualizer.measureElement(el);
-											}}
+											ref={measureRef}
 											data-index={virtualRow.index}
 											style={{
 												position: 'absolute',
@@ -113,6 +121,4 @@ const Home = ({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' | 'all' }) => {
 			</motion.div>
 		</div>
 	);
-};
-
-export default Home;
+}

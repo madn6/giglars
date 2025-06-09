@@ -4,11 +4,7 @@ import { Post } from '../../../redux/features/posts/postTypes';
 import { EllipsisVertical } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import ReadMoreText from './ReadMoreText';
-import LuckButton from './interactionButtons/LuckButton';
-import CommentsButton from './interactionButtons/CommentsButton';
-import CapsButton from './interactionButtons/CapsButton';
-import SaveButton from './interactionButtons/SaveButton';
-import ShareButton from './interactionButtons/ShareButton';
+import { LuckButton, CapsButton, SaveButton, ShareButton, CommentsButton } from './interactionButtons';
 
 type PostCardProps = {
 	post: Post;
@@ -148,15 +144,15 @@ export default function PostCard({ post, userData, currentUser }: PostCardProps)
 			</div>
 
 			<div className="image__bottom flex justify-between items-center mt-4 text-sm">
-				<LuckButton postId={post._id!} />
+				<LuckButton postId={post._id ?? ''} />
 				<CommentsButton
 					postId={post._id ?? ''}
 					postAuthorId={(typeof post.userId === 'object' && post.userId?._id) || ''}
 					currentUser={currentUser}
 				/>
-				<CapsButton postId={post._id ?? ''} />
-				<SaveButton postId={post._id ?? ''} />
-				<ShareButton postId={post._id ?? ''} />
+				<CapsButton />
+				<SaveButton />
+				<ShareButton  />
 			</div>
 		</div>
 	);

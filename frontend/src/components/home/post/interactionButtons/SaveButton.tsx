@@ -1,15 +1,15 @@
-import { FaRegBookmark } from 'react-icons/fa';
+import { GiBilledCap } from 'react-icons/gi';
 
-type SaveButtonProps = {
-  postId: string;
-  onClick?: () => void;
-};
+// type CapsButtonProps = {
+// 	postId: string;
+// 	onClick?: () => void;
+// };
 
-export default function SaveButton({postId, onClick}: SaveButtonProps) {
-  return (
-    <div className="flex items-center gap-2 cursor-pointer hover:opacity-75" onClick={onClick}>
-      <FaRegBookmark />
-      <p>{}</p>
-    </div>
-  );
+export default function SaveButton() {
+	return (
+		<div className="flex items-center gap-2 cursor-pointer hover:opacity-75">
+			<GiBilledCap />
+			<p className="">{}</p>
+		</div>
+	);
 }
