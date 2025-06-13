@@ -24,7 +24,7 @@ app.use(helmet());
 
 app.use(
 	cors({
-		origin: ['http://localhost:5173', 'http://192.168.204.78:5173'], // Allow frontend origin
+		origin: ['http://localhost:5173', 'http://192.168.125.63:5173'], // Allow frontend origin
 		credentials: true // Allow cookies & authentication headers
 	})
 );
