@@ -15,16 +15,10 @@ import {
 type PostCardProps = {
 	post: Post;
 	userData: { profileImage: string; uniqueUsername: string; displayName: string };
-	currentUser: {
-		userId: string;
-		email: string;
-		name: string;
-		profileImage: string;
-		isLoggedIn: boolean;
-	};
+	onCommentClick?: (postId: string, postAuthorId: string) => void;
 };
 
-export default function PostCard({ post, userData, currentUser }: PostCardProps) {
+export default function PostCard({ post, userData,onCommentClick }: PostCardProps) {
 	const removeImagesFromHtml = (html: string) => {
 		return html.replace(/<img[^>]*>/g, '');
 	};
@@ -152,9 +146,12 @@ export default function PostCard({ post, userData, currentUser }: PostCardProps)
 			<div className="image__bottom flex justify-between items-center mt-4 text-sm">
 				<LuckButton postId={post._id ?? ''} />
 				<CommentsButton
-					postId={post._id ?? ''}
-					postAuthorId={(typeof post.userId === 'object' && post.userId?._id) || ''}
-					currentUser={currentUser}
+					onClick={() =>
+						onCommentClick?.(
+							post._id ?? '',
+							post.userId && typeof post.userId === 'object' ? post.userId._id : ''
+						)
+					}
 				/>
 				<CapsButton />
 				<SaveButton />
@@ -162,4 +159,4 @@ export default function PostCard({ post, userData, currentUser }: PostCardProps)
 			</div>
 		</div>
 	);
-}
+}            

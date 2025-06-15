@@ -3,6 +3,7 @@ import Comment from '../../models/comment.model';
 import Post from '../../models/Post.model';
 import { AuthRequest } from '../../middleware/verifyToken';
 import { AppError } from '../../utils/AppError';
+import { Types } from 'mongoose';
 
 // Create a comment
 export const createComment = async (req: AuthRequest, res: Response) => {
@@ -118,4 +119,49 @@ export const reportComment = async (req: AuthRequest, res: Response) => {
 	await comment.save();
 
 	res.status(200).json({ message: 'Comment reported successfully.' });
+};
+
+export const likeComment = async (req: AuthRequest, res: Response) => {
+	const userId = req.userId;
+	const { commentId } = req.params;
+
+	const comment = await Comment.findById(commentId);
+	if (!comment) {
+		throw new AppError('Comment not found', 404);
+	}
+
+	const userObjectId = new Types.ObjectId(userId);
+	const liked = comment.likes.some((id) => id.equals(userObjectId));
+
+	if (liked) {
+		comment.likes = comment.likes.filter((id) => !id.equals(userObjectId));
+	} else {
+		comment.likes.push(userObjectId);
+		comment.dislikes = comment.dislikes.filter((id) => !id.equals(userObjectId));
+	}
+	await comment.save();
+	res.status(200).json({ message: liked ? 'unliked' : 'liked', likes: comment.likes.length });
+};
+
+
+export const disLikeComment = async (req: AuthRequest, res: Response) => {
+	const userId = req.userId;
+	const { commentId } = req.params;
+
+	const comment = await Comment.findById(commentId);
+	if (!comment) {
+		throw new AppError('Comment not found', 404);
+	}
+
+	const userObjectId = new Types.ObjectId(userId);
+	const disliked = comment.dislikes.some((id) => id.equals(userObjectId));
+
+	if (disliked) {
+		comment.dislikes = comment.dislikes.filter((id) => !id.equals(userObjectId));
+	} else {
+		comment.dislikes.push(userObjectId);
+		comment.likes = comment.likes.filter((id) => !id.equals(userObjectId));
+	}
+	await comment.save();
+	res.status(200).json({ message: disliked ? 'unliked' : 'liked', likes: comment.dislikes.length });
 };

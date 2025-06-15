@@ -4,6 +4,7 @@ import { fetchPosts } from '../../redux/features/posts/postsSlice';
 import { HomeNavigations, PostCard } from '../../components';
 import { useWindowVirtualizer } from '@tanstack/react-virtual';
 import { motion } from 'framer-motion';
+import CommentDrawer from '../../components/home/post/interactionButtons/comment/CommentDrawer';
 
 export default function Home({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' | 'all' }) {
 	const [loading, setLoading] = useState(true);
@@ -14,6 +15,19 @@ export default function Home({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' 
 	const { postItems } = useAppSelector((state) => state.posts);
 	const auth = useAppSelector((state) => state.auth);
 	const userId = auth.userId;
+
+	const [drawerPostId, setDrawerPostId] = useState<string | null>(null);
+	const [drawerPostAuthorId, setDrawerPostAuthorId] = useState<string | null>(null);
+
+	const openComments = (postId: string, authorId: string) => {
+		setDrawerPostId(postId);
+		setDrawerPostAuthorId(authorId);
+	};
+
+	const closeComments = () => {
+		setDrawerPostId(null);
+		setDrawerPostAuthorId(null);
+	};
 
 	useEffect(() => {
 		setFeeling(filter);
@@ -39,7 +53,7 @@ export default function Home({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' 
 		measureElement: (el) => el.getBoundingClientRect().height
 	});
 
-	// 🔽 Place this RIGHT BELOW the rowVirtualizer definition
+	//  Place this RIGHT BELOW the rowVirtualizer definition
 	const measureRef = useCallback(
 		(el: HTMLDivElement | null) => {
 			if (el) rowVirtualizer.measureElement(el);
@@ -56,9 +70,9 @@ export default function Home({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' 
 				initial={{ opacity: 0, y: 50 }}
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ duration: 0.5, ease: 'easeOut' }}
-				className="flex-1 pt-20 md:pb-0 pb-18 lg:pl-0  md:pl-[140px] px-2 md:px-6 mx-auto w-full max-w-3xl "
+				className="flex-1 pt-20 md:pb-0 pb-18 lg:pl-0  md:pl-[140px]  px-2 md:px-6 mx-auto w-full  lg:max-w-2xl md:max-w-3xl"
 			>
-				<div className="max-w-2xl w-full h-full">
+				<div className=" w-full h-full">
 					{loading ? (
 						<p className="flex items-center justify-center h-screen text-white">
 							<img src="/svg/tube-spinner.svg" alt="spinner" className="w-10" />
@@ -103,12 +117,11 @@ export default function Home({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' 
 													uniqueUsername: post.userId?.uniqueUsername || 'Unknown',
 													displayName: post.userId?.displayName || 'Anonymous'
 												}}
-												currentUser={{
-													userId: auth.userId ?? '',
-													email: auth.email ?? '',
-													name: auth.name ?? '',
-													profileImage: auth.profileImage ?? '',
-													isLoggedIn: auth.isLoggedIn ?? false
+												onCommentClick={() => {
+													const postId = post._id;
+													const authorId = post.userId?._id;
+													if (!postId || !authorId) return; // Optional: Show error/toast/log
+													openComments(postId, authorId);
 												}}
 											/>
 										</div>
@@ -119,6 +132,21 @@ export default function Home({ filter = 'all' }: { filter?: 'lucky' | 'unlucky' 
 					)}
 				</div>
 			</motion.div>
+			{/* Drawer appears at the root level */}
+			{drawerPostId && drawerPostAuthorId && (
+				<CommentDrawer
+					postId={drawerPostId}
+					postAuthorId={drawerPostAuthorId}
+					currentUser={{
+						userId: auth.userId ?? '',
+						email: auth.email ?? '',
+						name: auth.name ?? '',
+						profileImage: auth.profileImage ?? '',
+						isLoggedIn: auth.isLoggedIn ?? false
+					}}
+					onClose={closeComments}
+				/>
+			)}
 		</div>
 	);
 }

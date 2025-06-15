@@ -11,8 +11,7 @@ import {
 import CommentOperations from './CommentOperations';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
-import { MoveLeft } from 'lucide-react';
-// import { Link } from 'react-router-dom';
+import { MessageSquareReply, MoveLeft, ThumbsDown, ThumbsUp } from 'lucide-react';
 
 type Comment = {
 	_id: string;
@@ -39,7 +38,12 @@ type CommentSectionProps = {
 	onBack?: () => void;
 };
 
-export default function CommentSection({ currentUser, postId, postAuthorId, onBack }: CommentSectionProps) {
+export default function CommentSection({
+	currentUser,
+	postId,
+	postAuthorId,
+	onBack
+}: CommentSectionProps) {
 	const dispatch = useAppDispatch();
 	const { userId } = useAppSelector((state) => state.auth);
 
@@ -107,11 +111,6 @@ export default function CommentSection({ currentUser, postId, postAuthorId, onBa
 			});
 	};
 
-	// const handleHide = (commentId: string) => {
-	// 	// Implement hide functionality here
-	// 	console.log(`Hiding comment with ID: ${commentId}`);
-	// };
-
 	return (
 		<div className=" px-3 ">
 			<div className="sticky top-0 z-10 bg-secondary  py-4">
@@ -159,6 +158,12 @@ export default function CommentSection({ currentUser, postId, postAuthorId, onBa
 						placeholder="Write a comment..."
 						value={commentText}
 						onChange={(e) => setCommentText(e.target.value)}
+						onKeyDown={(e) => {
+							if (e.key === 'Enter' && commentText.trim() !== '') {
+								handleSubmit();
+								e.preventDefault(); // Prevent form submission
+							}
+						}}
 					/>
 					<button
 						onClick={handleSubmit}
@@ -178,7 +183,10 @@ export default function CommentSection({ currentUser, postId, postAuthorId, onBa
 					<p className="text-gray-400 text-sm">No comments yet.</p>
 				) : (
 					comments.map((comment) => (
-						<div key={comment._id} className="flex border p-2 rounded-lg bg-gray border-border/20 items-start gap-3">
+						<div
+							key={comment._id}
+							className="flex border p-2 rounded-lg bg-gray border-border/20 items-start gap-3"
+						>
 							<div className="rounded-full flex items-center  justify-center ">
 								<img
 									className="w-8 h-8 rounded-full object-cover "
@@ -235,6 +243,17 @@ export default function CommentSection({ currentUser, postId, postAuthorId, onBa
 								) : (
 									<p className="text-sm">{comment.content}</p>
 								)}
+								<div className="flex gap-6 items-center mt-2">
+									<button>
+										<ThumbsUp size={16} />
+									</button>
+									<button>
+										<ThumbsDown size={16} />
+									</button>
+									<button>
+										<MessageSquareReply size={16}/>
+									</button>
+								</div>
 							</div>
 						</div>
 					))
